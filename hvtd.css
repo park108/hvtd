@@ -1,0 +1,78 @@
+body {
+	background-color: #cccccc;
+}
+.node-frame {
+	width: 100%;
+	margin-top: 3px;
+	margin-bottom: 5px;
+	min-height: 2em;
+	overflow: hidden;
+	position: relative;
+
+	border-bottom-style: solid;
+	border-bottom-width: 2px;
+
+	border-right-style: solid;
+	border-right-width: 2px;
+}
+
+.node-frame-collapsed {
+	border-bottom-style: dashed;
+}
+
+.node-contents {
+	margin-left: 5px;
+	margin-right: 0px;
+	margin-top: 6px;
+	margin-bottom: 6px;
+	width: calc(100% - 7em);
+	white-space: pre-wrap;
+}
+
+.node-status-none {
+	background-color: #ffffff;
+
+	border-bottom-color: #dddddd;
+	border-right-color: #dddddd;
+}
+
+.node-status-done {
+	background-color: #eeffee;
+	/*background-color: #ffffff;*/
+
+	border-bottom-color: #bbddbb;
+	border-right-color: #bbddbb;
+}
+
+.node-status-cancel {
+	background-color: #ffeeee;
+	/*background-color: #ffffff;*/
+
+	border-bottom-color: #ddbbbb;
+	border-right-color: #ddbbbb;
+}
+
+.node-toolbar {
+	width: 7em;
+	top: 0;
+	right: 0;
+	height: 100%;
+	position: absolute;
+}
+
+.node-toolbar-label {
+	display:inline-block;
+	text-align: center;
+	width: 33%;
+}
+
+.node-toolbar-label img {
+	padding: 3px;
+	width: calc(2em - 6px);
+	height: calc(2em - 6px);
+}
+
+.node-toolbar-checkbox {
+	display: none;
+	visibility: hidden;
+}
