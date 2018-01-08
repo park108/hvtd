@@ -23,8 +23,8 @@ function createNode(currentNode) {
 		GLOBAL_VARIABLE.changed = true;
 	}
 
-	var level = currentNode.getAttribute("level") * 1;
-	if(0 == level) {
+	var level = getNodeLevel(currentNode);
+	if(undefined == level || 0 == level) {
 		level = 1;
 	}
 
@@ -109,7 +109,7 @@ function createNode(currentNode) {
 	newNodeContents.focus();
 }
 
-function deleteNode(node) {
+function deleteNode(node, key) {
 
 	var nodeCount = getNodeCount();
 
@@ -147,25 +147,39 @@ function deleteNode(node) {
 			});
 		}
 
-		// Set focus on previous node
-		var prevNode = getPreviousVisibleNode(node);
-		var prevContents = getContents(prevNode);
-		prevContents.focus();
+		var setFocustOnLast = true;
+		var focusingNode;
 
+		// Delete by command or backspace key
+		if(undefined == key || "BACKSPACE" == key) {
 
-		// Set caret position on last
-		var lastChild = prevContents.childNodes[prevContents.childNodes.length - 1];
-			
-		if(undefined != lastChild) {
+			// Set focus on previous visible node
+			focusingNode = getPreviousVisibleNode(node);
+			setFocustOnLast = true;
 
-			var range = document.createRange();					
-			range.setStart(lastChild, lastChild.length);
-			range.collapse(true);
-			
-			var sel = window.getSelection();
-			sel.removeAllRanges();
-			sel.addRange(range);
+			// If didn't have focusing node, set focus on next sibling node
+			if(node.id == focusingNode.id) {
+				focusingNode = getNextSiblingNode(node);
+				setFocustOnLast = false;
+			}
 		}
+
+		// Delete by delete key
+		else if("DELETE" == key) {
+
+			// Set focus on next sibling node
+			focusingNode = getNextSiblingNode(node);
+			setFocustOnLast = false;
+
+			// If didn't have focusing node, set focus on previous visible node
+			if(undefined == focusingNode) {
+				focusingNode = getPreviousVisibleNode(node);
+				setFocustOnLast = true;
+			}
+		}
+
+		// Set caret position
+		setFocustOnLast ? setCaretPositionToLast(focusingNode) : setCaretPositionToFirst(focusingNode);
 
 		// Delete this node
 		node.parentNode.removeChild(node);
@@ -174,9 +188,46 @@ function deleteNode(node) {
 	}
 }
 
+function setCaretPositionToFirst(node) {
+	
+	var contents = getContents(node);
+	contents.focus();
+}
+
+function setCaretPositionToLast(node) {
+	
+	var contents = getContents(node);
+	contents.focus();
+
+	var lastChild = contents.childNodes[contents.childNodes.length - 1];
+
+	if(undefined != lastChild) {
+
+		var range = document.createRange();
+		range.setStart(lastChild, lastChild.length);
+		range.collapse(true);
+
+		var sel = window.getSelection();
+		sel.removeAllRanges();
+		sel.addRange(range);
+	}
+}
+
+function getNodeLevel(node) {
+
+	var level = node.getAttribute("level");
+
+	if(undefined == level) {
+		return undefined;
+	}
+	else {
+		return level * 1;
+	}
+}
+
 function getNodeCount() {
 
-	// Count based on node-contents
+	// Count based on class name "node-contents"
 	return document.getElementsByClassName("node-contents").length;
 }
 
@@ -202,8 +253,8 @@ function hasChildNode(node) {
 		return false;
 	}
 
-	var currentNodeLevel = node.getAttribute("level") * 1;
-	var nextNodeLevel = nextNode.getAttribute("level") * 1;
+	var currentNodeLevel = getNodeLevel(node);
+	var nextNodeLevel = getNodeLevel(nextNode);
 
 	if(currentNodeLevel < nextNodeLevel) {
 		return true;
@@ -215,13 +266,13 @@ function hasChildNode(node) {
 
 function getChildrenIdList(node) {
 
-	var baseNodeLevel = node.getAttribute("level") * 1;
+	var baseNodeLevel = getNodeLevel(node);
 	var nextNode = getNextNode(node);
 	var childrenIdList = [];
 
 	while(undefined != nextNode) {
 		
-		var nextNodeLevel = nextNode.getAttribute("level") * 1;
+		var nextNodeLevel = getNodeLevel(nextNode);
 
 		if(baseNodeLevel < nextNodeLevel) {
 			childrenIdList.push(nextNode.id);
@@ -238,7 +289,7 @@ function getChildrenIdList(node) {
 
 function getParentIdList(node) {
 
-	var baseNodeLevel = node.getAttribute("level") * 1;
+	var baseNodeLevel = getNodeLevel(node);
 	var prevNode = getPreviousNode(node);
 	var minimumLevel = baseNodeLevel;
 	var prevNodeLevel = 0;
@@ -246,7 +297,7 @@ function getParentIdList(node) {
 
 	while(undefined != prevNode) {
 		
-		prevNodeLevel = prevNode.getAttribute("level") * 1;
+		prevNodeLevel = getNodeLevel(prevNode);
 
 		if(prevNodeLevel < minimumLevel) {
 			parentIdList.push(prevNode.id);
@@ -471,13 +522,40 @@ function getNextVisibleNode(node) {
 	return lastVisibleNode;
 }
 
+function getNextSiblingNode(node) {
+
+	var baseNode = node;
+	var baseNodeLevel = getNodeLevel(baseNode);
+
+	var nextNode = node;
+	var nextNodeLevel;
+	var nextSiblingNode = undefined;
+
+	while(true) {
+
+		nextNode = getNextNode(nextNode);
+		nextNodeLevel = getNodeLevel(nextNode);
+
+		if(baseNodeLevel >= nextNodeLevel) {
+			nextSiblingNode = nextNode;
+			break;
+		}
+
+		if(isNodeLast(nextNode)) {
+			break;
+		}
+	}
+
+	return nextSiblingNode;
+}
+
 function increaseLevel(node) {
 
 	// Get children before increase
 	var childrenIdList = getChildrenIdList(node);
 
 	// Increase current Node level
-	var currentNodeLevel = node.getAttribute("level") * 1;
+	var currentNodeLevel = getNodeLevel(node);
 	node.setAttribute("level", currentNodeLevel + 1);
 
 	// Increase children level
@@ -485,7 +563,7 @@ function increaseLevel(node) {
 
 	childrenIdList.forEach(function(id) {
 		childNode = document.getElementById(id);
-		childNodeLevel = childNode.getAttribute("level") * 1;
+		childNodeLevel = getNodeLevel(childNode);
 		childNode.setAttribute("level", childNodeLevel + 1);
 	});
 
@@ -501,7 +579,7 @@ function decreaseLevel(node) {
 	var childrenIdList = getChildrenIdList(node);
 
 	// Decrease current Node level
-	var currentNodeLevel = node.getAttribute("level") * 1;
+	var currentNodeLevel = getNodeLevel(node);
 	if(currentNodeLevel == 1) return false;
 	node.setAttribute("level", currentNodeLevel - 1);
 
@@ -521,7 +599,7 @@ function decreaseLevel(node) {
 }
 
 function setLeftMarginByNodeLevel(node) {
-	var level = node.getAttribute("level") * 1;
+	var level = getNodeLevel(node);
 	node.style.margin = "3px 0px 5px " + (20 * (level - 1)) + "px";
 	node.style.width = "calc(100% - " + (20 * (level - 1)) + "px)"
 }
@@ -530,22 +608,36 @@ function getContents(node) {
 	return document.getElementById("contents" + node.id);
 }
 
-function movePreviousNode(node) {
+function movePreviousNode(node, onLast) {
 
 	var prevNode = getPreviousVisibleNode(node);
 
 	if(node.id != prevNode.id) {
-		getContents(prevNode).focus();
+
+		if(undefined == onLast || false == onLast) {
+			setCaretPositionToFirst(prevNode);
+		}
+		else {
+			setCaretPositionToLast(prevNode);
+		}
+
 		log("MOVE_PREV: " + node.id + " -> " + prevNode.id);
 	}
 }
 
-function moveNextNode(node) {
+function moveNextNode(node, onLast) {
 
 	var nextNode = getNextVisibleNode(node);
 
 	if(node.id != nextNode.id) {
-		getContents(nextNode).focus();
+
+		if(undefined == onLast || false == onLast) {
+			setCaretPositionToFirst(nextNode);
+		}
+		else {
+			setCaretPositionToLast(nextNode);
+		}
+
 		log("MOVE_NEXT: " + node.id + " -> " + nextNode.id);
 	}
 }
@@ -745,7 +837,16 @@ function keyin(e) {
 	else if(8 == e.which) {
 
 		if(0 == getCaretOffset() && 0 == getContents(currentNode).innerHTML.length) {
-			deleteNode(currentNode);
+			deleteNode(currentNode, "BACKSPACE");
+			return false;
+		}
+	}
+
+	// Delete
+	else if(46 == e.which) {
+
+		if(0 == getCaretOffset() && 0 == getContents(currentNode).innerHTML.length) {
+			deleteNode(currentNode, "DELETE");
 			return false;
 		}
 	}
@@ -766,12 +867,12 @@ function keyin(e) {
 					return false;
 				}
 				else {
-					movePreviousNode(currentNode);
+					movePreviousNode(currentNode, true);
 					return false;
 				}
 			}
 			else {
-				movePreviousNode(currentNode);
+				movePreviousNode(currentNode, true);
 				return false;
 			}
 		}
