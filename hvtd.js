@@ -107,6 +107,8 @@ function createNode(currentNode) {
 	refreshNode(newNode);
 
 	newNodeContents.focus();
+
+	return newNode;
 }
 
 function deleteNode(node, key) {
@@ -214,6 +216,10 @@ function setCaretPositionToLast(node) {
 }
 
 function getNodeLevel(node) {
+
+	if(undefined == node) {
+		return undefined;
+	}
 
 	var level = node.getAttribute("level");
 
@@ -835,6 +841,8 @@ function keyin(e) {
 
 	// Backspace
 	else if(8 == e.which) {
+
+		log("CONTENTS = '" + getContents(currentNode).innerHTML + "'");
 
 		if(0 == getCaretOffset() && 0 == getContents(currentNode).innerHTML.length) {
 			deleteNode(currentNode, "BACKSPACE");
