@@ -1,13 +1,89 @@
 body {
 	background-color: #cccccc;
 }
+
+#header {
+	background-color: #ffffff;
+	height: 2.3em;
+}
+
+#selected-date {
+	float: left;
+	padding-top: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-bottom: 5px;
+	font-family: sans-serif;
+	font-size: 1.5em;
+}
+
+#header-tool-bar {
+	padding-top: 2px;
+}
+
+#calendar-icon {
+	float: left;
+	padding: 3px;
+	width: calc(2em - 6px);
+	height: calc(2em - 6px);
+}
+
+#calendar {
+	padding: 10px;
+	background-color: #ffffff;
+}
+
+#calendar span.date {
+	display: inline-block;
+	vertical-align: middle;
+	padding: 5px;
+	width: 1.2em;
+	height: 1.2em;
+	text-align: center;
+	word-wrap: normal;
+	font-weight: 100;
+}
+
+#calendar span.month-text {
+	display: inline-block;
+	vertical-align: middle;
+	padding: 5px;
+	width: 4em;
+	height: 1.2em;
+	text-align: center;
+	word-wrap: normal;
+	font-weight: 100;
+}
+
+#calendar span.date:hover {
+	border-radius: 50%;
+	background-color: #dddddd;
+	font-weight: 700;
+}
+
+#calendar .selected-date {
+	border-radius: 50%;
+	background-color: #ffff88;
+}
+
+#calendar .saturday {
+	color: #0000ff;
+}
+
+#calendar .sunday {
+	color: #ff0000;
+}
+
+#frame {
+	margin-top: 5px;
+}
+
 .node-frame {
+	position: relative;
 	width: 100%;
-	margin-top: 3px;
 	margin-bottom: 5px;
 	min-height: 2em;
 	overflow: hidden;
-	position: relative;
 
 	border-bottom-style: solid;
 	border-bottom-width: 2px;

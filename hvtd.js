@@ -948,8 +948,160 @@ function keyin(e) {
 	}
 }
 
-window.onload = function() {
+function setSelectedDate() {
+
+	var d = GLOBAL_VARIABLE.selected_date;
+
+	if(null == d) {
+		GLOBAL_VARIABLE.selected_date = new Date();
+		d = GLOBAL_VARIABLE.selected_date;
+	}
+
+	var date = d.getDate();
+	var day = d.getDay();
+	var year = d.getFullYear();
+	var month = d.getMonth() + 1;
+
+	if(month < 10) {
+		month = "0" + month;
+	}
+
+	if(date < 10) {
+		date = "0" + date;
+	}
+
+	var selectedDateString = year + "-" + month + "-" + date;
+	var weekString = "(" + getMessage("W0" + day) + ")";
+
+	document.getElementById("selected-date").innerHTML = selectedDateString + " " + weekString;
+}
+
+function createCalendar(d) {
+
+	// Get selected date
+	var selectedDate = GLOBAL_VARIABLE.selected_date;
+
+	var day = new Date(d.getFullYear(), d.getMonth(), 1).getDay(); 
+	var lastMonth = new Date(d.getFullYear(), d.getMonth() - 1, 1);
+	var lastDate = new Date(d.getFullYear(), d.getMonth() + 1, 0);
+	var nextMonth = new Date(d.getFullYear(), d.getMonth() + 1, 1);
+
+	var calendar = document.getElementById("calendar");
+	calendar.innerHTML = "";
+
+	// Add previous month arrow
+	var dateObj = document.createElement("span");
+	addClass(dateObj, "date");
+	dateObj.innerHTML = "< " ;
+	dateObj.addEventListener("click", function() {
+		createCalendar(lastMonth)
+	}, false);
+	calendar.appendChild(dateObj);
+
+	// Add month text
+	dateObj = document.createElement("span");
+	addClass(dateObj, "month-text");
+	var yearString = d.getFullYear();
+	var monthString = d.getMonth() + 1;
+	if(monthString < 10) {
+		monthString = "0" + monthString;
+	}
+	dateObj.innerHTML = yearString + "-" + monthString;
+	calendar.appendChild(dateObj);
+
+	// Add next month arrow
+	dateObj = document.createElement("span");
+	addClass(dateObj, "date");
+	dateObj.innerHTML = "> " ;
+	dateObj.addEventListener("click", function() {
+		createCalendar(nextMonth)
+	}, false);
+	calendar.appendChild(dateObj);
+
+	// Create current month calendar
+	var currentDate = 1;
+
+	while(currentDate <= lastDate.getDate()) {
+
+		dateObj = document.createElement("span");
+		dateObj.innerHTML = currentDate + " " ;
+		addClass(dateObj, "date");
+
+		if(currentDate == selectedDate.getDate()
+			&& d.getFullYear() == selectedDate.getFullYear()
+			&& d.getMonth() == selectedDate.getMonth()) {
+			addClass(dateObj, "selected-date");
+		}
+
+		if(0 == day) {
+			addClass(dateObj, "sunday");
+		}
+		else if(6 == day) {
+			addClass(dateObj, "saturday");
+		}
+
+		dateObj.setAttribute(
+			"onclick"
+			, "getData(" + d.getFullYear() + ", " + d.getMonth() + ", " + currentDate + ")");
+
+		calendar.appendChild(dateObj);
+
+		++currentDate;
+		day = ( ++day % 7 );
+	}
+}
+
+function getData(year, month, date) {
+
+	// TODO: If current todo is changed, confirm save / leave / cancel
+	if(GLOBAL_VARIABLE.changed) {
+
+	}
+
+	GLOBAL_VARIABLE.selected_date = new Date(year, month, date);
+	createCalendar(GLOBAL_VARIABLE.selected_date);
+
+	init();
+}
+
+function showCalendar() {
+
+	var calendar = document.getElementById("calendar");
+
+	if("none" == calendar.style.display) {
+		calendar.style.display = "block";
+		createCalendar(GLOBAL_VARIABLE.selected_date);
+	}
+	else {
+		calendar.style.display = "none";
+	}
+}
+
+function clear() {
+
+	var nodeList = getNodeList();
+	var frame = document.getElementById("frame");
+
+	nodeList.forEach(function(node) {
+
+		frame.removeChild(node);
+	});
+
+	GLOBAL_VARIABLE.node_id = 0;
+	GLOBAL_VARIABLE.changed = false;
+}
+
+function init() {
+
+	clear();
 	createNode();
+	setSelectedDate();
+	document.getElementById("calendar-icon").addEventListener("click", showCalendar, false);
+}
+
+window.onload = function() {
+	
+	init();
 }
 
 window.onbeforeunload = function(e) {
