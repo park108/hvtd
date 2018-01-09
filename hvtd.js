@@ -849,7 +849,7 @@ function executeCancel(checkbox, node) {
 	setCaretPositionToLast(node);
 
 	log((checked ? "CANCEL" : "UNCANCEL") + "_NODE: ID = " + node.id);
-	
+
 	setChanged(true);
 }
 
@@ -1125,6 +1125,7 @@ function getData(year, month, date) {
 
 function showCalendar(show) {
 
+	var header = document.getElementById("header");
 	var calendar = document.getElementById("calendar");
 
 	if(undefined == show) {
@@ -1139,10 +1140,18 @@ function showCalendar(show) {
 	if(show) {
 		calendar.style.display = "block";
 		createCalendar(GLOBAL_VARIABLE.selected_date);
+		
 	}
 	else {
 		calendar.style.display = "none";
 	}
+
+	refreshContentsMargin();
+}
+
+function refreshContentsMargin() {
+	var contents = document.getElementById("contents");
+	contents.style.marginTop = (header.clientHeight + 5) + "px";
 }
 
 function clear() {
@@ -1156,11 +1165,10 @@ function clear() {
 	if(doClear) {
 
 		var nodeList = getNodeList();
-		var frame = document.getElementById("frame");
+		var contents = document.getElementById("contents");
 
 		nodeList.forEach(function(node) {
-
-			frame.removeChild(node);
+			contents.removeChild(node);
 		});
 
 		GLOBAL_VARIABLE.node_id = 0;
@@ -1198,3 +1206,7 @@ window.onbeforeunload = function(e) {
 
 	return msg;
 };
+
+window.onresize = function() {
+	refreshContentsMargin();
+}

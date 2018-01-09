@@ -8,17 +8,22 @@
 		<link rel="stylesheet" type="text/css" href="./hvtd.css">
 	</head>
 	<body>
+	
 		<div id="header">
-			<div id="selected-date">
+			<div id="title">
+				<div id="selected-date">
+				</div>
+				<div id="header-tool-bar">
+					<img id="calendar-icon" src='./icons/calendar.svg' />
+					<img id="clear-icon" src='./icons/trash_bin.svg' />
+				</div>
 			</div>
-			<div id="header-tool-bar">
-				<img id="calendar-icon" src='./icons/calendar.svg' />
-				<img id="clear-icon" src='./icons/trash_bin.svg' />
+
+			<div id="calendar" style="display: none;">
 			</div>
 		</div>
-		<div id="calendar" style="display: none;">
-		</div>
-		<div id="frame">
+
+		<div id="contents">
 			<div id="header-of-node"></div>
 			<div id="trailer-of-node"></div>
 		</div>

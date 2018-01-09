@@ -4,6 +4,18 @@ body {
 }
 
 #header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 100;
+
+	border-bottom-color: #dddddd;
+	border-bottom-style: solid;
+	border-bottom-width: 2px;
+}
+
+#title {
 	background-color: #ffffff;
 	height: 2.3em;
 }
@@ -13,7 +25,6 @@ body {
 	padding-top: 5px;
 	padding-left: 10px;
 	padding-right: 10px;
-	padding-bottom: 5px;
 	width: 7.5em;
 	font-size: 1.5em;
 	font-weight: 300;
@@ -80,8 +91,9 @@ body {
 	color: #ff0000;
 }
 
-#frame {
-	margin-top: 5px;
+#contents {
+	top: 0;
+	left: 0;
 }
 
 .node-frame {
