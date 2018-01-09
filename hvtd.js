@@ -11,7 +11,28 @@ function newNodeId() {
 
 function changeData(e) {
 	log("CHANGE_DATA: ID = " + e.target.parentNode.id);
-	GLOBAL_VARIABLE.changed = true;
+	setChanged(true);
+}
+
+function getChanged() {
+	return GLOBAL_VARIABLE.changed;	
+}
+
+function setChanged(isChanged) {
+
+	if(GLOBAL_VARIABLE.changed != isChanged) {
+
+		GLOBAL_VARIABLE.changed = isChanged;
+
+		var button = document.getElementById("clear-icon");
+
+		if(isChanged) {
+			button.style.display = "block";
+		}
+		else {
+			button.style.display = "none";
+		}
+	}
 }
 
 function createNode(currentNode) {
@@ -20,7 +41,7 @@ function createNode(currentNode) {
 		currentNode = document.getElementById("header-of-node");
 	}
 	else {
-		GLOBAL_VARIABLE.changed = true;
+		setChanged(true);
 	}
 
 	var level = getNodeLevel(currentNode);
@@ -322,7 +343,7 @@ function setStatus(node, status) {
 	// D: Done
 	// C: Cancel
 	node.setAttribute("status", status);
-	GLOBAL_VARIABLE.changed = true;
+	setChanged(true);
 }
 
 function getParentStatus(node) {
@@ -576,7 +597,7 @@ function increaseLevel(node) {
 	refreshNode(node);
 
 	log("INCREASE_LEVEL: ID = " + node.id + ", LEVEL = " + (currentNodeLevel + 1));
-	GLOBAL_VARIABLE.changed = true;
+	setChanged(true);
 }
 
 function decreaseLevel(node) {
@@ -601,7 +622,7 @@ function decreaseLevel(node) {
 	refreshNode(node);
 
 	log("DECREASE_LEVEL: ID = " + node.id + ", LEVEL = " + (currentNodeLevel - 1));
-	GLOBAL_VARIABLE.changed = true;
+	setChanged(true);
 }
 
 function setLeftMarginByNodeLevel(node) {
@@ -654,6 +675,15 @@ function newTodo() {
 
 function saveTodo() {
 	
+	var date = GLOBAL_VARIABLE.selected_date;
+
+	var todo = {
+		"year": date.getFullYear(),
+		"month": date.getMonth(),
+		"date": date.getDate(),
+		"list": null
+	};
+
 	var nodeList = getNodeList();
 	var todoList = [];
 	var nodeObject;
@@ -669,11 +699,13 @@ function saveTodo() {
 		todoList.push(nodeObject);
 	});
 
-	var jsonString = JSON.stringify(todoList);
+	todo.list = todoList;
+
+	var jsonString = JSON.stringify(todo);
 
 	log("SAVE: " + jsonString);
 
-	GLOBAL_VARIABLE.changed = false;
+	setChanged(false);
 }
 
 function openTodo() {
@@ -753,8 +785,12 @@ function executeCollapse(checkbox, node) {
 
 		refreshNode(node);
 
+		// Set cursor
+		checked ? setCaretPositionToFirst(node) : setCaretPositionToLast(node);
+
 		log((checked ? "COLLAPSE" : "EXPAND") + "_NODE: ID = " + node.id);
-		GLOBAL_VARIABLE.changed = true;
+
+		setChanged(true);
 	}
 }
 
@@ -780,8 +816,11 @@ function executeDone(checkbox, node) {
 		executeCollapse(collapseCheckbox, node);
 	}
 
+	// Set cursor
+	setCaretPositionToLast(node);
+
 	log((checked ? "DONE" : "UNDONE") + "_NODE: ID = " + node.id);
-	GLOBAL_VARIABLE.changed = true;
+	setChanged(true);
 }
 
 function executeCancel(checkbox, node) {
@@ -806,8 +845,12 @@ function executeCancel(checkbox, node) {
 		executeCollapse(collapseCheckbox, node);
 	}
 
+	// Set cursor
+	setCaretPositionToLast(node);
+
 	log((checked ? "CANCEL" : "UNCANCEL") + "_NODE: ID = " + node.id);
-	GLOBAL_VARIABLE.changed = true;
+	
+	setChanged(true);
 }
 
 function keyin(e) {
@@ -1051,24 +1094,49 @@ function createCalendar(d) {
 	}
 }
 
-function getData(year, month, date) {
+function getIntializeConfirm() {
 
-	// TODO: If current todo is changed, confirm save / leave / cancel
-	if(GLOBAL_VARIABLE.changed) {
-
-	}
-
-	GLOBAL_VARIABLE.selected_date = new Date(year, month, date);
-	createCalendar(GLOBAL_VARIABLE.selected_date);
-
-	init();
+	return confirm(getMessage("003"));
 }
 
-function showCalendar() {
+function getClearConfirm() {
+
+	return confirm(getMessage("004"));
+}
+
+function getData(year, month, date) {
+
+	var doInit = true;
+
+	if(getChanged()) {
+		doInit = getIntializeConfirm();
+	}
+
+	if(doInit) {
+
+		GLOBAL_VARIABLE.selected_date = new Date(year, month, date);
+		createCalendar(GLOBAL_VARIABLE.selected_date);
+
+		setChanged(false);
+
+		init();
+	}
+}
+
+function showCalendar(show) {
 
 	var calendar = document.getElementById("calendar");
 
-	if("none" == calendar.style.display) {
+	if(undefined == show) {
+		if("none" == calendar.style.display) {
+			show = true;
+		}
+		else {
+			show = false;
+		}
+	}
+
+	if(show) {
 		calendar.style.display = "block";
 		createCalendar(GLOBAL_VARIABLE.selected_date);
 	}
@@ -1079,34 +1147,51 @@ function showCalendar() {
 
 function clear() {
 
-	var nodeList = getNodeList();
-	var frame = document.getElementById("frame");
+	var doClear = true;
 
-	nodeList.forEach(function(node) {
+	if(getChanged()) {
+		doClear = getClearConfirm();
+	}
 
-		frame.removeChild(node);
-	});
+	if(doClear) {
 
-	GLOBAL_VARIABLE.node_id = 0;
-	GLOBAL_VARIABLE.changed = false;
+		var nodeList = getNodeList();
+		var frame = document.getElementById("frame");
+
+		nodeList.forEach(function(node) {
+
+			frame.removeChild(node);
+		});
+
+		GLOBAL_VARIABLE.node_id = 0;
+		
+		createNode();
+	}
 }
 
 function init() {
 
 	clear();
-	createNode();
 	setSelectedDate();
-	document.getElementById("calendar-icon").addEventListener("click", showCalendar, false);
+	showCalendar(true);
 }
 
 window.onload = function() {
-	
+
 	init();
+
+	document.getElementById("calendar-icon").addEventListener("click"
+		, function() {showCalendar(); }, false);
+
+	document.getElementById("clear-icon").addEventListener("click"
+		, function() {
+			clear();
+		}, false);
 }
 
 window.onbeforeunload = function(e) {
 
-	if(GLOBAL_VARIABLE.changed) {
+	if(getChanged()) {
 		var msg = getMessage("002");
 		e.returnValue = msg;
 	}

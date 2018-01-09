@@ -1,7 +1,9 @@
 var GLOBAL_SETTING = {
 	"log": true,
 	"language": "KO",
-	"auto_collapse": true
+	"auto_copy": true,
+	"clear_done_todo": true,
+	"auto_collapse": true,
 }
 
 var GLOBAL_VARIABLE = {
@@ -40,9 +42,19 @@ function getMessage(code) {
 		else return "It has children. Do you delete it?";
 	}
 	else if("002" == code) {
-		if("KO" == GLOBAL_SETTING.language) return "수정사항을 저장하지 않고 종료하시겠습니까?";
-		else if("EN" == GLOBAL_SETTING.language) return "Do you leave this page before save changed data?";
-		else return "Do you leave this page before save changed data?";	
+		if("KO" == GLOBAL_SETTING.language) return "저장하지 않고 종료 하시겠습니까?";
+		else if("EN" == GLOBAL_SETTING.language) return "Do you leave this page before save?";
+		else return "Do you leave this page before save?";	
+	}
+	else if("003" == code) {
+		if("KO" == GLOBAL_SETTING.language) return "저장하지 않고 진행 하시겠습니까?";
+		else if("EN" == GLOBAL_SETTING.language) return "Do you leave before save?";
+		else return "Do you leave before save?";	
+	}
+	else if("004" == code) {
+		if("KO" == GLOBAL_SETTING.language) return "저장하지 않고 초기화 하시겠습니까?";
+		else if("EN" == GLOBAL_SETTING.language) return "Do you clear data before save?";
+		else return "Do you clear data before save?";	
 	}
 	else if("W00" == code) {
 		if("KO" == GLOBAL_SETTING.language) return "일";
@@ -50,8 +62,8 @@ function getMessage(code) {
 		else return "SUN";
 	}
 	else if("W01" == code) {
-		if("KO" == GLOBAL_SETTING.language) return "일";
-		else if("EN" == GLOBAL_SETTING.language) return "SUN";
+		if("KO" == GLOBAL_SETTING.language) return "월";
+		else if("EN" == GLOBAL_SETTING.language) return "MON";
 		else return "SUN";
 	}
 	else if("W02" == code) {
