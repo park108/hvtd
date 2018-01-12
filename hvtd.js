@@ -35,18 +35,45 @@ function setChanged(isChanged) {
 	}
 }
 
-function createNode(currentNode) {
+function createNode(currentNode, inputLevel, inputStatus, inputCollapse, inputContents) {
 
+	// Set previous node
 	if(undefined == currentNode) {
 		currentNode = document.getElementById("header-of-node");
 	}
-	else {
+	else if(undefined == inputLevel) {
 		setChanged(true);
 	}
 
-	var level = getNodeLevel(currentNode);
+	// Set level
+	var level = 1;
+	if(undefined != inputLevel) {
+		level = inputLevel;
+	}
+	else {
+		level = getNodeLevel(currentNode);		
+	}
+
 	if(undefined == level || 0 == level) {
 		level = 1;
+	}
+
+	// Set status
+	var status = "N";
+	if(undefined != inputStatus) {
+		status = inputStatus;
+	}
+
+	// Set collapse
+	var collapse = false;
+	if(undefined != inputCollapse) {
+		collapse = inputCollapse;
+	}
+
+	// Set contents
+	var contents = "";
+	if(undefined != inputContents) {
+		contents = inputContents;
 	}
 
 	// Node Frame
@@ -54,9 +81,10 @@ function createNode(currentNode) {
 	var newNode = document.createElement("div");
 	newNode.setAttribute("id", GLOBAL_VARIABLE.node_id);
 	newNode.setAttribute("level", level);
-	newNode.setAttribute("status", "N");
+	newNode.setAttribute("status", status);
 	newNode.setAttribute("class", "node-frame");
-	newNode.setAttribute("onkeydown", "return keyin(event)");
+	// newNode.addEventListener("keydown", keyInContents, false);
+	newNode.setAttribute("onkeydown", "return keyInContents(event)");
 
 	// Node Contents
 	var newNodeContents = document.createElement("div");
@@ -65,6 +93,7 @@ function createNode(currentNode) {
 	newNodeContents.setAttribute("contenteditable", "true");
 	newNodeContents.setAttribute("onpaste", "return stripTags(this)");
 	newNodeContents.setAttribute("ondrop", "return false");
+	newNodeContents.innerHTML = contents;
 
 	// Node Toolbar
 	var newNodeToolbar = document.createElement("div");
@@ -74,30 +103,33 @@ function createNode(currentNode) {
 	var newLabelCollapse = document.createElement("label");
 	newLabelCollapse.setAttribute("for", "collapse" + GLOBAL_VARIABLE.node_id);
 	newLabelCollapse.setAttribute("class", "node-toolbar-label");
-	newLabelCollapse.innerHTML = ICON_COLLAPSE;
+	newLabelCollapse.innerHTML = collapse ? ICON_EXPAND : ICON_COLLAPSE;
 	var newCheckboxCollpase = document.createElement("input");
 	newCheckboxCollpase.setAttribute("id", "collapse" + GLOBAL_VARIABLE.node_id);
 	newCheckboxCollpase.setAttribute("type", "checkbox");
 	newCheckboxCollpase.setAttribute("class", "node-toolbar-checkbox");
 	newCheckboxCollpase.setAttribute("onclick", "return executeToobarCommand(this)");
+	newCheckboxCollpase.checked = collapse;
 	var newLabelDone = document.createElement("label");
 	newLabelDone.setAttribute("for", "done" + GLOBAL_VARIABLE.node_id);
 	newLabelDone.setAttribute("class", "node-toolbar-label");
-	newLabelDone.innerHTML = ICON_DONE_NO;
+	newLabelDone.innerHTML = ("D" == status) ? ICON_DONE : ICON_DONE_NO;
 	var newCheckboxDone = document.createElement("input");
 	newCheckboxDone.setAttribute("id", "done" + GLOBAL_VARIABLE.node_id);
 	newCheckboxDone.setAttribute("type", "checkbox");
 	newCheckboxDone.setAttribute("class", "node-toolbar-checkbox");
 	newCheckboxDone.setAttribute("onclick", "return executeToobarCommand(this)");
+	newCheckboxDone.checked = ("D" == status);
 	var newLabelCancel = document.createElement("label");
 	newLabelCancel.setAttribute("for", "cancel" + GLOBAL_VARIABLE.node_id);
 	newLabelCancel.setAttribute("class", "node-toolbar-label");
-	newLabelCancel.innerHTML = ICON_CANCEL_NO;
+	newLabelCancel.innerHTML = ("C" == status) ? ICON_CANCEL : ICON_CANCEL_NO;
 	var newCheckboxCancel = document.createElement("input");
 	newCheckboxCancel.setAttribute("id", "cancel" + GLOBAL_VARIABLE.node_id);
 	newCheckboxCancel.setAttribute("type", "checkbox");
 	newCheckboxCancel.setAttribute("class", "node-toolbar-checkbox");
 	newCheckboxCancel.setAttribute("onclick", "return executeToobarCommand(this)");
+	newCheckboxCancel.checked = ("C" == status);
 
 	// Combine into newNode
 	newNodeToolbar.appendChild(newLabelCollapse);
@@ -669,24 +701,31 @@ function moveNextNode(node, onLast) {
 	}
 }
 
-function newTodo() {
-	log("NEW TODO");
-}
-
 function saveTodo() {
 	
 	var date = GLOBAL_VARIABLE.selected_date;
 
+	var yearString = GLOBAL_VARIABLE.selected_date.getFullYear();
+	var monthString = GLOBAL_VARIABLE.selected_date.getMonth();
+	var dateString = GLOBAL_VARIABLE.selected_date.getDate();
+
+	++monthString;
+	monthString = (monthString < 10) ? "0" + monthString : monthString;
+	dateString = (dateString < 10) ? "0" + dateString : dateString;
+
+	var yyyymmdd = yearString + monthString + dateString;
+
 	var todo = {
-		"year": date.getFullYear(),
-		"month": date.getMonth(),
-		"date": date.getDate(),
+		"year": yearString,
+		"month": monthString,
+		"date": dateString,
 		"list": null
 	};
 
 	var nodeList = getNodeList();
 	var todoList = [];
 	var nodeObject;
+
 	nodeList.forEach(function(node) {
 
 		nodeObject = new Object();
@@ -703,13 +742,45 @@ function saveTodo() {
 
 	var jsonString = JSON.stringify(todo);
 
-	log("SAVE: " + jsonString);
+	log("SAVE: " + yyyymmdd + " -> " + jsonString);
+
+	sessionStorage.setItem(yyyymmdd, jsonString);
 
 	setChanged(false);
 }
 
-function openTodo() {
-	log("OPEN TODO");
+function loadTodo() {
+
+	var yearString = GLOBAL_VARIABLE.selected_date.getFullYear();
+	var monthString = GLOBAL_VARIABLE.selected_date.getMonth();
+	var dateString = GLOBAL_VARIABLE.selected_date.getDate();
+
+	++monthString;
+	monthString = (monthString < 10) ? "0" + monthString : monthString;
+	dateString = (dateString < 10) ? "0" + dateString : dateString;
+
+	var yyyymmdd = yearString + monthString + dateString;
+
+	var data = sessionStorage.getItem(yyyymmdd);
+
+	if(undefined == data || null == data || "" == data) {
+
+		createNode();
+	}
+	else {
+
+		var todo = JSON.parse(data);
+		var todoList = todo.list;
+		var previousNode = undefined;
+
+		todoList.forEach(function(node) {
+			previousNode = createNode(previousNode
+				, node.level
+				, node.status
+				, node.collapse
+				, node.contents);
+		});
+	}
 }
 
 function getCaretOffset() {
@@ -853,7 +924,22 @@ function executeCancel(checkbox, node) {
 	setChanged(true);
 }
 
-function keyin(e) {
+function keyInCommon(e) {
+
+	// Ctrl + S: Save
+	if(e.ctrlKey && 83 == e.which) {
+		saveTodo();
+		return false;
+	}
+
+	// Ctrl + Shift + C: Calendar expand/collapse
+	else if(e.ctrlKey &&  e.shiftKey && 67 == e.which) {
+		showCalendar();
+		return false;
+	}
+}
+
+function keyInContents(e) {
 
 	var currentNode = window.getSelection().focusNode.parentNode;
 
@@ -969,24 +1055,6 @@ function keyin(e) {
 	// Down arrow
 	else if(40 == e.which) {
 		moveNextNode(currentNode);
-		return false;
-	}
-
-	// Ctrl + N: New
-	else if(e.ctrlKey && 78 == e.which) {
-		newTodo();
-		return false;
-	}
-
-	// Ctrl + S: Save
-	else if(e.ctrlKey && 83 == e.which) {
-		saveTodo();
-		return false;
-	}
-
-	// Ctrl + O: Open
-	else if(e.ctrlKey && 79 == e.which) {
-		openTodo();
 		return false;
 	}
 }
@@ -1146,11 +1214,13 @@ function showCalendar(show) {
 		calendar.style.display = "none";
 	}
 
-	refreshContentsMargin();
+	setContentsMargin();
 }
 
-function refreshContentsMargin() {
+function setContentsMargin() {
+
 	var contents = document.getElementById("contents");
+
 	contents.style.marginTop = (header.clientHeight + 5) + "px";
 }
 
@@ -1172,8 +1242,6 @@ function clear() {
 		});
 
 		GLOBAL_VARIABLE.node_id = 0;
-		
-		createNode();
 	}
 }
 
@@ -1181,6 +1249,7 @@ function init() {
 
 	clear();
 	setSelectedDate();
+	loadTodo();
 	showCalendar(true);
 }
 
@@ -1189,12 +1258,16 @@ window.onload = function() {
 	init();
 
 	document.getElementById("calendar-icon").addEventListener("click"
-		, function() {showCalendar(); }, false);
+		, function() {
+			showCalendar();
+		}, false);
 
 	document.getElementById("clear-icon").addEventListener("click"
 		, function() {
 			clear();
 		}, false);
+
+	document.body.addEventListener("keydown", keyInCommon, false);
 }
 
 window.onbeforeunload = function(e) {
@@ -1208,5 +1281,6 @@ window.onbeforeunload = function(e) {
 };
 
 window.onresize = function() {
-	refreshContentsMargin();
+
+	setContentsMargin();
 }
