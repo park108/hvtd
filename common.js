@@ -1,12 +1,11 @@
-var GLOBAL_SETTING = {
+let GLOBAL_SETTING = {
 	"log": true,
 	"language": "KO",
 	"auto_copy": true,
-	"clear_done_todo": true,
 	"auto_collapse": true,
 }
 
-var GLOBAL_VARIABLE = {
+let GLOBAL_VARIABLE = {
 	"node_id": 0,
 	"changed": false,
 	"selected_date": null
@@ -34,7 +33,7 @@ function removeClass(e, className) {
 	e.setAttribute("class", classes.replace(" " + className, ""));
 }
 
-function getMessage(code) {
+function getMessage(code, param1, param2, param3) {
 
 	if("001" == code) {
 		if("KO" == GLOBAL_SETTING.language) return "하위 항목까지 모두 삭제 하시겠습니까?";
@@ -42,53 +41,108 @@ function getMessage(code) {
 		else return "It has children. Do you delete it?";
 	}
 	else if("002" == code) {
-		if("KO" == GLOBAL_SETTING.language) return "저장하지 않고 종료 하시겠습니까?";
-		else if("EN" == GLOBAL_SETTING.language) return "Do you leave this page before save?";
-		else return "Do you leave this page before save?";	
+		if("KO" == GLOBAL_SETTING.language) return "이전 데이터를 복사하시겠습니까? (" + param1 + ")";
+		else if("EN" == GLOBAL_SETTING.language) return "Do you copy last todo?(" + param1 + ")";
+		else return "Do you copy last todo?(" + param1 + ")";
 	}
 	else if("003" == code) {
-		if("KO" == GLOBAL_SETTING.language) return "저장하지 않고 진행 하시겠습니까?";
-		else if("EN" == GLOBAL_SETTING.language) return "Do you leave before save?";
-		else return "Do you leave before save?";	
+		if("KO" == GLOBAL_SETTING.language) return "";
+		else if("EN" == GLOBAL_SETTING.language) return "";
+		else return "";	
 	}
 	else if("004" == code) {
-		if("KO" == GLOBAL_SETTING.language) return "저장하지 않고 초기화 하시겠습니까?";
-		else if("EN" == GLOBAL_SETTING.language) return "Do you clear data before save?";
-		else return "Do you clear data before save?";	
+		if("KO" == GLOBAL_SETTING.language) return "초기화 하시겠습니까?";
+		else if("EN" == GLOBAL_SETTING.language) return "Do you clear data?";
+		else return "Do you clear data?";	
 	}
-	else if("W00" == code) {
+}
+
+function getWeekText(week) {
+	if(0 == week) {
 		if("KO" == GLOBAL_SETTING.language) return "일";
 		else if("EN" == GLOBAL_SETTING.language) return "SUN";
 		else return "SUN";
 	}
-	else if("W01" == code) {
+	else if(1 == week) {
 		if("KO" == GLOBAL_SETTING.language) return "월";
 		else if("EN" == GLOBAL_SETTING.language) return "MON";
 		else return "SUN";
 	}
-	else if("W02" == code) {
+	else if(2 == week) {
 		if("KO" == GLOBAL_SETTING.language) return "화";
 		else if("EN" == GLOBAL_SETTING.language) return "TUE";
 		else return "TUE";
 	}
-	else if("W03" == code) {
+	else if(3 == week) {
 		if("KO" == GLOBAL_SETTING.language) return "수";
 		else if("EN" == GLOBAL_SETTING.language) return "WED";
 		else return "WED";
 	}
-	else if("W04" == code) {
+	else if(4 == week) {
 		if("KO" == GLOBAL_SETTING.language) return "목";
 		else if("EN" == GLOBAL_SETTING.language) return "THU";
 		else return "THU";
 	}
-	else if("W05" == code) {
+	else if(5 == week) {
 		if("KO" == GLOBAL_SETTING.language) return "금";
 		else if("EN" == GLOBAL_SETTING.language) return "FRI";
 		else return "FRI";
 	}
-	else if("W06" == code) {
+	else if(6 == week) {
 		if("KO" == GLOBAL_SETTING.language) return "토";
 		else if("EN" == GLOBAL_SETTING.language) return "SAT";
 		else return "SAT";
 	}
+}
+
+function getChanged() {
+	return GLOBAL_VARIABLE.changed;	
+}
+
+function setChanged(isChanged) {
+
+	if(GLOBAL_VARIABLE.changed != isChanged) {
+
+		GLOBAL_VARIABLE.changed = isChanged;
+	}
+}
+
+function getCaretOffset() {
+
+	let selection = window.getSelection();
+
+	if(selection.getRangeAt) {
+		return selection.getRangeAt(0).endOffset;
+	}
+	else {
+		return -1;
+	}
+}
+
+function stripTags(contents) {
+
+	setTimeout(function() {
+		let htmlBeforeStripTags = contents.innerHTML;
+		let htmlAfterStripTags = htmlBeforeStripTags.replace(/<(?:.|\n)*?>/gm, '');
+		log("STRIP TAGS = " + htmlBeforeStripTags + " ---> " + htmlAfterStripTags);
+		contents.innerHTML = htmlAfterStripTags;
+		setCaretPositionToLast(contents.parentNode);
+	}, 0);
+}
+
+function getYYYYMMDD(inputDate) {
+	
+	let year = inputDate.getFullYear();
+	let month = inputDate.getMonth() + 1;
+	let date = inputDate.getDate();
+
+	if(month < 10) {
+		month = "0" + month;
+	}
+
+	if(date < 10) {
+		date = "0" + date;
+	}
+
+	return year + month + date;
 }

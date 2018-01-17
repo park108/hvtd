@@ -41,10 +41,6 @@ body {
 	height: calc(2em - 6px);
 }
 
-#clear-icon {
-	display: none;
-}
-
 #calendar {
 	padding: 10px;
 	background-color: #ffffff;
