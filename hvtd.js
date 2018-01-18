@@ -41,7 +41,7 @@ function saveTodo() {
 
 	log("SAVE: " + yyyymmdd + " -> " + jsonString);
 
-	sessionStorage.setItem(yyyymmdd, jsonString);
+	localStorage.setItem(yyyymmdd, jsonString);
 
 	setChanged(false);
 }
@@ -50,12 +50,12 @@ function loadTodo() {
 
 	let yyyymmdd = getYYYYMMDD(GLOBAL_VARIABLE.selected_date);
 
-	let data = sessionStorage.getItem(yyyymmdd);
+	let data = localStorage.getItem(yyyymmdd);
 
 	// No data
 	if(undefined == data || null == data || "" == data) {
 
-		let length = sessionStorage.length;
+		let length = localStorage.length;
 		let doConfirm = false;
 		let key;
 		let previousKey = "00000000";
@@ -63,9 +63,9 @@ function loadTodo() {
 		// If enabled Auto Copy, get previous todo key (yyyymmdd)
 		if(GLOBAL_SETTING.auto_copy && length > 0) {
 
-			for(let i = 0; i < sessionStorage.length; i++) {
+			for(let i = 0; i < localStorage.length; i++) {
 
-				key = sessionStorage.key(i);
+				key = localStorage.key(i);
 
 				if(key < yyyymmdd && previousKey < key) {
 
@@ -102,7 +102,7 @@ function loadTodo() {
 		// Copy from previous todo if confirmed
 		if(doConfirm && confirm(getMessage("002", previousDataString))) {
 
-			data = sessionStorage.getItem(previousKey);
+			data = localStorage.getItem(previousKey);
 
 			let todo = JSON.parse(data);
 			let todoList = todo.list;
@@ -165,7 +165,7 @@ function loadTodo() {
 function deleteTodo(yyyymmdd) {
 
 	if(confirm(getMessage("004"))) {
-		sessionStorage.removeItem(yyyymmdd);	
+		localStorage.removeItem(yyyymmdd);	
 	}
 }
 
@@ -365,7 +365,7 @@ function createCalendar(d) {
 
 	// Add previous month arrow
 	let dateObj = document.createElement("span");
-	addClass(dateObj, "date");
+	dateObj.classList.add("date");
 	dateObj.innerHTML = "< " ;
 	dateObj.addEventListener("click", function() {
 		createCalendar(lastMonth)
@@ -374,7 +374,7 @@ function createCalendar(d) {
 
 	// Add month text
 	dateObj = document.createElement("span");
-	addClass(dateObj, "month-text");
+	dateObj.classList.add("month-text");
 	let yearString = d.getFullYear();
 	let monthString = d.getMonth() + 1;
 	if(monthString < 10) {
@@ -385,7 +385,7 @@ function createCalendar(d) {
 
 	// Add next month arrow
 	dateObj = document.createElement("span");
-	addClass(dateObj, "date");
+	dateObj.classList.add("date");
 	dateObj.innerHTML = "> " ;
 	dateObj.addEventListener("click", function() {
 		createCalendar(nextMonth)
@@ -399,19 +399,19 @@ function createCalendar(d) {
 
 		dateObj = document.createElement("span");
 		dateObj.innerHTML = currentDate + " " ;
-		addClass(dateObj, "date");
+		dateObj.classList.add("date");
 
 		if(currentDate == selectedDate.getDate()
 			&& d.getFullYear() == selectedDate.getFullYear()
 			&& d.getMonth() == selectedDate.getMonth()) {
-			addClass(dateObj, "selected-date");
+			dateObj.classList.add("selected-date");
 		}
 
 		if(0 == day) {
-			addClass(dateObj, "sunday");
+			dateObj.classList.add("sunday");
 		}
 		else if(6 == day) {
-			addClass(dateObj, "saturday");
+			dateObj.classList.add("saturday");
 		}
 
 		dateObj.setAttribute(

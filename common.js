@@ -1,5 +1,5 @@
 let GLOBAL_SETTING = {
-	"log": true,
+	"log": false,
 	"language": "KO",
 	"auto_copy": true,
 	"auto_collapse": true,
@@ -15,22 +15,6 @@ function log(line) {
 	if(GLOBAL_SETTING.log) {
 		console.log(line);
 	}
-}
-
-function addClass(e, className) {
-
-	classes = e.getAttribute("class");
-	if(null == classes) {
-		classes = "";
-	}
-	if(classes.indexOf(className) == -1) {
-		e.setAttribute("class", classes + " " + className);
-	}
-}
-
-function removeClass(e, className) {
-	classes = e.getAttribute("class");
-	e.setAttribute("class", classes.replace(" " + className, ""));
 }
 
 function getMessage(code, param1, param2, param3) {
@@ -117,17 +101,6 @@ function getCaretOffset() {
 	else {
 		return -1;
 	}
-}
-
-function stripTags(contents) {
-
-	setTimeout(function() {
-		let htmlBeforeStripTags = contents.innerHTML;
-		let htmlAfterStripTags = htmlBeforeStripTags.replace(/<(?:.|\n)*?>/gm, '');
-		log("STRIP TAGS = " + htmlBeforeStripTags + " ---> " + htmlAfterStripTags);
-		contents.innerHTML = htmlAfterStripTags;
-		setCaretPositionToLast(contents.parentNode);
-	}, 0);
 }
 
 function getYYYYMMDD(inputDate) {

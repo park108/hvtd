@@ -68,7 +68,7 @@ function createNode(currentNode, inputLevel, inputStatus, inputCollapse, inputCo
 	newNodeContents.setAttribute("id", "contents" + GLOBAL_VARIABLE.node_id);
 	newNodeContents.setAttribute("class", "node-contents");
 	newNodeContents.setAttribute("contenteditable", "true");
-	newNodeContents.setAttribute("onpaste", "return stripTags(this)");
+	newNodeContents.setAttribute("onpaste", "return setPastedContents(this)");
 	newNodeContents.setAttribute("ondrop", "return false");
 	newNodeContents.innerHTML = contents;
 
@@ -412,19 +412,19 @@ function setBackgroundByNodeStatus(node) {
 	});
 
 	if("N" == status) {
-		addClass(node, "node-status-none");
-		removeClass(node, "node-status-done");
-		removeClass(node, "node-status-cancel");
+		node.classList.add("node-status-none");
+		node.classList.remove("node-status-done");
+		node.classList.remove("node-status-cancel");
 	}
 	else if("D" == status) {
-		removeClass(node, "node-status-none");
-		addClass(node, "node-status-done");
-		removeClass(node, "node-status-cancel");
+		node.classList.remove("node-status-none");
+		node.classList.add("node-status-done");
+		node.classList.remove("node-status-cancel");
 	}
 	else if("C" == status) {
-		removeClass(node, "node-status-none");
-		removeClass(node, "node-status-done");
-		addClass(node, "node-status-cancel");
+		node.classList.remove("node-status-none");
+		node.classList.remove("node-status-done");
+		node.classList.add("node-status-cancel");
 	}
 }
 
@@ -709,7 +709,7 @@ function executeCollapse(checkbox, node) {
 		checkbox.previousSibling.innerHTML = checked ? ICON_EXPAND : ICON_COLLAPSE;
 
 		// Set collapse line
-		checked ? addClass(node, "node-frame-collapsed") : removeClass(node, "node-frame-collapsed");
+		checked ? node.classList.add("node-frame-collapsed") : node.classList.remove("node-frame-collapsed");
 
 		refreshNode(node);
 
@@ -779,4 +779,75 @@ function executeCancel(checkbox, node) {
 	log((checked ? "CANCEL" : "UNCANCEL") + "_NODE: ID = " + node.id);
 
 	setChanged(true);
+}
+
+function setPastedContents(contents) {
+
+	setTimeout(function() {
+
+		// Strip Tags
+		let htmlBeforeStripTags = contents.innerHTML;
+		let htmlAfterStripTags = htmlBeforeStripTags.replace(/<(?:.|\n)*?>/gm, '');
+
+		// Split contents by new line character
+		let splitContents = htmlAfterStripTags.split("\n");
+
+		// Set variables
+		let currentNode = contents.parentNode;
+		let parentNodeLevel = getNodeLevel(currentNode);
+		let currentContents = contents;
+		let isFirst = true;
+		let startTabCount = 0;
+		let textNoTab;
+		
+		// Set splitted contents each node
+		splitContents.forEach(function(text) {
+
+			// Count first tabs
+			startTabCount = 0;
+
+			for(let i = 0; i < text.length; i++) {
+				if('\t' == text.charAt(i)) {
+					++startTabCount;
+				}
+				else {
+					break;
+				}
+			}
+
+			// Remove first tabs from text
+			textNoTab = text.substring(startTabCount, text.length);
+
+			// Paste text if it has length
+			if(textNoTab.length > 0) {
+
+				// First text line: paste on current node
+				if(isFirst) {
+
+					isFirst = false;
+
+					// If has first tab, increse node level
+					for(let i = 0; i < startTabCount; i++) {
+						increaseNodeLevel(currentNode);
+					}
+				}
+
+				// Not a first line, paste on new node
+				else {
+
+					// Create node with level
+					currentNode = createNode(currentNode, parentNodeLevel + startTabCount);
+
+					// Get contents object
+					currentContents = getContents(currentNode);
+				}
+
+				// Set contents
+				currentContents.innerHTML = textNoTab;
+			}
+		});
+
+		setCaretPositionToLast(currentNode);
+
+	}, 0);
 }
