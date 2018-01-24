@@ -141,7 +141,7 @@ function createNode(currentNode, inputLevel, inputStatus, inputCollapse, inputCo
 	return newNode;
 }
 
-function deleteNode(node, key) {
+function deleteNode(node, forceDelete, key) {
 
 	let nodeCount = getNodeCount();
 
@@ -155,7 +155,7 @@ function deleteNode(node, key) {
 	let childrenIdList;
 	let childrenCount = 0;
 
-	// If has children, get user confirm
+	// If has children and not force delete, get user confirm
 	if(hasChildNode(node)) {
 		
 		childrenIdList = getChildrenIdList(node);
@@ -166,7 +166,9 @@ function deleteNode(node, key) {
 			return false;
 		}
 
-		doDelete = confirm(getMessage("001"));
+		if(!forceDelete) {
+			doDelete = confirm(getMessage("001"));
+		}
 	}
 
 	if(doDelete) {
@@ -179,7 +181,7 @@ function deleteNode(node, key) {
 			});
 		}
 
-		let setFocustOnLast = true;
+		let setFocusOnLast = true;
 		let focusingNode;
 
 		// Delete by command or backspace key
@@ -187,12 +189,12 @@ function deleteNode(node, key) {
 
 			// Set focus on previous visible node
 			focusingNode = getPreviousVisibleNode(node);
-			setFocustOnLast = true;
+			setFocusOnLast = true;
 
 			// If didn't have focusing node, set focus on next sibling node
 			if(node.id == focusingNode.id) {
 				focusingNode = getNextSiblingNode(node);
-				setFocustOnLast = false;
+				setFocusOnLast = false;
 			}
 		}
 
@@ -201,17 +203,17 @@ function deleteNode(node, key) {
 
 			// Set focus on next sibling node
 			focusingNode = getNextSiblingNode(node);
-			setFocustOnLast = false;
+			setFocusOnLast = false;
 
 			// If didn't have focusing node, set focus on previous visible node
 			if(undefined == focusingNode) {
 				focusingNode = getPreviousVisibleNode(node);
-				setFocustOnLast = true;
+				setFocusOnLast = true;
 			}
 		}
 
 		// Set caret position
-		setFocustOnLast ? setCaretPositionToLast(focusingNode) : setCaretPositionToFirst(focusingNode);
+		setFocusOnLast ? setCaretPositionToLast(focusingNode) : setCaretPositionToFirst(focusingNode);
 
 		// Delete this node
 		node.parentNode.removeChild(node);
@@ -558,6 +560,37 @@ function getNextVisibleNode(node) {
 	return lastVisibleNode;
 }
 
+function getPreviousSiblingNode(node) {
+
+	let baseNode = node;
+	let baseNodeLevel = getNodeLevel(baseNode);
+
+	let prevNode = node;
+	let prevNodeLevel;
+	let prevSiblingNode = undefined;
+
+	while(true) {
+
+		prevNode = getPreviousNode(prevNode);
+
+		if(undefined == prevNode) {
+			break;
+		}
+
+		prevNodeLevel = getNodeLevel(prevNode);
+
+		if(baseNodeLevel == prevNodeLevel) {
+			prevSiblingNode = prevNode;
+			break;
+		}
+		else if(baseNodeLevel < prevNodeLevel) {
+			break;
+		}
+	}
+
+	return prevSiblingNode;
+}
+
 function getNextSiblingNode(node) {
 
 	let baseNode = node;
@@ -570,14 +603,18 @@ function getNextSiblingNode(node) {
 	while(true) {
 
 		nextNode = getNextNode(nextNode);
+
+		if(undefined == nextNode) {
+			break;
+		}
+		
 		nextNodeLevel = getNodeLevel(nextNode);
 
-		if(baseNodeLevel >= nextNodeLevel) {
+		if(baseNodeLevel == nextNodeLevel) {
 			nextSiblingNode = nextNode;
 			break;
 		}
-
-		if(isNodeLast(nextNode)) {
+		else if(baseNodeLevel > nextNodeLevel) {
 			break;
 		}
 	}
@@ -676,6 +713,117 @@ function moveNextNode(node, doCaretSetLast) {
 
 		log("MOVE_NEXT: " + node.id + " -> " + nextNode.id);
 	}
+}
+
+function moveNodeToPrevious(node) {
+
+	if(isNodeFirst(node)) {
+		return false;
+	}
+
+	let thisNodeLevel = getNodeLevel(node);
+	let prevNode = getPreviousNode(node);
+	let baseNode = undefined;
+
+	// Get base node
+	while(true) {
+
+		if(undefined == prevNode) {
+			break;
+		}
+
+		if(thisNodeLevel == getNodeLevel(prevNode)) {
+
+			baseNode = getPreviousNode(prevNode);
+			break;
+		}
+		else if(thisNodeLevel > getNodeLevel(prevNode)) {
+
+			baseNode = prevNode;
+			break;
+		}
+		else {
+
+			prevNode = getPreviousNode(prevNode);
+		}
+	}
+
+	// Copy this node below base node
+	let copiedCurrentNode = createNode(baseNode
+								, getNodeLevel(node)
+								, node.status
+								, false
+								, getContents(node).innerHTML);
+
+	// Copy this node's children
+	let childrenIdList = getChildrenIdList(node);
+	let childNode;
+	baseNode = copiedCurrentNode;
+
+	childrenIdList.forEach(function(id) {
+		childNode = document.getElementById(id);
+		baseNode = createNode(baseNode
+					, getNodeLevel(childNode)
+					, childNode.status
+					, false
+					, getContents(childNode).innerHTML);
+	});
+
+	// Force delete current node & children
+	deleteNode(node, true);
+
+	// Set focus copied node
+	setCaretPositionToFirst(copiedCurrentNode);
+}
+
+function moveNodeToNext(node) {
+
+	let nextSiblingNode = getNextSiblingNode(node);
+
+	if(undefined == nextSiblingNode) {
+		return false;
+	}
+
+	// Get base node
+	let baseNode;
+	let nextSiblingChildrenIdList = getChildrenIdList(nextSiblingNode);
+
+	if(nextSiblingChildrenIdList.length > 0) {
+		let baseNodeId = nextSiblingChildrenIdList.pop();
+		baseNode = document.getElementById(baseNodeId);
+	}
+	else {
+		baseNode = nextSiblingNode;
+	}
+	
+	log("BASE_NODE = " + baseNode.id);
+
+	// Copy this node below base node
+	let copiedCurrentNode = createNode(baseNode
+								, getNodeLevel(node)
+								, node.status
+								, false
+								, getContents(node).innerHTML);
+
+	// Copy this node's children
+	let childrenIdList = getChildrenIdList(node);
+	let childNode;
+	baseNode = copiedCurrentNode;
+
+	childrenIdList.forEach(function(id) {
+		childNode = document.getElementById(id);
+		baseNode = createNode(baseNode
+					, getNodeLevel(childNode)
+					, childNode.status
+					, false
+					, getContents(childNode).innerHTML);
+	});
+
+	// Force delete current node & children
+	deleteNode(node, true);
+
+	// Set focus copied node
+	setCaretPositionToFirst(copiedCurrentNode);
 }
 
 function executeToobarCommand(e) {

@@ -223,7 +223,7 @@ function keyInContents(e) {
 		log("CONTENTS = '" + getContents(currentNode).innerHTML + "'");
 
 		if(0 == getCaretOffset() && 0 == getContents(currentNode).innerHTML.length) {
-			deleteNode(currentNode, "BACKSPACE");
+			deleteNode(currentNode, false, "BACKSPACE");
 			return false;
 		}
 	}
@@ -232,7 +232,7 @@ function keyInContents(e) {
 	else if(46 == e.which) {
 
 		if(0 == getCaretOffset() && 0 == getContents(currentNode).innerHTML.length) {
-			deleteNode(currentNode, "DELETE");
+			deleteNode(currentNode, false, "DELETE");
 			return false;
 		}
 	}
@@ -297,13 +297,27 @@ function keyInContents(e) {
 
 	// Up arrow
 	else if(38 == e.which) {
-		movePreviousNode(currentNode);
+
+		if(e.shiftKey) {
+			moveNodeToPrevious(currentNode);
+		}
+		else {
+			movePreviousNode(currentNode);
+		}
+
 		return false;
 	}
 
 	// Down arrow
 	else if(40 == e.which) {
-		moveNextNode(currentNode);
+
+		if(e.shiftKey) {
+			moveNodeToNext(currentNode);
+		}
+		else {
+			moveNextNode(currentNode);
+		}
+
 		return false;
 	}
 }

@@ -1,5 +1,5 @@
 let GLOBAL_SETTING = {
-	"log": false,
+	"log": true,
 	"language": "KO",
 	"auto_copy": true,
 	"auto_collapse": true,
