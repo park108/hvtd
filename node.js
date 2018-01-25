@@ -1,10 +1,3 @@
-let ICON_COLLAPSE = "<img src='./icons/minus.svg' />"
-let ICON_EXPAND = "<img src='./icons/plus.svg' />"
-let ICON_DONE = "<img src='./icons/check.svg' />"
-let ICON_DONE_NO = "<img src='./icons/check_false.svg' />"
-let ICON_CANCEL = "<img src='./icons/cross.svg' />"
-let ICON_CANCEL_NO = "<img src='./icons/cross_false.svg' />"
-
 function changeData(e) {
 	log("CHANGE_DATA: ID = " + e.target.parentNode.id);
 	setChanged(true);
@@ -80,7 +73,7 @@ function createNode(currentNode, inputLevel, inputStatus, inputCollapse, inputCo
 	let newLabelCollapse = document.createElement("label");
 	newLabelCollapse.setAttribute("for", "collapse" + GLOBAL_VARIABLE.node_id);
 	newLabelCollapse.setAttribute("class", "node-toolbar-label");
-	newLabelCollapse.innerHTML = collapse ? ICON_EXPAND : ICON_COLLAPSE;
+	newLabelCollapse.innerHTML = collapse ? IMG.icon_expand : IMG.icon_collapse;
 	let newCheckboxCollpase = document.createElement("input");
 	newCheckboxCollpase.setAttribute("id", "collapse" + GLOBAL_VARIABLE.node_id);
 	newCheckboxCollpase.setAttribute("type", "checkbox");
@@ -90,7 +83,7 @@ function createNode(currentNode, inputLevel, inputStatus, inputCollapse, inputCo
 	let newLabelDone = document.createElement("label");
 	newLabelDone.setAttribute("for", "done" + GLOBAL_VARIABLE.node_id);
 	newLabelDone.setAttribute("class", "node-toolbar-label");
-	newLabelDone.innerHTML = ("D" == status) ? ICON_DONE : ICON_DONE_NO;
+	newLabelDone.innerHTML = ("D" == status) ? IMG.icon_done : IMG.icon_done_no;
 	let newCheckboxDone = document.createElement("input");
 	newCheckboxDone.setAttribute("id", "done" + GLOBAL_VARIABLE.node_id);
 	newCheckboxDone.setAttribute("type", "checkbox");
@@ -100,7 +93,7 @@ function createNode(currentNode, inputLevel, inputStatus, inputCollapse, inputCo
 	let newLabelCancel = document.createElement("label");
 	newLabelCancel.setAttribute("for", "cancel" + GLOBAL_VARIABLE.node_id);
 	newLabelCancel.setAttribute("class", "node-toolbar-label");
-	newLabelCancel.innerHTML = ("C" == status) ? ICON_CANCEL : ICON_CANCEL_NO;
+	newLabelCancel.innerHTML = ("C" == status) ? IMG.icon_cancel : IMG.icon_cancel_no;
 	let newCheckboxCancel = document.createElement("input");
 	newCheckboxCancel.setAttribute("id", "cancel" + GLOBAL_VARIABLE.node_id);
 	newCheckboxCancel.setAttribute("type", "checkbox");
@@ -120,7 +113,7 @@ function createNode(currentNode, inputLevel, inputStatus, inputCollapse, inputCo
 
 	// CurrentNode 가 collapsed 인 경우, 마지막 child의 다음에 신규 node를 생성
 	if("header-of-node" != currentNode.id
-		&& document.getElementById("collapse" + currentNode.id).checked
+		&& isNodeCollapsed(currentNode.id)
 		&& hasChildNode(currentNode)) {
 
 		let childrenIdList = getChildrenIdList(currentNode);
@@ -131,7 +124,7 @@ function createNode(currentNode, inputLevel, inputStatus, inputCollapse, inputCo
 		currentNode.parentNode.insertBefore(newNode, currentNode.nextSibling);
 	}
 
-	log("CREATE: Current = " + currentNode.id + ", New = " + newNode.id);
+	log("CREATE_NODE: Current = " + currentNode.id + ", New = " + newNode.id);
 
 	newNodeContents.addEventListener("input", changeData, false);
 	refreshNode(newNode);
@@ -141,85 +134,83 @@ function createNode(currentNode, inputLevel, inputStatus, inputCollapse, inputCo
 	return newNode;
 }
 
-function deleteNode(node, forceDelete, key) {
+function isNodeCanDelete(node) {
 
 	let nodeCount = getNodeCount();
 
-	// If it has last node, do not delete.
+	// If it has last node, cannot delete.
 	if(2 > nodeCount) {
 
 		return false;
 	}
 
-	let doDelete = true;
-	let childrenIdList;
-	let childrenCount = 0;
+	// If has no child node, can delete.
+	if(!hasChildNode(node)) {
 
-	// If has children and not force delete, get user confirm
-	if(hasChildNode(node)) {
-		
-		childrenIdList = getChildrenIdList(node);
-		childrenCount = childrenIdList.length;
-
-		// If it is last parent node, do not delete.
-		if((nodeCount - 1) == childrenCount) {
-			return false;
-		}
-
-		if(!forceDelete) {
-			doDelete = confirm(getMessage("001"));
-		}
+		return true;
 	}
 
-	if(doDelete) {
+	// If it is last parent node, cannot delete.
+	let childrenIdList = getChildrenIdList(node);
+	let childrenCount = childrenIdList.length;
 
-		// Delete all children
-		if(0 < childrenCount) {
-			childrenIdList.forEach(function(id) {
-				childNode = document.getElementById(id);
-				node.parentNode.removeChild(childNode);
-			});
-		}
+	if((nodeCount - 1) == childrenCount) {
+		return false;
+	}
 
-		let setFocusOnLast = true;
-		let focusingNode;
+	return true;
+}
 
-		// Delete by command or backspace key
-		if(undefined == key || "BACKSPACE" == key) {
+function deleteNode(node, keycode) {
 
-			// Set focus on previous visible node
-			focusingNode = getPreviousVisibleNode(node);
-			setFocusOnLast = true;
+	let childrenIdList = getChildrenIdList(node);
 
-			// If didn't have focusing node, set focus on next sibling node
-			if(node.id == focusingNode.id) {
-				focusingNode = getNextSiblingNode(node);
-				setFocusOnLast = false;
-			}
-		}
+	// Delete all children
+	if(0 < childrenIdList.length) {
+		childrenIdList.forEach(function(id) {
+			childNode = document.getElementById(id);
+			node.parentNode.removeChild(childNode);
+		});
+	}
 
-		// Delete by delete key
-		else if("DELETE" == key) {
+	let setFocusOnLast = true;
+	let focusingNode;
 
-			// Set focus on next sibling node
+	// Delete by command or backspace key
+	if(undefined == keycode || 8 == keycode) {
+
+		// Set focus on previous visible node
+		focusingNode = getPreviousVisibleNode(node);
+		setFocusOnLast = true;
+
+		// If didn't have focusing node, set focus on next sibling node
+		if(node.id == focusingNode.id) {
 			focusingNode = getNextSiblingNode(node);
 			setFocusOnLast = false;
-
-			// If didn't have focusing node, set focus on previous visible node
-			if(undefined == focusingNode) {
-				focusingNode = getPreviousVisibleNode(node);
-				setFocusOnLast = true;
-			}
 		}
-
-		// Set caret position
-		setFocusOnLast ? setCaretPositionToLast(focusingNode) : setCaretPositionToFirst(focusingNode);
-
-		// Delete this node
-		node.parentNode.removeChild(node);
-
-		log("DELETE_NODE: ID = " + node.id);
 	}
+
+	// Delete by delete key
+	else if(46 == keycode) {
+
+		// Set focus on next sibling node
+		focusingNode = getNextSiblingNode(node);
+		setFocusOnLast = false;
+
+		// If didn't have focusing node, set focus on previous visible node
+		if(undefined == focusingNode) {
+			focusingNode = getPreviousVisibleNode(node);
+			setFocusOnLast = true;
+		}
+	}
+
+	// Set caret position
+	setFocusOnLast ? setCaretPositionToLast(focusingNode) : setCaretPositionToFirst(focusingNode);
+
+	// Delete this node
+	node.parentNode.removeChild(node);
+
+	log("DELETE_NODE: ID = " + node.id);
 }
 
 function setCaretPositionToFirst(node) {
@@ -261,6 +252,59 @@ function getNodeLevel(node) {
 	else {
 		return level * 1;
 	}
+}
+
+function setNodeLevel(node, diff) {
+
+	// If diff has no difference, end this function.
+	if(undefined == diff || 0 == diff) {
+		return false;
+	}
+
+	// Get children before change level
+	let childrenIdList = getChildrenIdList(node);
+
+	// Set current Node level
+	let currentNodeLevel = getNodeLevel(node);
+	node.setAttribute("level", currentNodeLevel + diff);
+
+	// Set children level
+	let childNodeLevel = 0;
+
+	childrenIdList.forEach(function(id) {
+		childNode = document.getElementById(id);
+		childNodeLevel = getNodeLevel(childNode);
+		childNode.setAttribute("level", childNodeLevel + diff);
+	});
+
+	setChanged(true);
+
+	log("SET_NODE_LEVEL: ID = " + node.id + ", LEVEL = " + (currentNodeLevel + diff));
+}
+
+function getNodeStatus(node) {
+
+	if(undefined == node) {
+		return undefined;
+	}
+
+	// N: None
+	// D: Done
+	// C: Cancel
+	let status = node.getAttribute("status");
+
+	return status;
+}
+
+function setNodeStatus(node, status) {
+
+	// N: None
+	// D: Done
+	// C: Cancel
+	node.setAttribute("status", status);
+	setChanged(true);
+
+	log("SET_NODE_STATUS: ID = " + node.id + ", STATUS = " + status);
 }
 
 function getNodeCount() {
@@ -348,15 +392,6 @@ function getParentIdList(node) {
 	return parentIdList;
 }
 
-function setNodeStatus(node, status) {
-
-	// N: None
-	// D: Done
-	// C: Cancel
-	node.setAttribute("status", status);
-	setChanged(true);
-}
-
 function getParentStatusList(node) {
 
 	let parentIdList = getParentIdList(node);
@@ -395,7 +430,23 @@ function isNodeVisible(node) {
 	return "block" == node.style.display;
 }
 
-function setBackgroundByNodeStatus(node) {
+function isNodeCollapsed(node) {
+
+	if(undefined == node) {
+		return false;
+	}
+
+	let checkbox = document.getElementById("collapse" + node.id);
+
+	if(undefined == checkbox) {
+		return false;
+	}
+	else {
+		return checkbox.checked;
+	}
+}
+
+function setNodeStyleByStatus(node) {
 
 	let statusArray = getParentStatusList(node);
 	let status = "N";
@@ -430,12 +481,20 @@ function setBackgroundByNodeStatus(node) {
 	}
 }
 
-function setCollapseButtonVisibility(node) {
+function setNodeStyleByCollapse(node) {
 
-	let collapse = document.getElementById("collapse" + node.id).previousSibling;
+	let checkbox = document.getElementById("collapse" + node.id);
+	let button = checkbox.previousSibling;
 	let isVisible = hasChildNode(node);
 
-	collapse.style.visibility = isVisible ? "visible" : "hidden";
+	// Set button icon
+	button.innerHTML = checkbox.checked ? IMG.icon_expand : IMG.icon_collapse;
+
+	// Show collapse button if node has child
+	button.style.visibility = isVisible ? "visible" : "hidden";
+
+	// Set collapse line
+	checkbox.checked ? node.classList.add("node-frame-collapsed") : node.classList.remove("node-frame-collapsed");
 }
 
 function refreshNode(node) {
@@ -443,10 +502,10 @@ function refreshNode(node) {
 	let childrenIdList = getChildrenIdList(node);
 	let parentsIdList = getParentIdList(node);
 
-	// Refresh
+	// Refresh this node
 	setLeftMarginByNodeLevel(node);
-	setBackgroundByNodeStatus(node);
-	setCollapseButtonVisibility(node);
+	setNodeStyleByStatus(node);
+	setNodeStyleByCollapse(node);
 	setNodeVisibility(node);
 
 	// Refresh children
@@ -455,8 +514,8 @@ function refreshNode(node) {
 	childrenIdList.forEach(function(id) {
 		childNode = document.getElementById(id);
 		setLeftMarginByNodeLevel(childNode);
-		setBackgroundByNodeStatus(childNode);
-		setCollapseButtonVisibility(childNode);
+		setNodeStyleByStatus(childNode);
+		setNodeStyleByCollapse(childNode);
 		setNodeVisibility(childNode);
 	});
 
@@ -466,8 +525,8 @@ function refreshNode(node) {
 	parentsIdList.forEach(function(id) {
 		parentNode = document.getElementById(id);
 		setLeftMarginByNodeLevel(parentNode);
-		setBackgroundByNodeStatus(parentNode);
-		setCollapseButtonVisibility(parentNode);
+		setNodeStyleByStatus(parentNode);
+		setNodeStyleByCollapse(parentNode);
 	});
 
 	// Refresh previous
@@ -475,8 +534,8 @@ function refreshNode(node) {
 
 	if(undefined != prevNode) {
 		setLeftMarginByNodeLevel(prevNode);
-		setBackgroundByNodeStatus(prevNode);
-		setCollapseButtonVisibility(prevNode);
+		setNodeStyleByStatus(prevNode);
+		setNodeStyleByCollapse(prevNode);
 	}
 }
 
@@ -607,7 +666,7 @@ function getNextSiblingNode(node) {
 		if(undefined == nextNode) {
 			break;
 		}
-		
+
 		nextNodeLevel = getNodeLevel(nextNode);
 
 		if(baseNodeLevel == nextNodeLevel) {
@@ -620,55 +679,6 @@ function getNextSiblingNode(node) {
 	}
 
 	return nextSiblingNode;
-}
-
-function increaseNodeLevel(node) {
-
-	// Get children before increase
-	let childrenIdList = getChildrenIdList(node);
-
-	// Increase current Node level
-	let currentNodeLevel = getNodeLevel(node);
-	node.setAttribute("level", currentNodeLevel + 1);
-
-	// Increase children level
-	let childNodeLevel = 0;
-
-	childrenIdList.forEach(function(id) {
-		childNode = document.getElementById(id);
-		childNodeLevel = getNodeLevel(childNode);
-		childNode.setAttribute("level", childNodeLevel + 1);
-	});
-
-	refreshNode(node);
-
-	log("INCREASE_LEVEL: ID = " + node.id + ", LEVEL = " + (currentNodeLevel + 1));
-	setChanged(true);
-}
-
-function decreaseNodeLevel(node) {
-
-	// Get children before decrease
-	let childrenIdList = getChildrenIdList(node);
-
-	// Decrease current Node level
-	let currentNodeLevel = getNodeLevel(node);
-	if(currentNodeLevel == 1) return false;
-	node.setAttribute("level", currentNodeLevel - 1);
-
-	// Decrease children level
-	let childNodeLevel = 0;
-
-	childrenIdList.forEach(function(id) {
-		childNode = document.getElementById(id);
-		childNodeLevel = childNode.getAttribute("level") * 1;
-		childNode.setAttribute("level", childNodeLevel - 1);
-	});
-
-	refreshNode(node);
-
-	log("DECREASE_LEVEL: ID = " + node.id + ", LEVEL = " + (currentNodeLevel - 1));
-	setChanged(true);
 }
 
 function setLeftMarginByNodeLevel(node) {
@@ -748,11 +758,16 @@ function moveNodeToPrevious(node) {
 		}
 	}
 
+	// If base node is previous node, do not move.
+	if(baseNode == getPreviousNode(node)) {
+		return false;
+	}
+
 	// Copy this node below base node
 	let copiedCurrentNode = createNode(baseNode
 								, getNodeLevel(node)
-								, node.status
-								, false
+								, getNodeStatus(node)
+								, isNodeCollapsed(node)
 								, getContents(node).innerHTML);
 
 	// Copy this node's children
@@ -764,16 +779,18 @@ function moveNodeToPrevious(node) {
 		childNode = document.getElementById(id);
 		baseNode = createNode(baseNode
 					, getNodeLevel(childNode)
-					, childNode.status
-					, false
+					, getNodeStatus(childNode)
+					, isNodeCollapsed(childNode)
 					, getContents(childNode).innerHTML);
 	});
 
-	// Force delete current node & children
-	deleteNode(node, true);
+	// Delete current node & children
+	deleteNode(node);
 
-	// Set focus copied node
+	// Set focus on copied node
 	setCaretPositionToFirst(copiedCurrentNode);
+
+	setChanged(true);
 }
 
 function moveNodeToNext(node) {
@@ -795,14 +812,12 @@ function moveNodeToNext(node) {
 	else {
 		baseNode = nextSiblingNode;
 	}
-	
-	log("BASE_NODE = " + baseNode.id);
 
 	// Copy this node below base node
 	let copiedCurrentNode = createNode(baseNode
 								, getNodeLevel(node)
-								, node.status
-								, false
+								, getNodeStatus(node)
+								, isNodeCollapsed(node)
 								, getContents(node).innerHTML);
 
 	// Copy this node's children
@@ -814,16 +829,18 @@ function moveNodeToNext(node) {
 		childNode = document.getElementById(id);
 		baseNode = createNode(baseNode
 					, getNodeLevel(childNode)
-					, childNode.status
-					, false
+					, getNodeStatus(childNode)
+					, isNodeCollapsed(childNode)
 					, getContents(childNode).innerHTML);
 	});
 
-	// Force delete current node & children
-	deleteNode(node, true);
+	// Delete current node & children
+	deleteNode(node);
 
-	// Set focus copied node
+	// Set focus on copied node
 	setCaretPositionToFirst(copiedCurrentNode);
+
+	setChanged(true);
 }
 
 function executeToobarCommand(e) {
@@ -851,22 +868,15 @@ function executeCollapse(checkbox, node) {
 
 	if(hasChildNode(node)) {
 
-		let checked = checkbox.checked;
-
-		// Set icon
-		checkbox.previousSibling.innerHTML = checked ? ICON_EXPAND : ICON_COLLAPSE;
-
-		// Set collapse line
-		checked ? node.classList.add("node-frame-collapsed") : node.classList.remove("node-frame-collapsed");
-
 		refreshNode(node);
 
 		// Set cursor
+		let checked = checkbox.checked;
 		checked ? setCaretPositionToFirst(node) : setCaretPositionToLast(node);
 
-		log((checked ? "COLLAPSE" : "EXPAND") + "_NODE: ID = " + node.id);
-
 		setChanged(true);
+
+		log((checked ? "COLLAPSE" : "EXPAND") + "_NODE: ID = " + node.id);
 	}
 }
 
@@ -876,11 +886,11 @@ function executeDone(checkbox, node) {
 	let cancelCheckbox = document.getElementById("cancel" + node.id);
 	cancelCheckbox.checked = false;
 	let cancelLabel = cancelCheckbox.previousSibling;
-	cancelLabel.innerHTML = ICON_CANCEL_NO;
+	cancelLabel.innerHTML = IMG.icon_cancel_no;
 
 	// Set icon
 	let checked = checkbox.checked;
-	checkbox.previousSibling.innerHTML = checked ? ICON_DONE : ICON_DONE_NO;
+	checkbox.previousSibling.innerHTML = checked ? IMG.icon_done : IMG.icon_done_no;
 	setNodeStatus(node, checked ? "D" : "N");
 
 	refreshNode(node);
@@ -896,7 +906,6 @@ function executeDone(checkbox, node) {
 	setCaretPositionToLast(node);
 
 	log((checked ? "DONE" : "UNDONE") + "_NODE: ID = " + node.id);
-	setChanged(true);
 }
 
 function executeCancel(checkbox, node) {
@@ -905,11 +914,11 @@ function executeCancel(checkbox, node) {
 	let doneCheckbox = document.getElementById("done" + node.id);
 	doneCheckbox.checked = false;
 	let doneLabel = doneCheckbox.previousSibling;
-	doneLabel.innerHTML = ICON_DONE_NO;
+	doneLabel.innerHTML = IMG.icon_done_no;
 
 	// Set icon
 	let checked = checkbox.checked;
-	checkbox.previousSibling.innerHTML = checked ? ICON_CANCEL : ICON_CANCEL_NO;
+	checkbox.previousSibling.innerHTML = checked ? IMG.icon_cancel : IMG.icon_cancel_no;
 	setNodeStatus(node, checked ? "C" : "N");
 
 	refreshNode(node);
@@ -925,8 +934,6 @@ function executeCancel(checkbox, node) {
 	setCaretPositionToLast(node);
 
 	log((checked ? "CANCEL" : "UNCANCEL") + "_NODE: ID = " + node.id);
-
-	setChanged(true);
 }
 
 function setPastedContents(contents) {
@@ -975,9 +982,8 @@ function setPastedContents(contents) {
 					isFirst = false;
 
 					// If has first tab, increse node level
-					for(let i = 0; i < startTabCount; i++) {
-						increaseNodeLevel(currentNode);
-					}
+					setNodeLevel(currentNode, startTabCount);
+					refreshNode(currentNode);
 				}
 
 				// Not a first line, paste on new node

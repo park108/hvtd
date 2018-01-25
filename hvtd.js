@@ -1,174 +1,3 @@
-function saveTodo() {
-	
-	let date = GLOBAL_VARIABLE.selected_date;
-
-	let yearString = date.getFullYear();
-	let monthString = date.getMonth();
-	let dateString = date.getDate();
-
-	++monthString;
-	monthString = (monthString < 10) ? "0" + monthString : monthString;
-	dateString = (dateString < 10) ? "0" + dateString : dateString;
-
-	let yyyymmdd = yearString + monthString + dateString;
-
-	let todo = {
-		"year": yearString,
-		"month": monthString,
-		"date": dateString,
-		"list": null
-	};
-
-	let nodeList = getNodeList();
-	let todoList = [];
-	let nodeObject;
-
-	nodeList.forEach(function(node) {
-
-		nodeObject = new Object();
-		nodeObject.id = node.id;
-		nodeObject.level = node.getAttribute("level");
-		nodeObject.status = node.getAttribute("status");
-		nodeObject.collapse = document.getElementById("collapse" + node.id).checked;
-		nodeObject.contents = document.getElementById("contents" + node.id).innerHTML;
-		
-		todoList.push(nodeObject);
-	});
-
-	todo.list = todoList;
-
-	let jsonString = JSON.stringify(todo);
-
-	log("SAVE: " + yyyymmdd + " -> " + jsonString);
-
-	localStorage.setItem(yyyymmdd, jsonString);
-
-	setChanged(false);
-}
-
-function loadTodo() {
-
-	let yyyymmdd = getYYYYMMDD(GLOBAL_VARIABLE.selected_date);
-
-	let data = localStorage.getItem(yyyymmdd);
-
-	// No data
-	if(undefined == data || null == data || "" == data) {
-
-		let length = localStorage.length;
-		let doConfirm = false;
-		let key;
-		let previousKey = "00000000";
-
-		// If enabled Auto Copy, get previous todo key (yyyymmdd)
-		if(GLOBAL_SETTING.auto_copy && length > 0) {
-
-			for(let i = 0; i < localStorage.length; i++) {
-
-				key = localStorage.key(i);
-
-				if(key < yyyymmdd && previousKey < key) {
-
-					doConfirm = true;
-					previousKey = key;
-				}
-			}
-		}
-
-
-		// Set previous data string for Confirm popup
-		let previousDataString;
-
-		if(doConfirm) {
-
-			let previousDateYear = previousKey.substring(0, 4);
-			let previousDateMonth = previousKey.substring(4, 6);
-			let previousDateDate = previousKey.substring(6, 8);
-
-			log(previousDateYear + "-" + previousDateMonth + "-" + previousDateDate)
-
-			let previousDate = new Date(previousDateYear
-				, (previousDateMonth * 1) - 1
-				, (previousDateDate * 1));
-
-			let previousDateWeek = getWeekText(previousDate.getDay());
-
-			previousDataString = previousDateYear + "-"
-				+ previousDateMonth + "-"
-				+ previousDateDate
-				+ "(" + previousDateWeek + ")";
-		}
-
-		// Copy from previous todo if confirmed
-		if(doConfirm && confirm(getMessage("002", previousDataString))) {
-
-			data = localStorage.getItem(previousKey);
-
-			let todo = JSON.parse(data);
-			let todoList = todo.list;
-			let previousNode = undefined;
-			let startDeleteLevel = 9999;
-
-			todoList.forEach(function(node) {
-
-				// Skip completed node
-				if("N" == node.status
-					&& startDeleteLevel >= node.level) {
-
-					previousNode = createNode(previousNode
-						, node.level
-						, node.status
-						, node.collapse
-						, node.contents);
-
-					startDeleteLevel = 9999;
-				}
-				else {
-
-					if(startDeleteLevel > node.level) {
-
-						startDeleteLevel = node.level;
-					}
-				}
-
-			});
-
-			setChanged(true);
-		}
-
-		// Nop. New todo.
-		else {
-
-			createNode();
-		}
-	}
-
-	// If has data, get that data
-	else {
-
-		let todo = JSON.parse(data);
-		let todoList = todo.list;
-		let previousNode = undefined;
-
-		todoList.forEach(function(node) {
-			previousNode = createNode(previousNode
-				, node.level
-				, node.status
-				, node.collapse
-				, node.contents);
-		});
-	}
-
-	log("LOAD: " + yyyymmdd + " -> " + data);
-}
-
-function deleteTodo(yyyymmdd) {
-
-	if(confirm(getMessage("004"))) {
-		localStorage.removeItem(yyyymmdd);	
-	}
-}
-
 function keyInCommon(e) {
 
 	// Ctrl + S: Save
@@ -183,7 +12,7 @@ function keyInCommon(e) {
 
 	// Ctrl + Shift + C: Calendar expand/collapse
 	else if(e.ctrlKey &&  e.shiftKey && 67 == e.which) {
-		showCalendar();
+		setCalendarVisibility();
 		return false;
 	}
 }
@@ -209,11 +38,14 @@ function keyInContents(e) {
 	else if(9 == e.which) {
 
 		if(e.shiftKey) {
-			decreaseNodeLevel(currentNode);
+			setNodeLevel(currentNode, -1);
 		}
 		else {
-			increaseNodeLevel(currentNode);
+			setNodeLevel(currentNode, 1);
 		}
+
+		refreshNode(currentNode);
+
 		return false;
 	}
 
@@ -223,7 +55,23 @@ function keyInContents(e) {
 		log("CONTENTS = '" + getContents(currentNode).innerHTML + "'");
 
 		if(0 == getCaretOffset() && 0 == getContents(currentNode).innerHTML.length) {
-			deleteNode(currentNode, false, "BACKSPACE");
+
+			if(isNodeCanDelete(currentNode)) {
+
+				if(hasChildNode(currentNode)) {
+
+					openModal(getMessage("001")
+						, function() {
+							deleteNode(currentNode, e.which);
+							closeModal();
+						}, closeModal);
+
+				}
+				else {
+					deleteNode(currentNode, e.which);
+				}
+			}
+
 			return false;
 		}
 	}
@@ -232,7 +80,23 @@ function keyInContents(e) {
 	else if(46 == e.which) {
 
 		if(0 == getCaretOffset() && 0 == getContents(currentNode).innerHTML.length) {
-			deleteNode(currentNode, false, "DELETE");
+
+			if(isNodeCanDelete(currentNode)) {
+			
+				if(hasChildNode(currentNode)) {
+
+					openModal(getMessage("001")
+						, function() {
+							deleteNode(currentNode, e.which);
+							closeModal();
+						}, closeModal);
+
+				}
+				else {
+					deleteNode(currentNode, e.which);
+				}
+			}
+
 			return false;
 		}
 	}
@@ -361,7 +225,9 @@ function setDate(year, month, date) {
 
 	setChanged(false);
 
-	init();
+	clearTodo();
+	setSelectedDate();
+	loadTodo();
 }
 
 function createCalendar(d) {
@@ -439,7 +305,7 @@ function createCalendar(d) {
 	}
 }
 
-function showCalendar(show) {
+function setCalendarVisibility(show) {
 
 	let header = document.getElementById("header");
 	let calendar = document.getElementById("calendar");
@@ -472,43 +338,28 @@ function setContentsMargin() {
 	contents.style.marginTop = (header.clientHeight + 5) + "px";
 }
 
-function clear() {
-
-	let nodeList = getNodeList();
-	let contents = document.getElementById("contents");
-
-	nodeList.forEach(function(node) {
-		contents.removeChild(node);
-	});
-
-	GLOBAL_VARIABLE.node_id = 0;
-}
-
-function init() {
-
-	setSelectedDate();
-	clear();
-	loadTodo();
-	showCalendar(true);
-}
-
 window.onload = function() {
 
-	init();
+	log("WINDOW.ONLOAD");
+	setSelectedDate();
+	clearTodo();
+	loadTodo();
+	setCalendarVisibility(true);
 
 	// Set event listners
 	document.getElementById("calendar-icon").addEventListener("click"
 		, function() {
-			showCalendar();
+			setCalendarVisibility();
 		}, false);
 
 	document.getElementById("clear-icon").addEventListener("click"
 		, function() {
 			deleteTodo(getYYYYMMDD(GLOBAL_VARIABLE.selected_date));
-			init();
 		}, false);
 
 	document.body.addEventListener("keydown", keyInCommon, false);
+
+	document.getElementById("modal-close").addEventListener("click", closeModal, false);
 }
 
 window.onbeforeunload = function(e) {
@@ -521,4 +372,13 @@ window.onbeforeunload = function(e) {
 window.onresize = function() {
 
 	setContentsMargin();
+}
+
+window.onclick = function(e) {
+
+	let modal = document.getElementById("modal");
+
+	if(e.target == modal) {
+		closeModal();
+	}
 }

@@ -8,7 +8,16 @@ let GLOBAL_SETTING = {
 let GLOBAL_VARIABLE = {
 	"node_id": 0,
 	"changed": false,
-	"selected_date": null
+	"selected_date": null,
+}
+
+let IMG = {
+	"icon_collapse": "<img src='./icons/minus.svg' />",
+	"icon_expand": "<img src='./icons/plus.svg' />",
+	"icon_done": "<img src='./icons/check.svg' />",
+	"icon_done_no": "<img src='./icons/check_false.svg' />",
+	"icon_cancel": "<img src='./icons/cross.svg' />",
+	"icon_cancel_no": "<img src='./icons/cross_false.svg' />",
 }
 
 function log(line) {
@@ -118,4 +127,46 @@ function getYYYYMMDD(inputDate) {
 	}
 
 	return year + month + date;
+}
+
+function openModal(message, callback1, callback2) {
+
+	let modal = document.getElementById("modal");
+	let messageDom = document.getElementById("modal-message");
+
+	messageDom.innerHTML = message;
+	modal.style.display = "block";
+
+	// Set button OK
+	let newButton;
+	let buttonOk = document.getElementById("modal-ok");
+
+	if(undefined == callback1 || null == callback1) {
+		buttonOk.style.display = "none";
+	}
+	else {
+		buttonOk.style.display = "";
+		newButton = buttonOk.cloneNode(true); // For reset event listner
+		buttonOk.parentNode.replaceChild(newButton, buttonOk);
+		newButton.addEventListener("click", callback1, false);	
+	}
+
+	// Set button Cancel
+	let buttonCancel = document.getElementById("modal-cancel");
+	
+	if(undefined == callback2 || null == callback2) {
+		buttonCancel.style.display = "none";
+	}
+	else {
+		buttonCancel.style.display = "";
+		newButton = buttonCancel.cloneNode(true); // For reset event listner
+		buttonCancel.parentNode.replaceChild(newButton, buttonCancel);
+		newButton.addEventListener("click", callback2, false);
+	}
+}
+
+function closeModal() {
+
+	let modal = document.getElementById("modal");
+	modal.style.display = "none";
 }
