@@ -3,11 +3,33 @@ function changeData(e) {
 	setChanged(true);
 }
 
+function hasData() {
+
+	if(1 == getNodeCount()) {
+
+		let list = getNodeList();
+		let node = list.pop();
+
+		if("" == getContents(node).innerHTML) {
+
+			return false;
+		}
+		else {
+
+			return true;
+		} 
+	}
+	else {
+
+		return true;	
+	}
+}
+
 function createNode(currentNode, inputLevel, inputStatus, inputCollapse, inputContents) {
 
 	// Set previous node
 	if(undefined == currentNode) {
-		currentNode = document.getElementById("header-of-node");
+		currentNode = E("header-of-node");
 	}
 	else if(undefined == inputLevel) {
 		setChanged(true);
@@ -61,7 +83,7 @@ function createNode(currentNode, inputLevel, inputStatus, inputCollapse, inputCo
 	newNodeContents.setAttribute("id", "contents" + GLOBAL_VARIABLE.node_id);
 	newNodeContents.setAttribute("class", "node-contents");
 	newNodeContents.setAttribute("contenteditable", "true");
-	newNodeContents.setAttribute("onpaste", "return setPastedContents(this)");
+	newNodeContents.setAttribute("onpaste", "return removeTags(this)");
 	newNodeContents.setAttribute("ondrop", "return false");
 	newNodeContents.innerHTML = contents;
 
@@ -113,12 +135,12 @@ function createNode(currentNode, inputLevel, inputStatus, inputCollapse, inputCo
 
 	// CurrentNode 가 collapsed 인 경우, 마지막 child의 다음에 신규 node를 생성
 	if("header-of-node" != currentNode.id
-		&& isNodeCollapsed(currentNode.id)
+		&& isNodeCollapsed(currentNode)
 		&& hasChildNode(currentNode)) {
 
 		let childrenIdList = getChildrenIdList(currentNode);
 		let lastChild = childrenIdList.pop();
-		currentNode.parentNode.insertBefore(newNode, document.getElementById(lastChild).nextSibling);
+		currentNode.parentNode.insertBefore(newNode, E(lastChild).nextSibling);
 	}
 	else {
 		currentNode.parentNode.insertBefore(newNode, currentNode.nextSibling);
@@ -138,21 +160,20 @@ function isNodeCanDelete(node) {
 
 	let nodeCount = getNodeCount();
 
-	// If it has last node, cannot delete.
+	// If it is last node, cannot delete.
 	if(2 > nodeCount) {
 
 		return false;
 	}
 
-	// If has no child node, can delete.
+	// If it has no child node, can delete.
 	if(!hasChildNode(node)) {
 
 		return true;
 	}
 
 	// If it is last parent node, cannot delete.
-	let childrenIdList = getChildrenIdList(node);
-	let childrenCount = childrenIdList.length;
+	let childrenCount = getChildrenIdList(node).length;
 
 	if((nodeCount - 1) == childrenCount) {
 		return false;
@@ -168,7 +189,7 @@ function deleteNode(node, keycode) {
 	// Delete all children
 	if(0 < childrenIdList.length) {
 		childrenIdList.forEach(function(id) {
-			childNode = document.getElementById(id);
+			childNode = E(id);
 			node.parentNode.removeChild(childNode);
 		});
 	}
@@ -215,8 +236,13 @@ function deleteNode(node, keycode) {
 
 function setCaretPositionToFirst(node) {
 	
-	let contents = getContents(node);
-	contents.focus();
+	if(undefined != node) {
+		let contents = getContents(node);
+
+		if(undefined != contents) {
+			contents.focus();
+		}
+	}
 }
 
 function setCaretPositionToLast(node) {
@@ -272,7 +298,7 @@ function setNodeLevel(node, diff) {
 	let childNodeLevel = 0;
 
 	childrenIdList.forEach(function(id) {
-		childNode = document.getElementById(id);
+		childNode = E(id);
 		childNodeLevel = getNodeLevel(childNode);
 		childNode.setAttribute("level", childNodeLevel + diff);
 	});
@@ -317,7 +343,7 @@ function getNodeList() {
 
 	let list = [];
 
-	let currentNode = document.getElementById("header-of-node").nextSibling;
+	let currentNode = E("header-of-node").nextSibling;
 
 	while(undefined != currentNode) {
 		list.push(currentNode);
@@ -402,7 +428,7 @@ function getParentStatusList(node) {
 	let parentNode;
 
 	parentIdList.forEach(function(id) {
-		parentNode = document.getElementById(id);
+		parentNode = E(id);
 		returnStatus.push(parentNode.getAttribute("status"));
 	});
 
@@ -416,7 +442,7 @@ function setNodeVisibility(node) {
 
 	// If one or more parents is collapsed
 	parentIdList.forEach(function(id) {
-		if(document.getElementById("collapse" + id).checked) {
+		if(E("collapse" + id).checked) {
 			isCollapsed = true;
 		}
 	});
@@ -436,7 +462,7 @@ function isNodeCollapsed(node) {
 		return false;
 	}
 
-	let checkbox = document.getElementById("collapse" + node.id);
+	let checkbox = E("collapse" + node.id);
 
 	if(undefined == checkbox) {
 		return false;
@@ -483,7 +509,7 @@ function setNodeStyleByStatus(node) {
 
 function setNodeStyleByCollapse(node) {
 
-	let checkbox = document.getElementById("collapse" + node.id);
+	let checkbox = E("collapse" + node.id);
 	let button = checkbox.previousSibling;
 	let isVisible = hasChildNode(node);
 
@@ -512,7 +538,7 @@ function refreshNode(node) {
 	let childNode;
 
 	childrenIdList.forEach(function(id) {
-		childNode = document.getElementById(id);
+		childNode = E(id);
 		setLeftMarginByNodeLevel(childNode);
 		setNodeStyleByStatus(childNode);
 		setNodeStyleByCollapse(childNode);
@@ -523,7 +549,7 @@ function refreshNode(node) {
 	let parentNode;
 
 	parentsIdList.forEach(function(id) {
-		parentNode = document.getElementById(id);
+		parentNode = E(id);
 		setLeftMarginByNodeLevel(parentNode);
 		setNodeStyleByStatus(parentNode);
 		setNodeStyleByCollapse(parentNode);
@@ -688,7 +714,82 @@ function setLeftMarginByNodeLevel(node) {
 }
 
 function getContents(node) {
-	return document.getElementById("contents" + node.id);
+	return E("contents" + node.id);
+}
+
+function removeTags(contents, position) {
+
+	setTimeout(function() {
+
+		// Strip Tags
+		let htmlBeforeStripTags = contents.innerHTML;
+		let htmlAfterStripTags = htmlBeforeStripTags.replace(/<(?:.|\n)*?>/gm, '');
+
+		// Split contents by new line character
+		let splitContents = htmlAfterStripTags.split("\n");
+
+		// Set variables
+		let currentNode = contents.parentNode;
+		let parentNodeLevel = getNodeLevel(currentNode);
+		let currentContents = contents;
+		let isFirst = true;
+		let startTabCount = 0;
+		let textNoTab;
+		
+		// Set splitted contents each node
+		splitContents.forEach(function(text) {
+
+			// Count first tabs
+			startTabCount = 0;
+
+			for(let i = 0; i < text.length; i++) {
+				if('\t' == text.charAt(i)) {
+					++startTabCount;
+				}
+				else {
+					break;
+				}
+			}
+
+			// Remove first tabs from text
+			textNoTab = text.substring(startTabCount, text.length);
+
+			// Paste text if it has length
+			if(textNoTab.length > 0) {
+
+				// First text line: paste on current node
+				if(isFirst) {
+
+					isFirst = false;
+
+					// If has first tab, increse node level
+					setNodeLevel(currentNode, startTabCount);
+					refreshNode(currentNode);
+				}
+
+				// Not a first line, paste on new node
+				else {
+
+					// Create node with level
+					currentNode = createNode(currentNode, parentNodeLevel + startTabCount);
+
+					// Get contents object
+					currentContents = getContents(currentNode);
+				}
+
+				// Set contents
+				currentContents.innerHTML = textNoTab;
+			}
+		});
+
+		if(undefined == position) {
+			setCaretPositionToLast(currentNode);
+		}
+		else {
+			setCaretPositionToFirst(currentNode);
+		}
+
+	}, 0);
 }
 
 function movePreviousNode(node, doCaretSetLast) {
@@ -776,7 +877,7 @@ function moveNodeToPrevious(node) {
 	baseNode = copiedCurrentNode;
 
 	childrenIdList.forEach(function(id) {
-		childNode = document.getElementById(id);
+		childNode = E(id);
 		baseNode = createNode(baseNode
 					, getNodeLevel(childNode)
 					, getNodeStatus(childNode)
@@ -807,7 +908,7 @@ function moveNodeToNext(node) {
 
 	if(nextSiblingChildrenIdList.length > 0) {
 		let baseNodeId = nextSiblingChildrenIdList.pop();
-		baseNode = document.getElementById(baseNodeId);
+		baseNode = E(baseNodeId);
 	}
 	else {
 		baseNode = nextSiblingNode;
@@ -826,7 +927,7 @@ function moveNodeToNext(node) {
 	baseNode = copiedCurrentNode;
 
 	childrenIdList.forEach(function(id) {
-		childNode = document.getElementById(id);
+		childNode = E(id);
 		baseNode = createNode(baseNode
 					, getNodeLevel(childNode)
 					, getNodeStatus(childNode)
@@ -843,24 +944,24 @@ function moveNodeToNext(node) {
 	setChanged(true);
 }
 
-function executeToobarCommand(e) {
+function executeToobarCommand(checkbox) {
 
-	let id = e.id;
+	let id = checkbox.id;
 
 	// Is it checked
-	let checked = document.getElementById(id).checked;
+	let checked = E(id).checked;
 
 	// Get node data
-	let node = e.parentNode.parentNode; // Toolbar -> Node
+	let node = checkbox.parentNode.parentNode; // Toolbar -> Node
 
 	if(id.indexOf("collapse") > -1) {
-		executeCollapse(e, node);
+		executeCollapse(checkbox, node);
 	}
 	else if(id.indexOf("done") > -1) {
-		executeDone(e, node);
+		executeDone(checkbox, node);
 	}
 	else if(id.indexOf("cancel") > -1) {
-		executeCancel(e, node);
+		executeCancel(checkbox, node);
 	}
 }
 
@@ -883,7 +984,7 @@ function executeCollapse(checkbox, node) {
 function executeDone(checkbox, node) {
 	
 	// Disable cancel
-	let cancelCheckbox = document.getElementById("cancel" + node.id);
+	let cancelCheckbox = E("cancel" + node.id);
 	cancelCheckbox.checked = false;
 	let cancelLabel = cancelCheckbox.previousSibling;
 	cancelLabel.innerHTML = IMG.icon_cancel_no;
@@ -896,8 +997,8 @@ function executeDone(checkbox, node) {
 	refreshNode(node);
 
 	// If auto collapse enabled, collapse/expand this Node
-	if(GLOBAL_SETTING.auto_collapse && hasChildNode(node)) {
-		let collapseCheckbox = document.getElementById("collapse" + node.id);
+	if(SETTINGS.auto_collapse && hasChildNode(node)) {
+		let collapseCheckbox = E("collapse" + node.id);
 		collapseCheckbox.checked = checked;
 		executeCollapse(collapseCheckbox, node);
 	}
@@ -911,7 +1012,7 @@ function executeDone(checkbox, node) {
 function executeCancel(checkbox, node) {
 	
 	// Disable done
-	let doneCheckbox = document.getElementById("done" + node.id);
+	let doneCheckbox = E("done" + node.id);
 	doneCheckbox.checked = false;
 	let doneLabel = doneCheckbox.previousSibling;
 	doneLabel.innerHTML = IMG.icon_done_no;
@@ -924,8 +1025,8 @@ function executeCancel(checkbox, node) {
 	refreshNode(node);
 
 	// If auto collapse enabled, collapse/expand this Node
-	if(GLOBAL_SETTING.auto_collapse && hasChildNode(node)) {
-		let collapseCheckbox = document.getElementById("collapse" + node.id);
+	if(SETTINGS.auto_collapse && hasChildNode(node)) {
+		let collapseCheckbox = E("collapse" + node.id);
 		collapseCheckbox.checked = checked;
 		executeCollapse(collapseCheckbox, node);
 	}
@@ -934,74 +1035,4 @@ function executeCancel(checkbox, node) {
 	setCaretPositionToLast(node);
 
 	log((checked ? "CANCEL" : "UNCANCEL") + "_NODE: ID = " + node.id);
-}
-
-function setPastedContents(contents) {
-
-	setTimeout(function() {
-
-		// Strip Tags
-		let htmlBeforeStripTags = contents.innerHTML;
-		let htmlAfterStripTags = htmlBeforeStripTags.replace(/<(?:.|\n)*?>/gm, '');
-
-		// Split contents by new line character
-		let splitContents = htmlAfterStripTags.split("\n");
-
-		// Set variables
-		let currentNode = contents.parentNode;
-		let parentNodeLevel = getNodeLevel(currentNode);
-		let currentContents = contents;
-		let isFirst = true;
-		let startTabCount = 0;
-		let textNoTab;
-		
-		// Set splitted contents each node
-		splitContents.forEach(function(text) {
-
-			// Count first tabs
-			startTabCount = 0;
-
-			for(let i = 0; i < text.length; i++) {
-				if('\t' == text.charAt(i)) {
-					++startTabCount;
-				}
-				else {
-					break;
-				}
-			}
-
-			// Remove first tabs from text
-			textNoTab = text.substring(startTabCount, text.length);
-
-			// Paste text if it has length
-			if(textNoTab.length > 0) {
-
-				// First text line: paste on current node
-				if(isFirst) {
-
-					isFirst = false;
-
-					// If has first tab, increse node level
-					setNodeLevel(currentNode, startTabCount);
-					refreshNode(currentNode);
-				}
-
-				// Not a first line, paste on new node
-				else {
-
-					// Create node with level
-					currentNode = createNode(currentNode, parentNodeLevel + startTabCount);
-
-					// Get contents object
-					currentContents = getContents(currentNode);
-				}
-
-				// Set contents
-				currentContents.innerHTML = textNoTab;
-			}
-		});
-
-		setCaretPositionToLast(currentNode);
-
-	}, 0);
 }

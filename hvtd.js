@@ -2,11 +2,7 @@ function keyInCommon(e) {
 
 	// Ctrl + S: Save
 	if(e.ctrlKey && 83 == e.which) {
-
-		if(getChanged()) {
-			saveTodo();
-		}
-
+		saveTodo();
 		return false;
 	}
 
@@ -24,12 +20,9 @@ function keyInContents(e) {
 	if(-1 < currentNode.id.indexOf("contents")) {
 		currentNode = currentNode.parentNode;
 	}
-
-	// log("KEY_IN: ID = " + currentNode.id + ", KEYCODE = " + e.which);
 	
 	// Enter
 	if(13 == e.which) {
-
 		createNode(currentNode);
 		return false;
 	}
@@ -49,14 +42,27 @@ function keyInContents(e) {
 		return false;
 	}
 
+	// Space
+	else if(32 == e.which) {
+
+		if(e.shiftKey) {
+			setNodeLevel(currentNode, -1);
+			refreshNode(currentNode);
+			return false;
+		}
+		else if(0 == getCaretOffset()) {
+			setNodeLevel(currentNode, 1);
+			refreshNode(currentNode);
+			return false;
+		}
+	}
+
 	// Backspace
 	else if(8 == e.which) {
 
-		log("CONTENTS = '" + getContents(currentNode).innerHTML + "'");
+		if(0 == getCaretOffset() ) {
 
-		if(0 == getCaretOffset() && 0 == getContents(currentNode).innerHTML.length) {
-
-			if(isNodeCanDelete(currentNode)) {
+			if(isNodeCanDelete(currentNode) && 0 == getContents(currentNode).innerHTML.length) {
 
 				if(hasChildNode(currentNode)) {
 
@@ -79,9 +85,9 @@ function keyInContents(e) {
 	// Delete
 	else if(46 == e.which) {
 
-		if(0 == getCaretOffset() && 0 == getContents(currentNode).innerHTML.length) {
+		if(0 == getCaretOffset()) {
 
-			if(isNodeCanDelete(currentNode)) {
+			if(isNodeCanDelete(currentNode) && 0 == getContents(currentNode).innerHTML.length) {
 			
 				if(hasChildNode(currentNode)) {
 
@@ -109,7 +115,7 @@ function keyInContents(e) {
 
 			if(hasChildNode(currentNode)) {
 
-				let collapse = document.getElementById("collapse" + currentNode.id);
+				let collapse = E("collapse" + currentNode.id);
 
 				if(!collapse.checked) {
 					collapse.checked = true;
@@ -140,7 +146,7 @@ function keyInContents(e) {
 
 			if(hasChildNode(currentNode)) {
 
-				let collapse = document.getElementById("collapse" + currentNode.id);
+				let collapse = E("collapse" + currentNode.id);
 
 				if(collapse.checked) {
 					collapse.checked = false;
@@ -211,14 +217,12 @@ function setSelectedDate() {
 	let selectedDateString = year + "-" + month + "-" + date;
 	let weekString = "(" + getWeekText(day) + ")";
 
-	document.getElementById("selected-date").innerHTML = selectedDateString + " " + weekString;
+	E("selected-date").innerHTML = selectedDateString + " " + weekString;
 }
 
 function setDate(year, month, date) {
 
-	if(getChanged()) {
-		saveTodo();
-	}
+	saveTodo();
 
 	GLOBAL_VARIABLE.selected_date = new Date(year, month, date);
 	createCalendar(GLOBAL_VARIABLE.selected_date);
@@ -240,7 +244,7 @@ function createCalendar(d) {
 	let lastDate = new Date(d.getFullYear(), d.getMonth() + 1, 0);
 	let nextMonth = new Date(d.getFullYear(), d.getMonth() + 1, 1);
 
-	let calendar = document.getElementById("calendar");
+	let calendar = E("calendar");
 	calendar.innerHTML = "";
 
 	// Add previous month arrow
@@ -307,8 +311,8 @@ function createCalendar(d) {
 
 function setCalendarVisibility(show) {
 
-	let header = document.getElementById("header");
-	let calendar = document.getElementById("calendar");
+	let header = E("header");
+	let calendar = E("calendar");
 
 	if(undefined == show) {
 		if("none" == calendar.style.display) {
@@ -333,7 +337,7 @@ function setCalendarVisibility(show) {
 
 function setContentsMargin() {
 
-	let contents = document.getElementById("contents");
+	let contents = E("contents");
 
 	contents.style.marginTop = (header.clientHeight + 5) + "px";
 }
@@ -347,26 +351,15 @@ window.onload = function() {
 	setCalendarVisibility(true);
 
 	// Set event listners
-	document.getElementById("calendar-icon").addEventListener("click"
-		, function() {
-			setCalendarVisibility();
-		}, false);
-
-	document.getElementById("clear-icon").addEventListener("click"
-		, function() {
-			deleteTodo(getYYYYMMDD(GLOBAL_VARIABLE.selected_date));
-		}, false);
-
+	E("calendar-icon").addEventListener("click", setCalendarVisibility, false);
+	E("clear-icon").addEventListener("click", deleteTodo, false);
 	document.body.addEventListener("keydown", keyInCommon, false);
-
-	document.getElementById("modal-close").addEventListener("click", closeModal, false);
+	E("modal-close").addEventListener("click", closeModal, false);
 }
 
 window.onbeforeunload = function(e) {
 
-	if(getChanged()) {
-		saveTodo();
-	}
+	saveTodo();
 };
 
 window.onresize = function() {
@@ -376,7 +369,7 @@ window.onresize = function() {
 
 window.onclick = function(e) {
 
-	let modal = document.getElementById("modal");
+	let modal = E("modal");
 
 	if(e.target == modal) {
 		closeModal();

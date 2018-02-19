@@ -1,4 +1,4 @@
-let GLOBAL_SETTING = {
+let SETTINGS = {
 	"log": true,
 	"language": "KO",
 	"auto_copy": true,
@@ -21,74 +21,78 @@ let IMG = {
 }
 
 function log(line) {
-	if(GLOBAL_SETTING.log) {
+	if(SETTINGS.log) {
 		console.log(line);
 	}
+}
+
+function E(id) {
+	return document.getElementById(id);
 }
 
 function getMessage(code, param1, param2, param3) {
 
 	if("001" == code) {
-		if("KO" == GLOBAL_SETTING.language) return "하위 항목까지 모두 삭제 하시겠습니까?";
-		else if("EN" == GLOBAL_SETTING.language) return "It has children. Do you delete it?";
+		if("KO" == SETTINGS.language) return "하위 항목까지 모두 삭제 하시겠습니까?";
+		else if("EN" == SETTINGS.language) return "It has children. Do you delete it?";
 		else return "It has children. Do you delete it?";
 	}
 	else if("002" == code) {
-		if("KO" == GLOBAL_SETTING.language) return "이전 데이터를 복사하시겠습니까? (" + param1 + ")";
-		else if("EN" == GLOBAL_SETTING.language) return "Do you copy last todo?(" + param1 + ")";
+		if("KO" == SETTINGS.language) return "이전 데이터를 복사하시겠습니까? (" + param1 + ")";
+		else if("EN" == SETTINGS.language) return "Do you copy last todo?(" + param1 + ")";
 		else return "Do you copy last todo?(" + param1 + ")";
 	}
 	else if("003" == code) {
-		if("KO" == GLOBAL_SETTING.language) return "";
-		else if("EN" == GLOBAL_SETTING.language) return "";
+		if("KO" == SETTINGS.language) return "";
+		else if("EN" == SETTINGS.language) return "";
 		else return "";	
 	}
 	else if("004" == code) {
-		if("KO" == GLOBAL_SETTING.language) return "초기화 하시겠습니까?";
-		else if("EN" == GLOBAL_SETTING.language) return "Do you clear data?";
+		if("KO" == SETTINGS.language) return "초기화 하시겠습니까?";
+		else if("EN" == SETTINGS.language) return "Do you clear data?";
 		else return "Do you clear data?";	
 	}
 }
 
 function getWeekText(week) {
 	if(0 == week) {
-		if("KO" == GLOBAL_SETTING.language) return "일";
-		else if("EN" == GLOBAL_SETTING.language) return "SUN";
+		if("KO" == SETTINGS.language) return "일";
+		else if("EN" == SETTINGS.language) return "SUN";
 		else return "SUN";
 	}
 	else if(1 == week) {
-		if("KO" == GLOBAL_SETTING.language) return "월";
-		else if("EN" == GLOBAL_SETTING.language) return "MON";
+		if("KO" == SETTINGS.language) return "월";
+		else if("EN" == SETTINGS.language) return "MON";
 		else return "SUN";
 	}
 	else if(2 == week) {
-		if("KO" == GLOBAL_SETTING.language) return "화";
-		else if("EN" == GLOBAL_SETTING.language) return "TUE";
+		if("KO" == SETTINGS.language) return "화";
+		else if("EN" == SETTINGS.language) return "TUE";
 		else return "TUE";
 	}
 	else if(3 == week) {
-		if("KO" == GLOBAL_SETTING.language) return "수";
-		else if("EN" == GLOBAL_SETTING.language) return "WED";
+		if("KO" == SETTINGS.language) return "수";
+		else if("EN" == SETTINGS.language) return "WED";
 		else return "WED";
 	}
 	else if(4 == week) {
-		if("KO" == GLOBAL_SETTING.language) return "목";
-		else if("EN" == GLOBAL_SETTING.language) return "THU";
+		if("KO" == SETTINGS.language) return "목";
+		else if("EN" == SETTINGS.language) return "THU";
 		else return "THU";
 	}
 	else if(5 == week) {
-		if("KO" == GLOBAL_SETTING.language) return "금";
-		else if("EN" == GLOBAL_SETTING.language) return "FRI";
+		if("KO" == SETTINGS.language) return "금";
+		else if("EN" == SETTINGS.language) return "FRI";
 		else return "FRI";
 	}
 	else if(6 == week) {
-		if("KO" == GLOBAL_SETTING.language) return "토";
-		else if("EN" == GLOBAL_SETTING.language) return "SAT";
+		if("KO" == SETTINGS.language) return "토";
+		else if("EN" == SETTINGS.language) return "SAT";
 		else return "SAT";
 	}
 }
 
-function getChanged() {
+function isChanged() {
 	return GLOBAL_VARIABLE.changed;	
 }
 
@@ -131,15 +135,15 @@ function getYYYYMMDD(inputDate) {
 
 function openModal(message, callback1, callback2) {
 
-	let modal = document.getElementById("modal");
-	let messageDom = document.getElementById("modal-message");
+	let modal = E("modal");
+	let messageDom = E("modal-message");
 
 	messageDom.innerHTML = message;
 	modal.style.display = "block";
 
 	// Set button OK
 	let newButton;
-	let buttonOk = document.getElementById("modal-ok");
+	let buttonOk = E("modal-ok");
 
 	if(undefined == callback1 || null == callback1) {
 		buttonOk.style.display = "none";
@@ -152,7 +156,7 @@ function openModal(message, callback1, callback2) {
 	}
 
 	// Set button Cancel
-	let buttonCancel = document.getElementById("modal-cancel");
+	let buttonCancel = E("modal-cancel");
 	
 	if(undefined == callback2 || null == callback2) {
 		buttonCancel.style.display = "none";
@@ -167,6 +171,6 @@ function openModal(message, callback1, callback2) {
 
 function closeModal() {
 
-	let modal = document.getElementById("modal");
+	let modal = E("modal");
 	modal.style.display = "none";
 }

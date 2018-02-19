@@ -1,18 +1,19 @@
 // Save todo into storage
 function saveTodo() {
+
+	// No change do nothing
+	if(!isChanged()) {
+		return false;
+	}
 	
-	let date = GLOBAL_VARIABLE.selected_date;
+	// Get selected date
+	let yyyymmdd = getYYYYMMDD(GLOBAL_VARIABLE.selected_date);
 
-	let yearString = date.getFullYear();
-	let monthString = date.getMonth();
-	let dateString = date.getDate();
+	let yearString = yyyymmdd.substring(0, 4);
+	let monthString = yyyymmdd.substring(4, 6);
+	let dateString = yyyymmdd.substring(6, 8);
 
-	++monthString;
-	monthString = (monthString < 10) ? "0" + monthString : monthString;
-	dateString = (dateString < 10) ? "0" + dateString : dateString;
-
-	let yyyymmdd = yearString + monthString + dateString;
-
+	// Set date for todo
 	let todo = {
 		"year": yearString,
 		"month": monthString,
@@ -20,6 +21,7 @@ function saveTodo() {
 		"list": null
 	};
 
+	// Set node list
 	let nodeList = getNodeList();
 	let todoList = [];
 	let nodeObject;
@@ -30,16 +32,19 @@ function saveTodo() {
 		nodeObject.id = node.id;
 		nodeObject.level = node.getAttribute("level");
 		nodeObject.status = node.getAttribute("status");
-		nodeObject.collapse = document.getElementById("collapse" + node.id).checked;
-		nodeObject.contents = document.getElementById("contents" + node.id).innerHTML;
+		nodeObject.collapse = E("collapse" + node.id).checked;
+		nodeObject.contents = E("contents" + node.id).innerHTML;
 		
 		todoList.push(nodeObject);
 	});
 
 	todo.list = todoList;
 
+	// Convert data to JSON string
 	let jsonString = JSON.stringify(todo);
+	log(jsonString);
 
+	// Save data
 	localStorage.setItem(yyyymmdd, jsonString);
 
 	setChanged(false);
@@ -50,11 +55,13 @@ function saveTodo() {
 // Load todo for selected date
 function loadTodo() {
 
+	// Get selected date
 	let yyyymmdd = getYYYYMMDD(GLOBAL_VARIABLE.selected_date);
 
+	// Get data for selected date
 	let data = localStorage.getItem(yyyymmdd);
 
-	// No data
+	// If has no data
 	if(undefined == data || null == data || "" == data) {
 
 		let length = localStorage.length;
@@ -63,7 +70,7 @@ function loadTodo() {
 		let previousKey = "00000000";
 
 		// If enabled Auto Copy, get previous todo key (yyyymmdd)
-		if(GLOBAL_SETTING.auto_copy && length > 0) {
+		if(SETTINGS.auto_copy && length > 0) {
 
 			for(let i = 0; i < localStorage.length; i++) {
 
@@ -95,16 +102,17 @@ function loadTodo() {
 
 			let previousDateWeek = getWeekText(previousDate.getDay());
 
+			// YYYY-MM-DD(WEEK)
 			previousDataString = previousDateYear + "-"
 				+ previousDateMonth + "-"
 				+ previousDateDate
 				+ "(" + previousDateWeek + ")";
 
-
-			// Open confirm modal window
+			// Open copy confirm modal window
 			openModal(getMessage("002", previousDataString)
 				, function() {
 
+					// Confirm: copy todo from previous todo
 					data = localStorage.getItem(previousKey);
 
 					let todo = JSON.parse(data);
@@ -139,14 +147,23 @@ function loadTodo() {
 					setChanged(true);
 					closeModal();
 				}, function() {
+
+					// Cancel: New Todo
 					clearTodo();
 					createNode();
 					closeModal();
 				});
 		}
+
+		// New todo
+		else {
+			clearTodo();
+			createNode();
+			closeModal();
+		}
 	}
 
-	// If has data, get that data
+	// If has data, set data into page
 	else {
 
 		let todo = JSON.parse(data);
@@ -166,10 +183,15 @@ function loadTodo() {
 }
 
 // Delete todo from data storage
-function deleteTodo(yyyymmdd) {
+function deleteTodo() {
+
+	// Get selected date
+	let yyyymmdd = getYYYYMMDD(GLOBAL_VARIABLE.selected_date);
 
 	openModal(getMessage("004")
 		, function() {
+
+			// Confirm: delete data from storage and initialize page	
 			localStorage.removeItem(yyyymmdd);
 			clearTodo();
 			createNode();
@@ -178,19 +200,26 @@ function deleteTodo(yyyymmdd) {
 
 			log("DELETE_TODO: " + yyyymmdd);
 		}
-		, closeModal);
+		, 
+			// Cancel: close modal window
+			closeModal
+		);
 }
 
-// Clear todo on screen
+// Clear todo on page
 function clearTodo() {
 
+	// Get node list
 	let nodeList = getNodeList();
-	let contents = document.getElementById("contents");
+	let contents = E("contents");
 
+	// Remove all node
 	nodeList.forEach(function(node) {
 		contents.removeChild(node);
+		setChanged(true);
 	});
 
+	// Initialize node id
 	GLOBAL_VARIABLE.node_id = 0;
 
 	log("CLEAR_TODO");
