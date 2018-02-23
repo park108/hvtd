@@ -280,7 +280,6 @@ function callbackDeleteTodo() {
 			log("CALLBACK_DELETE_TODO: There was a problem with the request.");
 		}
 	}
-
 }
 
 // Clear todo on page
