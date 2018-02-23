@@ -314,19 +314,9 @@ function setCalendarVisibility(show) {
 	let header = E("header");
 	let calendar = E("calendar");
 
-	if(undefined == show) {
-		if("none" == calendar.style.display) {
-			show = true;
-		}
-		else {
-			show = false;
-		}
-	}
-
-	if(show) {
+	if(true == show || "none" == calendar.style.display) {
 		calendar.style.display = "block";
 		createCalendar(GLOBAL_VARIABLE.selected_date);
-		
 	}
 	else {
 		calendar.style.display = "none";

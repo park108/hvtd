@@ -287,12 +287,22 @@ function setNodeLevel(node, diff) {
 		return false;
 	}
 
+	// Get current node level
+	let currentNodeLevel = getNodeLevel(node);
+
+	// Calc changing node level
+	let changeNodeLevel = currentNodeLevel + diff;
+
+	// If level is less than 1, end this function
+	if(changeNodeLevel < 1) {
+		return false;
+	}
+
 	// Get children before change level
 	let childrenIdList = getChildrenIdList(node);
 
 	// Set current Node level
-	let currentNodeLevel = getNodeLevel(node);
-	node.setAttribute("level", currentNodeLevel + diff);
+	node.setAttribute("level", changeNodeLevel);
 
 	// Set children level
 	let childNodeLevel = 0;

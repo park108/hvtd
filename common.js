@@ -11,6 +11,11 @@ let GLOBAL_VARIABLE = {
 	"selected_date": null,
 }
 
+let USER = {
+	"id": "park108@gmail.com", // TODO: Test ID
+	"name": "Jongkil Park"
+}
+
 let IMG = {
 	"icon_collapse": "<img src='./icons/minus.svg' />",
 	"icon_expand": "<img src='./icons/plus.svg' />",
