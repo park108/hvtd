@@ -6,3 +6,4 @@ deploy:
   access_key_id: "AKIAIS7W2C3W5JLDFL7Q"
   secret_access_key: "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"
   bucket: "park108-todo"
+  alc: public_read
