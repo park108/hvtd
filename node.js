@@ -719,7 +719,7 @@ function getNextSiblingNode(node) {
 
 function setLeftMarginByNodeLevel(node) {
 	let level = getNodeLevel(node);
-	node.style.margin = "3px 0px 5px " + (20 * (level - 1)) + "px";
+	node.style.margin = "0px 0px 0px " + (20 * (level - 1)) + "px";
 	node.style.width = "calc(100% - " + (20 * (level - 1)) + "px)"
 }
 

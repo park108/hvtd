@@ -27,7 +27,7 @@ function callTodoAPI(method, yyyymmdd, callback, data) {
 		httpRequest.send(data);	
 	}
 
-	log("CALL TODO API: " + method + " " + apiUrl + " ... ");
+	log("CALL TODO API: " + method + " " + apiUrl + " ... " + "DATA = {" + data + "}");
 }
 
 // Save todo into storage
@@ -88,9 +88,10 @@ function callbackSaveTodo() {
 	if (httpRequest.readyState === 4) {
 
 		if (httpRequest.status === 200) {
+			log("CALLBACK_SAVE_TODO: OK.");
 		}
 		else {
-			log("CALLBACK_SAVE_TODO: There was a problem with the request.");
+			log("CALLBACK_SAVE_TODO: Save failed.");
 		}
 	}
 }
@@ -221,6 +222,8 @@ function callbackLoadTodo() {
 					
 					setChanged(false);
 				}
+
+				log("CALLBACK_LOAD_TODO: OK.");
 			}
 
 			// If has data, set data into page
@@ -240,7 +243,7 @@ function callbackLoadTodo() {
 			}
 		}
 		else {
-			log("CALLBACK_LOAD_TODO: There was a problem with the request.");
+			log("CALLBACK_LOAD_TODO: Load failed.");
 		}
 	}
 }
@@ -275,9 +278,11 @@ function callbackDeleteTodo() {
 			createNode();
 			setChanged(false);
 			closeModal();
+
+			log("CALLBACK_DELETE_TODO: OK.");
 		}
 		else {
-			log("CALLBACK_DELETE_TODO: There was a problem with the request.");
+			log("CALLBACK_DELETE_TODO: Delete failed.");
 		}
 	}
 }
