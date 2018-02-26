@@ -1,14 +1,15 @@
 language: node_js
 node_js:
-  - node
+- node
 deploy:
   provider: s3
-  access_key_id: "AKIAIS7W2C3W5JLDFL7Q"
-  secret_access_key: "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"
-  bucket: "park108-todo"
+  access_key_id: AKIAIS7W2C3W5JLDFL7Q
+  secret_access_key:
+    secure: Il+6WI3NAGDVpnZukBe7jar4ekuk7OMcQNmEyAVtzXv0631X0283zVLjoFxOqb7reMHwXR5dqSXijicm5wrqTEmsoJBKURLpc5PnZYmJ89r5xB0wE0+76g4BxqvJJW01bZ0a6EkVqiFLsyUGzDF/XNBptdOO5sZAaLLrvjchOs9ECXkB+rr+5TCezwycCMIEFuGEmmAi/fLIKIp1lMJSfLNbA3qlzdc0WH5+Vih+NVv5oT4HClv6xbElvX9fMzfqizDJPQ9E3uWRO3jnBZFlk4rqu30lpyOhs9cCw9heB4DHXi3LRgUK3J/vNhXZXxyzZo/FTk2l/IIODblQKAwWP4iykWr5Vax/9GH8MrDs/ZM+aQ0tc1YDs7frefMyeKuEF7dmCOP0XQ41SAqwZRVApM4o2nlpauibtnrLc5Gl14U+NHD5yGu/YVkvasP6xJTZOjA0EYl/KzpYei6CwQh8N1PFwo8j5231rdE7lwjjgC0mQ5E/ioZsRNFJLuQcKsyTvH5pOOSN+QvgMgNZCkycqeQ7vkF8tZulJz2E4WkUpIeDYTry64c4YpXUGOVe3Acv3maUwmIqEyy2Js3/OTlLbC694p3+zlHieTKFKQQEgb/JV498+W6VpTNexwNfOr06/bO7rVbTHDV6nK+dP1gtqOKIr9+sjsvAEFnzwiTAyT8=
+  bucket: park108-todo
   region: ap-northeast-2
   skip_cleanup: true
   alc: public_read
 branches:
   only:
-    - master
+  - master
