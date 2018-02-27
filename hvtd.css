@@ -119,6 +119,7 @@ body {
 	margin-bottom: 6px;
 	width: calc(100% - 7em);
 	white-space: pre-wrap;
+	font-weight: 300;
 }
 
 .node-status-none {
