@@ -1,25 +1,28 @@
 function onSignIn(googleUser) {
 
-  var profile = googleUser.getBasicProfile();
+  let profile = googleUser.getBasicProfile();
 
-  console.log('Google ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-  console.log('Google Name: ' + profile.getName());
-  console.log('Google Image URL: ' + profile.getImageUrl());
-  console.log('Google Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+  log('Google ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+  log('Google Name: ' + profile.getName());
+  log('Google Image URL: ' + profile.getImageUrl());
+  log('Google Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
 
   USER.id = profile.getEmail(); // Google email for hvtd ID
   USER.name = profile.getName(); // Google name for hvtd Name
+  USER.image = profile.getImageUrl(); // Google image for hvtd image
 
-  console.log("USER.id = " + USER.id);
-  console.log("USER.name = " + USER.name);
+  log("USER.id = " + USER.id);
+  log("USER.name = " + USER.name);
+  log("USER.image = " + USER.image);
 
-  var authResponse = googleUser.getAuthResponse();
+  let authResponse = googleUser.getAuthResponse();
   USER.token = authResponse.id_token;
-  console.log("USER.token = " + USER.token);
+  log("USER.token = " + USER.token);
 
 
   // Add the Google access token to the Cognito credentials login map.
   AWS.config.region = 'ap-northeast-2';
+
   AWS.config.credentials = new AWS.CognitoIdentityCredentials({
     IdentityPoolId: 'ap-northeast-2:d0984c85-59eb-4a30-baed-cac8d1b750c5',
     Logins: {
@@ -31,28 +34,32 @@ function onSignIn(googleUser) {
   AWS.config.credentials.get(function() {
 
     // Credentials will be available when this function is called.
-    var accessKeyId = AWS.config.credentials.accessKeyId;
-    var secretAccessKey = AWS.config.credentials.secretAccessKey;
-    var sessionToken = AWS.config.credentials.sessionToken;
+    let accessKeyId = AWS.config.credentials.accessKeyId;
+    let secretAccessKey = AWS.config.credentials.secretAccessKey;
+    let sessionToken = AWS.config.credentials.sessionToken;
 
-    console.log("Amazon Cognito accessKeyId: " + accessKeyId);
-    console.log("Amazon Cognito secretAccessKey: " + secretAccessKey);
-    console.log("Amazon Cognito sessionToken: " + sessionToken);
+    log("Amazon Cognito accessKeyId: " + accessKeyId);
+    log("Amazon Cognito secretAccessKey: " + secretAccessKey);
+    log("Amazon Cognito sessionToken: " + sessionToken);
 
     setUserInfo();
     closeModal();
   });
 }
 
-function signOut() {
+function onSignInFailure() {
+
+}
+
+function onSignOut() {
 	
-	var auth2 = gapi.auth2.getAuthInstance();
+	let auth2 = gapi.auth2.getAuthInstance();
 
 	auth2.signOut().then(function () {
     USER.id = "";
     USER.name = "";
     USER.token = "";
-		console.log('User signed out.');
+		log('User signed out.');
 
     setUserInfo();
 	});

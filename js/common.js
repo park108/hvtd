@@ -14,7 +14,8 @@ let GLOBAL_VARIABLE = {
 let USER = {
 	"id": "park108@gmail.com", // TODO: Test ID
 	"name": "Jongkil Park",
-	"token": ""
+	"token": "",
+	"image": ""
 }
 
 let IMG = {
