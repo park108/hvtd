@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/park108/hvtd/issues"
   },
-  "homepage": "https://github.com/park108/hvtd#readme"
+  "homepage": "https://github.com/park108/hvtd#readme",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.3",
+    "path": "^0.12.7"
+  }
 }

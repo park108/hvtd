@@ -10,10 +10,28 @@ window._config = {
 };
 
 // Amazon Cognito 인증 공급자를 초기화합니다
-AWS.config.region = 'ap-northeast-2'; // 리전
-AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-    IdentityPoolId: 'ap-northeast-2:d0984c85-59eb-4a30-baed-cac8d1b750c5',
-});
+// AWS.config.region = 'ap-northeast-2'; // 리전
+// AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+//     IdentityPoolId: 'ap-northeast-2:d0984c85-59eb-4a30-baed-cac8d1b750c5',
+// });
+function onSignIn(googleUser) {
+
+  var profile = googleUser.getBasicProfile();
+  
+  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+  console.log('Name: ' + profile.getName());
+  console.log('Image URL: ' + profile.getImageUrl());
+  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+}
+
+function signOut() {
+	
+	var auth2 = gapi.auth2.getAuthInstance();
+
+	auth2.signOut().then(function () {
+		console.log('User signed out.');
+	});
+}
 
 function signinCallback(authResult) {
   if (authResult['status']['signed_in']) {
