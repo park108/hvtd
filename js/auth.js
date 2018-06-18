@@ -14,14 +14,16 @@ function onSignIn(googleUser) {
   console.log("USER.name = " + USER.name);
 
   var authResponse = googleUser.getAuthResponse();
-  console.log("USER.token = " + authResponse.id_token);
+  USER.token = authResponse.id_token;
+  console.log("USER.token = " + USER.token);
+
 
   // Add the Google access token to the Cognito credentials login map.
   AWS.config.region = 'ap-northeast-2';
   AWS.config.credentials = new AWS.CognitoIdentityCredentials({
     IdentityPoolId: 'ap-northeast-2:d0984c85-59eb-4a30-baed-cac8d1b750c5',
     Logins: {
-      'accounts.google.com': authResponse.id_token
+      'accounts.google.com': USER.token
     }
   });
 
