@@ -37,7 +37,8 @@ function onSignIn(googleUser) {
     console.log("Amazon Cognito secretAccessKey: " + secretAccessKey);
     console.log("Amazon Cognito sessionToken: " + sessionToken);
 
-    window.location.reload(false);
+    setUserInfo();
+    closeModal();
   });
 }
 
@@ -50,7 +51,7 @@ function signOut() {
     USER.name = "";
     USER.token = "";
 		console.log('User signed out.');
-    
-    window.location.reload(false);
+
+    setUserInfo();
 	});
 }
