@@ -241,7 +241,7 @@ function setUserInfo() {
 		openModal(getMessage("000"));
 	}
 	else {
-		E("user-info").innerHTML = "<img src='" + USER.image + "' />";
+		E("user-info").innerHTML = "<img id='user-icon' src='" + USER.image + "' onclick='signOut()' />";
 	}
 }
 

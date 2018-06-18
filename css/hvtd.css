@@ -51,6 +51,11 @@ body {
 	font-weight: 100;
 }
 
+#user-icon {
+	width: 1.2em;
+	height: 1.2em;
+}
+
 #calendar {
 	padding: 10px;
 	background-color: #ffffff;

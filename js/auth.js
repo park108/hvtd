@@ -19,7 +19,6 @@ function onSignIn(googleUser) {
   USER.token = authResponse.id_token;
   log("USER.token = " + USER.token);
 
-
   // Add the Google access token to the Cognito credentials login map.
   AWS.config.region = 'ap-northeast-2';
 
@@ -51,7 +50,7 @@ function onSignInFailure() {
 
 }
 
-function onSignOut() {
+function signOut() {
 	
 	let auth2 = gapi.auth2.getAuthInstance();
 
@@ -59,8 +58,11 @@ function onSignOut() {
     USER.id = "";
     USER.name = "";
     USER.token = "";
+    USER.image = "";
+
 		log('User signed out.');
 
     setUserInfo();
+
 	});
 }
