@@ -13,7 +13,8 @@ let GLOBAL_VARIABLE = {
 
 let USER = {
 	"id": "park108@gmail.com", // TODO: Test ID
-	"name": "Jongkil Park"
+	"name": "Jongkil Park",
+	"token": ""
 }
 
 let IMG = {
@@ -37,7 +38,12 @@ function E(id) {
 
 function getMessage(code, param1, param2, param3) {
 
-	if("001" == code) {
+	if("000" == code) {
+		if("KO" == SETTINGS.language) return "로그인 하세요.";
+		else if("EN" == SETTINGS.language) return "Please Sign In";
+		else return "Please Sign In";	
+	}
+	else if("001" == code) {
 		if("KO" == SETTINGS.language) return "하위 항목까지 모두 삭제 하시겠습니까?";
 		else if("EN" == SETTINGS.language) return "It has children. Do you delete it?";
 		else return "It has children. Do you delete it?";
@@ -171,6 +177,17 @@ function openModal(message, callback1, callback2) {
 		newButton = buttonCancel.cloneNode(true); // For reset event listner
 		buttonCancel.parentNode.replaceChild(newButton, buttonCancel);
 		newButton.addEventListener("click", callback2, false);
+	}
+
+	// Set button Signin
+	let buttonSignin = E("modal-signin");
+	if("" == USER.token || null == USER.token) {
+		buttonSignin.style.display = "";
+		E("modal-close").style.display = "none";
+	}
+	else {
+		buttonSignin.style.display = "none";
+		E("modal-close").style.display = "";
 	}
 }
 

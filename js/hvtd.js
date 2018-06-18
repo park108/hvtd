@@ -236,6 +236,15 @@ function setDate(year, month, date) {
 	loadTodo();
 }
 
+function setUserInfo() {
+	if(null == USER.token || "" == USER.token) {
+		openModal(getMessage("000"));
+	}
+	else {
+		E("user-info").innerHTML = USER.id;
+	}
+}
+
 function createCalendar(d) {
 
 	// Get selected date
@@ -363,7 +372,7 @@ window.onclick = function(e) {
 
 	let modal = E("modal");
 
-	if(e.target == modal) {
+	if(e.target == modal && "" != USER.token && null != USER.token) {
 		closeModal();
 	}
 }

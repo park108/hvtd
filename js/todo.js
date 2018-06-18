@@ -224,6 +224,7 @@ function callbackLoadTodo() {
 				}
 
 				log("CALLBACK_LOAD_TODO: OK.");
+				setUserInfo();
 			}
 
 			// If has data, set data into page
@@ -244,6 +245,7 @@ function callbackLoadTodo() {
 		}
 		else {
 			log("CALLBACK_LOAD_TODO: Load failed.");
+			setUserInfo();
 		}
 	}
 }

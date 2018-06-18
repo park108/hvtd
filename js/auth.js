@@ -2,18 +2,19 @@ function onSignIn(googleUser) {
 
   var profile = googleUser.getBasicProfile();
 
-  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-  console.log('Name: ' + profile.getName());
-  console.log('Image URL: ' + profile.getImageUrl());
-  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+  console.log('Google ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+  console.log('Google Name: ' + profile.getName());
+  console.log('Google Image URL: ' + profile.getImageUrl());
+  console.log('Google Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
 
-  USER.id = profile.getId();
-  USER.name = profile.getName();
+  USER.id = profile.getEmail(); // Google email for hvtd ID
+  USER.name = profile.getName(); // Google name for hvtd Name
 
   console.log("USER.id = " + USER.id);
   console.log("USER.name = " + USER.name);
 
   var authResponse = googleUser.getAuthResponse();
+  console.log("USER.token = " + authResponse.id_token);
 
   // Add the Google access token to the Cognito credentials login map.
   AWS.config.region = 'ap-northeast-2';
@@ -35,6 +36,8 @@ function onSignIn(googleUser) {
     console.log("Amazon Cognito accessKeyId: " + accessKeyId);
     console.log("Amazon Cognito secretAccessKey: " + secretAccessKey);
     console.log("Amazon Cognito sessionToken: " + sessionToken);
+
+    window.location.reload(false);
   });
 }
 
@@ -43,6 +46,11 @@ function signOut() {
 	var auth2 = gapi.auth2.getAuthInstance();
 
 	auth2.signOut().then(function () {
+    USER.id = "";
+    USER.name = "";
+    USER.token = "";
 		console.log('User signed out.');
+    
+    window.location.reload(false);
 	});
 }
