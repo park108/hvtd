@@ -9,6 +9,9 @@ function onSignIn(googleUser) {
   USER.id = profile.getId();
   USER.name = profile.getName();
 
+  console.log("USER.id = " + USER.id);
+  console.log("USER.name = " + USER.name);
+
   // Add the Google access token to the Cognito credentials login map.
   AWS.config.region = 'ap-northeast-2'; // 리전
   AWS.config.credentials = new AWS.CognitoIdentityCredentials({
