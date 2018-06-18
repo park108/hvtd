@@ -19,8 +19,16 @@ function onSignIn(googleUser) {
   });
 
   // Obtain AWS credentials
-  AWS.config.credentials.get(function(){
-    // Access AWS resources here.
+  AWS.config.credentials.get(function() {
+
+    // Credentials will be available when this function is called.
+    var accessKeyId = AWS.config.credentials.accessKeyId;
+    var secretAccessKey = AWS.config.credentials.secretAccessKey;
+    var sessionToken = AWS.config.credentials.sessionToken;
+
+    console.log("Amazon Cognito accessKeyId: " + accessKeyId);
+    console.log("Amazon Cognito secretAccessKey: " + secretAccessKey);
+    console.log("Amazon Cognito sessionToken: " + sessionToken);
   });
 }
 
