@@ -14,9 +14,13 @@
 		<script src="./js/aws/amazon-cognito-identity.min.js"></script>
 		<script src="https://sdk.amazonaws.com/js/aws-sdk-2.258.1.min.js"></script>
 		<script src="https://apis.google.com/js/platform.js" async defer></script>
+		<script src="./js/common.js"></script>
 		<script src="./js/config.js"></script>
 
-		<div class="g-signin2" data-onsuccess="onSignIn"></div>
+		<div class="g-signin2"
+			data-onsuccess="onSignIn"
+			data-onfailure="onSignInFailure">
+		</div>
 
 	</body>
 </html>
