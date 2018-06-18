@@ -44,16 +44,18 @@ function keyInContents(e) {
 
 	// Space
 	else if(32 == e.which) {
+		if(0 == getCaretOffset()) {
 
-		if(e.shiftKey) {
-			setNodeLevel(currentNode, -1);
-			refreshNode(currentNode);
-			return false;
-		}
-		else if(0 == getCaretOffset()) {
-			setNodeLevel(currentNode, 1);
-			refreshNode(currentNode);
-			return false;
+			if(e.shiftKey) {
+				setNodeLevel(currentNode, -1);
+				refreshNode(currentNode);
+				return false;
+			}
+			else {
+				setNodeLevel(currentNode, 1);
+				refreshNode(currentNode);
+				return false;
+			}
 		}
 	}
 

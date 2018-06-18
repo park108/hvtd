@@ -191,7 +191,8 @@ body {
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    width: 60%;
+    min-width: 400px;
 }
 
 /* The Close Button */
@@ -210,20 +211,24 @@ body {
 }
 
 button {
-	min-height: 30px;
+	min-height: 50px;
 	font-size: 1em;
 	text-align: center;
 	border: 0;
 }
 
+#modal-button-set {
+	width: 100%;
+}
+
 #modal-ok {
-	width: 30%;
+	width: 45%;
 	background-color: #44cc66;
 	color: #ffffff;
 }
 
 #modal-cancel {
-	width: 30%;
+	width: 45%;
 	background-color: #cc6644;
 	color: #ffffff;
 }
