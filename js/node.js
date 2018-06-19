@@ -965,25 +965,28 @@ function executeToobarCommand(checkbox) {
 	let node = checkbox.parentNode.parentNode; // Toolbar -> Node
 
 	if(id.indexOf("collapse") > -1) {
-		executeCollapse(checkbox, node);
+		executeCollapse(checkbox, node, true);
 	}
 	else if(id.indexOf("done") > -1) {
-		executeDone(checkbox, node);
+		executeDone(checkbox, node, true);
 	}
 	else if(id.indexOf("cancel") > -1) {
-		executeCancel(checkbox, node);
+		executeCancel(checkbox, node, true);
 	}
 }
 
-function executeCollapse(checkbox, node) {
+function executeCollapse(checkbox, node, byClick) {
 
 	if(hasChildNode(node)) {
 
 		refreshNode(node);
 
-		// Set cursor
 		let checked = checkbox.checked;
-		checked ? setCaretPositionToFirst(node) : setCaretPositionToLast(node);
+
+		// Set cursor if isn't by click
+		if(!byClick) {
+			checked ? setCaretPositionToFirst(node) : setCaretPositionToLast(node);
+		}
 
 		setChanged(true);
 
@@ -991,7 +994,7 @@ function executeCollapse(checkbox, node) {
 	}
 }
 
-function executeDone(checkbox, node) {
+function executeDone(checkbox, node, byClick) {
 	
 	// Disable cancel
 	let cancelCheckbox = E("cancel" + node.id);
@@ -1013,13 +1016,15 @@ function executeDone(checkbox, node) {
 		executeCollapse(collapseCheckbox, node);
 	}
 
-	// Set cursor
-	setCaretPositionToLast(node);
+	// Set cursor to last of node if isn't by click
+	if(!byClick) {
+		setCaretPositionToLast(node);
+	}
 
 	log((checked ? "DONE" : "UNDONE") + "_NODE: ID = " + node.id);
 }
 
-function executeCancel(checkbox, node) {
+function executeCancel(checkbox, node, byClick) {
 	
 	// Disable done
 	let doneCheckbox = E("done" + node.id);
@@ -1041,8 +1046,10 @@ function executeCancel(checkbox, node) {
 		executeCollapse(collapseCheckbox, node);
 	}
 
-	// Set cursor
-	setCaretPositionToLast(node);
+	// Set cursor to last of node if isn't by click
+	if(!byClick) {
+		setCaretPositionToLast(node);
+	}
 
 	log((checked ? "CANCEL" : "UNCANCEL") + "_NODE: ID = " + node.id);
 }

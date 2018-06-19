@@ -95,11 +95,11 @@ body {
 }
 
 #calendar .saturday {
-	color: #0000ff;
+	color: blue;
 }
 
 #calendar .sunday {
-	color: #ff0000;
+	color: firebrick;
 }
 
 #contents {
@@ -133,6 +133,11 @@ body {
 	width: calc(100% - 7em);
 	white-space: pre-wrap;
 	font-weight: 300;
+	outline: 0px;
+}
+
+.node-contents:focus {
+	border-bottom: 1px firebrick dotted;
 }
 
 .node-status-none {
