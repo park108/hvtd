@@ -37,7 +37,11 @@ function onSignIn(googleUser) {
 
     log("User signed in: " + USER.token);
 
-    window.location.reload();
+    setSelectedDate();
+    clearTodo();
+    loadTodo();
+    setCalendarVisibility(true);
+    
   });
 }
 
