@@ -35,7 +35,9 @@ function onSignIn(googleUser) {
     setUserInfo();
     closeModal();
 
-    log("User signed on: " + USRE.token)
+    log("User signed in: " + USER.token);
+
+    window.location.reload();
   });
 }
 
