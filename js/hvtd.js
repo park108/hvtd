@@ -250,16 +250,16 @@ function setUserInfo() {
 	// If has token, create user-icon image and sign-out button in user-info element
 	else {
 
+		let userIcon = document.createElement("img");
+		userIcon.setAttribute("id", "user-icon");
+		userIcon.setAttribute("src", USER.image);
+		E("user-info").appendChild(userIcon);
+
 		let signOut = document.createElement("div");
 		signOut.setAttribute("id", "sign-out");
 		signOut.setAttribute("onclick", "signOut()");
 		signOut.innerHTML = "Sign Out"
 		E("user-info").appendChild(signOut);
-
-		let userIcon = document.createElement("img");
-		userIcon.setAttribute("id", "user-icon");
-		userIcon.setAttribute("src", USER.image);
-		E("user-info").appendChild(userIcon);
 	}
 }
 
