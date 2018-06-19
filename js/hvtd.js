@@ -237,11 +237,29 @@ function setDate(year, month, date) {
 }
 
 function setUserInfo() {
+
+	// Initialize user-info
+	E("user-info").innerHTML = "";
+
+	// If has no token, pop signin up
 	if(null == USER.token || "" == USER.token) {
+
 		openModal(getMessage("000"));
 	}
+
+	// If has token, create user-icon image and sign-out button in user-info element
 	else {
-		E("user-info").innerHTML = "<img id='user-icon' src='" + USER.image + "' onclick='signOut()' />";
+
+		let signOut = document.createElement("div");
+		signOut.setAttribute("id", "sign-out");
+		signOut.setAttribute("onclick", "signOut()");
+		signOut.innerHTML = "Sign Out"
+		E("user-info").appendChild(signOut);
+
+		let userIcon = document.createElement("img");
+		userIcon.setAttribute("id", "user-icon");
+		userIcon.setAttribute("src", USER.image);
+		E("user-info").appendChild(userIcon);
 	}
 }
 
@@ -349,12 +367,16 @@ window.onload = function() {
 	setSelectedDate();
 	clearTodo();
 
-	if("" != USER.token && null != USER.token) {
+	if(undefined != window.setTestData) {
+		window.setTestData();
+	}
+
+	setUserInfo();
+
+	if("" != USER.token && null != USER.token) {	
 		loadTodo();
 	}
-	else {
-		setUserInfo();
-	}
+
 	setCalendarVisibility(true);
 
 	// Set event listners

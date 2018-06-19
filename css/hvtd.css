@@ -27,9 +27,9 @@ body {
 	padding-top: 5px;
 	padding-left: 10px;
 	padding-right: 10px;
-	width: 7.5em;
+	width: 8em;
 	font-size: 1.5em;
-	font-weight: 300;
+	font-weight: 100;
 }
 
 #header-tool-bar {
@@ -41,19 +41,35 @@ body {
 	padding: 3px;
 	width: calc(2em - 6px);
 	height: calc(2em - 6px);
+	cursor: pointer;
 }
 
 #user-info {
 	float: right;
 	padding-top: 5px;
 	padding-right: 10px;
-	font-size: 1em;
-	font-weight: 100;
 }
 
 #user-icon {
-	width: 1.2em;
-	height: 1.2em;
+	float: right;
+	width: calc(2em - 6px);
+	height: calc(2em - 6px);
+}
+
+#sign-out {
+	float: right;
+	margin-left: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 5px;
+	height: calc(2em - 11px);
+	cursor: pointer;
+	text-align: center;
+	font-weight: 100;
+}
+
+#sign-out:hover {
+	font-weight: 500;
 }
 
 #calendar {
@@ -70,6 +86,7 @@ body {
 	text-align: center;
 	word-wrap: normal;
 	font-weight: 100;
+	cursor: pointer;
 }
 
 #calendar span.month-text {
@@ -181,6 +198,7 @@ body {
 	padding: 3px;
 	width: calc(2em - 6px);
 	height: calc(2em - 6px);
+	cursor: pointer;
 }
 
 .node-toolbar-checkbox {
@@ -219,6 +237,7 @@ body {
     float: right;
     font-size: 28px;
     font-weight: bold;
+	cursor: pointer;
 }
 
 .close:hover,
@@ -243,10 +262,12 @@ button {
 	width: 45%;
 	background-color: #44cc66;
 	color: #ffffff;
+	cursor: pointer;
 }
 
 #modal-cancel {
 	width: 45%;
 	background-color: #cc6644;
 	color: #ffffff;
+	cursor: pointer;
 }

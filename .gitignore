@@ -11,4 +11,6 @@ package.json
 
 main.js
 
+/js/test_setting.js
+
 /node_modules/*

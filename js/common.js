@@ -1,6 +1,6 @@
 let SETTINGS = {
 	"log": true,
-	"language": "KO",
+	"language": "EN",
 	"auto_copy": true,
 	"auto_collapse": true,
 }
@@ -12,8 +12,8 @@ let GLOBAL_VARIABLE = {
 }
 
 let USER = {
-	"id": "park108@gmail.com", // TODO: Test ID
-	"name": "Jongkil Park",
+	"id": "",
+	"name": "",
 	"token": "",
 	"image": ""
 }
@@ -40,9 +40,9 @@ function E(id) {
 function getMessage(code, param1, param2, param3) {
 
 	if("000" == code) {
-		if("KO" == SETTINGS.language) return "로그인 하세요.";
-		else if("EN" == SETTINGS.language) return "Please Sign In";
-		else return "Please Sign In";	
+		if("KO" == SETTINGS.language) return "hvtd에 로그인 하세요.";
+		else if("EN" == SETTINGS.language) return "Sign in to hvtd";
+		else return "Sign in to hvtd";	
 	}
 	else if("001" == code) {
 		if("KO" == SETTINGS.language) return "하위 항목까지 모두 삭제 하시겠습니까?";

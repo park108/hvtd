@@ -46,22 +46,36 @@ function onSignIn(googleUser) {
 }
 
 function onSignInFailure() {
-
+  log("User signed in failed.");
 }
 
 function signOut() {
 	
 	let auth2 = gapi.auth2.getAuthInstance();
 
-	auth2.signOut().then(function () {
+  if(undefined != auth2.currentUser.get().getAuthResponse.id_token
+    && null != auth2.currentUser.get().getAuthResponse.id_token) {
 
-    USER.id = "";
-    USER.name = "";
-    USER.token = "";
-    USER.image = "";
+  	auth2.signOut().then(function () {
 
-		log('User signed out.');
+      USER.id = "";
+      USER.name = "";
+      USER.token = "";
+      USER.image = "";
 
-    window.location.reload();
-	});
+  		log('User signed out.');
+
+      window.location.reload();
+  	});
+  }
+  else {
+
+      USER.id = "";
+      USER.name = "";
+      USER.token = "";
+      USER.image = "";
+
+      clearTodo();
+      setUserInfo();
+  }
 }
