@@ -11,13 +11,8 @@ function onSignIn(googleUser) {
   USER.name = profile.getName(); // Google name for hvtd Name
   USER.image = profile.getImageUrl(); // Google image for hvtd image
 
-  log("USER.id = " + USER.id);
-  log("USER.name = " + USER.name);
-  log("USER.image = " + USER.image);
-
   let authResponse = googleUser.getAuthResponse();
-  USER.token = authResponse.id_token;
-  log("USER.token = " + USER.token);
+  USER.token = authResponse.id_token; // Google id_token for hvtd user token
 
   // Add the Google access token to the Cognito credentials login map.
   AWS.config.region = 'ap-northeast-2';
@@ -37,12 +32,10 @@ function onSignIn(googleUser) {
     let secretAccessKey = AWS.config.credentials.secretAccessKey;
     let sessionToken = AWS.config.credentials.sessionToken;
 
-    log("Amazon Cognito accessKeyId: " + accessKeyId);
-    log("Amazon Cognito secretAccessKey: " + secretAccessKey);
-    log("Amazon Cognito sessionToken: " + sessionToken);
-
     setUserInfo();
     closeModal();
+
+    log("User signed on: " + USRE.token)
   });
 }
 
@@ -55,6 +48,7 @@ function signOut() {
 	let auth2 = gapi.auth2.getAuthInstance();
 
 	auth2.signOut().then(function () {
+
     USER.id = "";
     USER.name = "";
     USER.token = "";
@@ -62,7 +56,6 @@ function signOut() {
 
 		log('User signed out.');
 
-    setUserInfo();
-
+    window.location.reload();
 	});
 }

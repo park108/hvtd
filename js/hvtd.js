@@ -348,7 +348,13 @@ window.onload = function() {
 	log("WINDOW.ONLOAD");
 	setSelectedDate();
 	clearTodo();
-	loadTodo();
+
+	if("" != USER.token && null != USER.token) {
+		loadTodo();
+	}
+	else {
+		setUserInfo();
+	}
 	setCalendarVisibility(true);
 
 	// Set event listners

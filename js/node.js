@@ -1013,7 +1013,7 @@ function executeDone(checkbox, node, byClick) {
 	if(SETTINGS.auto_collapse && hasChildNode(node)) {
 		let collapseCheckbox = E("collapse" + node.id);
 		collapseCheckbox.checked = checked;
-		executeCollapse(collapseCheckbox, node);
+		executeCollapse(collapseCheckbox, node, byClick);
 	}
 
 	// Set cursor to last of node if isn't by click
@@ -1043,7 +1043,7 @@ function executeCancel(checkbox, node, byClick) {
 	if(SETTINGS.auto_collapse && hasChildNode(node)) {
 		let collapseCheckbox = E("collapse" + node.id);
 		collapseCheckbox.checked = checked;
-		executeCollapse(collapseCheckbox, node);
+		executeCollapse(collapseCheckbox, node, byClick);
 	}
 
 	// Set cursor to last of node if isn't by click
