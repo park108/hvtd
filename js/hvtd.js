@@ -387,9 +387,9 @@ window.onload = function() {
 }
 
 window.onbeforeunload = function(e) {
-
+	
 	saveTodo();
-};
+}
 
 window.onresize = function() {
 

@@ -156,30 +156,24 @@ body {
 }
 
 .node-contents:focus {
-	border-bottom: 1px firebrick dotted;
+	border-bottom: 1px firebrick solid;
 }
 
 .node-status-none {
 	background-color: #ffffff;
-
 	border-bottom-color: #dddddd;
-	border-right-color: #dddddd;
 }
 
 .node-status-done {
-	background-color: #eeffee;
-	/*background-color: #ffffff;*/
-
-	border-bottom-color: #bbddbb;
-	border-right-color: #bbddbb;
+	background-color: #f5fff5;
+	text-decoration: black solid line-through;
+	border-bottom-color: darkgreen;
 }
 
 .node-status-cancel {
 	background-color: #ffeeee;
-	/*background-color: #ffffff;*/
-
-	border-bottom-color: #ddbbbb;
-	border-right-color: #ddbbbb;
+	text-decoration: black solid line-through;
+	border-bottom-color: firebrick;
 }
 
 .node-toolbar {
@@ -229,8 +223,9 @@ body {
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 60%;
-    min-width: 400px;
+    max-width: 600px;
+    width: 80%;
+    min-width: 300px;
 }
 
 /* The Close Button */
