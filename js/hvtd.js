@@ -261,6 +261,7 @@ function createUserDropdownMenu() {
 	let userIcon = document.createElement("img");
 	userIcon.setAttribute("id", "user-icon");
 	userIcon.setAttribute("src", USER.image);
+	userIcon.setAttribute("onclick", "toggleUserDropdown()");
 
 	let userDropdownSettings = document.createElement("a");
 	userDropdownSettings.setAttribute("id", "user-dropdown-settings");
@@ -419,7 +420,6 @@ window.onload = function() {
 	E("clear-icon").addEventListener("click", deleteTodo, false);
 	document.body.addEventListener("keydown", keyInCommon, false);
 	E("modal-close").addEventListener("click", closeModal, false);
-	E("user-icon").addEventListener("click", toggleUserDropdown, false);
 }
 
 window.onbeforeunload = function(e) {
