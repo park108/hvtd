@@ -263,6 +263,24 @@ function createUserInfo() {
 	userIcon.setAttribute("src", USER.image);
 	userIcon.setAttribute("onclick", "toggleUserDropdown()");
 
+	let userDropdownIcon = document.createElement("img");
+	userDropdownIcon.setAttribute("id", "user-dropdown-icon");
+	userDropdownIcon.setAttribute("src", USER.image);
+
+	let userDropdownName = document.createElement("div");
+	userDropdownName.setAttribute("id", "user-dropdown-name");
+	userDropdownName.innerHTML = USER.name;
+
+	let userDropdownId = document.createElement("div");
+	userDropdownId.setAttribute("id", "user-dropdown-id");
+	userDropdownId.innerHTML = USER.id;
+
+	let userDropdownInfo = document.createElement("div");
+	userDropdownInfo.setAttribute("id", "user-dropdown-info");
+	userDropdownInfo.appendChild(userDropdownIcon);
+	userDropdownInfo.appendChild(userDropdownName);
+	userDropdownInfo.appendChild(userDropdownId);
+
 	let userDropdownSettings = document.createElement("a");
 	userDropdownSettings.setAttribute("id", "user-dropdown-settings");
 	userDropdownSettings.setAttribute("href", "#");
@@ -276,6 +294,7 @@ function createUserInfo() {
 
 	let userDropdown = document.createElement("div");
 	userDropdown.setAttribute("id", "user-dropdown");
+	userDropdown.appendChild(userDropdownInfo);
 	userDropdown.appendChild(userDropdownSettings);
 	userDropdown.appendChild(userDropdownSignout);
 
@@ -401,20 +420,20 @@ window.onload = function() {
 
 	log("WINDOW.ONLOAD");
 
-	if(undefined != window.setTestData) {
-		window.setTestData();
-	}
-
-	clearTodo();
-	setUserInfo();
-	setSelectedDate();
-	setCalendarVisibility(true);
-
 	// Set event listners
 	E("calendar-icon").addEventListener("click", setCalendarVisibility, false);
 	E("clear-icon").addEventListener("click", deleteTodo, false);
 	document.body.addEventListener("keydown", keyInCommon, false);
 	E("modal-close").addEventListener("click", closeModal, false);
+
+	// Set test data
+	if(undefined != window.setTestData) {
+		window.setTestData();
+	}
+
+	// Clear todo and set user info
+	clearTodo();
+	setUserInfo();
 }
 
 window.onbeforeunload = function(e) {

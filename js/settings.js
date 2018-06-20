@@ -107,8 +107,11 @@ function callbackLoadSettings() {
 			log("CALLBACK_LOAD_SETTINGS: Load failed.");
 		}
 
+		// Set objects after load settings
 		createUserInfo();
 		setSelectedDate();
+		setCalendarVisibility(true);
+		
 		loadTodo();
 	}
 }
