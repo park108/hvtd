@@ -134,10 +134,10 @@ body {
 	overflow: hidden;
 
 	border-bottom-style: solid;
-	border-bottom-width: 2px;
+	border-bottom-width: 1px;
 
 	border-right-style: solid;
-	border-right-width: 2px;
+	border-right-width: 1px;
 }
 
 .node-frame-collapsed {
@@ -153,11 +153,11 @@ body {
 	white-space: pre-wrap;
 	outline: 0px;
 	font-weight: 100;
+	caret-color: #ff0000;
 }
 
 .node-contents:focus {
-	background-color: rgba(255, 255, 222, 0.5);
-	border-bottom: 1px rgba(255, 255, 222, 1.0) solid;
+	background-color: rgba(255, 255, 240, 1.0);
 }
 
 .node-status-none {
@@ -222,13 +222,13 @@ body {
 
 /* Modal Content */
 .modal-content {
-    background-color: #fefefe;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #888;
-    max-width: 600px;
-    width: 80%;
-    min-width: 300px;
+	background-color: #fefefe;
+	margin: auto;
+	padding: 20px;
+	border: 1px solid #888;
+	max-width: 600px;
+	width: 80%;
+	min-width: 300px;
 }
 
 /* The Close Button */
