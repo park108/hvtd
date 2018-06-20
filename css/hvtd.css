@@ -151,8 +151,8 @@ body {
 	margin-bottom: 6px;
 	width: calc(100% - 7em);
 	white-space: pre-wrap;
-	font-weight: 300;
 	outline: 0px;
+	font-weight: 100;
 }
 
 .node-contents:focus {
@@ -166,13 +166,15 @@ body {
 
 .node-status-done {
 	background-color: #f5fff5;
-	text-decoration: black solid line-through;
+	color: darkgrey;
+	text-decoration: darkgrey solid line-through;
 	border-bottom-color: darkgreen;
 }
 
 .node-status-cancel {
 	background-color: #ffeeee;
-	text-decoration: black solid line-through;
+	color: darkgrey;
+	text-decoration: darkgrey solid line-through;
 	border-bottom-color: firebrick;
 }
 
