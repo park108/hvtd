@@ -66,6 +66,20 @@ function getMessage(code, param1, param2, param3) {
 	}
 }
 
+function getText(code, param1, param2, param3) {
+
+	if("USER_DROPDOWN_SIGNOUT" == code) {
+		if("KO" == SETTINGS.language) return "로그아웃";
+		else if("EN" == SETTINGS.language) return "Sign Out";
+		else return "Sign Out";	
+	}
+	else if("USER_DROPDOWN_SETTINGS" == code) {
+		if("KO" == SETTINGS.language) return "설정";
+		else if("EN" == SETTINGS.language) return "Settings";
+		else return "Settings";	
+	}
+}
+
 function getWeekText(week) {
 	if(0 == week) {
 		if("KO" == SETTINGS.language) return "일";

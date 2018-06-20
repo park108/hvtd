@@ -47,33 +47,51 @@ body {
 	cursor: pointer;
 }
 
+/* User */
 #user-info {
 	float: right;
 	padding-left: 10px;
+	padding-right: 10px;
 	height: 40px;
 }
 
 #user-icon {
 	float: left;
-	padding-top: 7px;
+	padding-top: 5px;
 	padding-left: 3px;
-	width: 26px;
-	height: 26px;
-}
-
-#sign-out {
-	float: left;
-	padding-top: 10px;
-	padding-left: 10px;
-	padding-right: 10px;
-	cursor: pointer;
-	font-weight: 100;
+	width: 30px;
+	height: 30px;
 }
 
 #sign-out:hover {
 	font-weight: 500;
 }
 
+#user-dropdown {
+	display: none;
+	position: absolute;
+	margin-left: -167px;
+	margin-top: 34px;
+	background-color: #f1f1f1;
+	width: 200px;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	z-index: 200;
+}
+
+#user-dropdown a {
+	cursor: pointer;
+	font-weight: 300;
+	padding: 12px 16px;
+	display: block;
+	color: black;
+	text-decoration: none;
+}
+
+#user-dropdown a:hover {
+	background-color: #ddd
+}
+
+/* Calendar */
 #calendar {
 	padding: 10px;
 	background-color: #ffffff;
@@ -153,7 +171,7 @@ body {
 	white-space: pre-wrap;
 	outline: 0px;
 	font-weight: 100;
-	caret-color: #ff0000;
+	caret-color: red;
 }
 
 .node-contents:focus {

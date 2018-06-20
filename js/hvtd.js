@@ -250,17 +250,39 @@ function setUserInfo() {
 	// If has token, create user-icon image and sign-out button in user-info element
 	else {
 
-		let userIcon = document.createElement("img");
-		userIcon.setAttribute("id", "user-icon");
-		userIcon.setAttribute("src", USER.image);
-		E("user-info").appendChild(userIcon);
-
-		let signOut = document.createElement("div");
-		signOut.setAttribute("id", "sign-out");
-		signOut.setAttribute("onclick", "signOut()");
-		signOut.innerHTML = "Sign Out"
-		E("user-info").appendChild(signOut);
+		if(undefined == E("user-dropdown")) {
+			createUserDropdownMenu();
+		}
 	}
+}
+
+function createUserDropdownMenu() {
+
+	let userIcon = document.createElement("img");
+	userIcon.setAttribute("id", "user-icon");
+	userIcon.setAttribute("src", USER.image);
+
+	let userDropdownSettings = document.createElement("a");
+	userDropdownSettings.setAttribute("id", "user-dropdown-settings");
+	userDropdownSettings.setAttribute("href", "#");
+	userDropdownSettings.innerHTML = getText("USER_DROPDOWN_SETTINGS");
+
+	let userDropdownSignout = document.createElement("a");
+	userDropdownSignout.setAttribute("id", "user-dropdown-signout");
+	userDropdownSignout.setAttribute("href", "#");
+	userDropdownSignout.setAttribute("onclick", "signOut()");
+	userDropdownSignout.innerHTML = getText("USER_DROPDOWN_SIGNOUT");
+
+	let userDropdown = document.createElement("div");
+	userDropdown.setAttribute("id", "user-dropdown");
+	userDropdown.appendChild(userDropdownSettings);
+	userDropdown.appendChild(userDropdownSignout);
+
+	let userInfo = E("user-info");
+	userInfo.appendChild(userIcon);
+	userInfo.appendChild(userDropdown);
+
+	log("Create user drop down menu for " + USER.name);
 }
 
 function createCalendar(d) {
@@ -362,6 +384,18 @@ function setContentsMargin() {
 	contents.style.marginTop = (header.clientHeight + 5) + "px";
 }
 
+function toggleUserDropdown() {
+
+	let menu = E("user-dropdown");
+
+	if("block" == menu.style.display) {
+		menu.style.display = "none";
+	}
+	else {
+		menu.style.display = "block";
+	}
+}
+
 window.onload = function() {
 
 	log("WINDOW.ONLOAD");
@@ -385,10 +419,11 @@ window.onload = function() {
 	E("clear-icon").addEventListener("click", deleteTodo, false);
 	document.body.addEventListener("keydown", keyInCommon, false);
 	E("modal-close").addEventListener("click", closeModal, false);
+	E("user-icon").addEventListener("click", toggleUserDropdown, false);
 }
 
 window.onbeforeunload = function(e) {
-	
+
 	saveTodo();
 }
 
