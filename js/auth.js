@@ -36,12 +36,6 @@ function onSignIn(googleUser) {
     closeModal();
 
     log("User signed in: " + USER.token);
-
-    setSelectedDate();
-    clearTodo();
-    loadTodo();
-    setCalendarVisibility(true);
-    
   });
 }
 

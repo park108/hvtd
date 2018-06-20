@@ -1,8 +1,8 @@
 let SETTINGS = {
-	"log": true,
+	"log": false,
 	"language": "EN",
-	"auto_copy": true,
-	"auto_collapse": true,
+	"auto_copy": false,
+	"auto_collapse": false,
 }
 
 let GLOBAL_VARIABLE = {

@@ -1,13 +1,13 @@
 // Call Todo API
-let httpRequest;
+let httpRequestTodo;
 
 function callTodoAPI(method, yyyymmdd, callback, data) {
 	
 	if(window.XMLHttpRequest) {
-		httpRequest = new XMLHttpRequest();
+		httpRequestTodo = new XMLHttpRequest();
 	}
 	else if(window.ActiveXObject) { // Above IE 8
-		httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+		httpRequestTodo = new ActiveXObject("Microsoft.XMLHTTP");
 	}
 
 	let apiUrl = "https://tfsds3iaxe.execute-api.ap-northeast-2.amazonaws.com" // API Gateway URL
@@ -16,15 +16,15 @@ function callTodoAPI(method, yyyymmdd, callback, data) {
 		+ "/" + USER.id // TODO: Param: User account
 		+ "/" + yyyymmdd // Param: yyyymmdd
 
-	httpRequest.onreadystatechange = callback;
-	httpRequest.open(method, apiUrl, true);
-	httpRequest.setRequestHeader("Content-type", "application/json");
+	httpRequestTodo.onreadystatechange = callback;
+	httpRequestTodo.open(method, apiUrl, true);
+	httpRequestTodo.setRequestHeader("Content-type", "application/json");
 
 	if("GET" == method) {
-		httpRequest.send();
+		httpRequestTodo.send();
 	}
 	else {
-		httpRequest.send(data);	
+		httpRequestTodo.send(data);	
 	}
 
 	log("CALL TODO API: " + method + " " + apiUrl + " ... " + "DATA = {" + data + "}");
@@ -85,9 +85,9 @@ function saveTodo() {
 // Callback function after save todo
 function callbackSaveTodo() {
 
-	if (httpRequest.readyState === 4) {
+	if (httpRequestTodo.readyState === 4) {
 
-		if (httpRequest.status === 200) {
+		if (httpRequestTodo.status === 200) {
 			log("CALLBACK_SAVE_TODO: OK.");
 		}
 		else {
@@ -111,12 +111,12 @@ function loadTodo() {
 // Callback function after load todo
 function callbackLoadTodo() {
 
-	if (httpRequest.readyState === 4) {
+	if (httpRequestTodo.readyState === 4) {
 
-		if (httpRequest.status === 200) {
+		if (httpRequestTodo.status === 200) {
 
 			let yyyymmdd = getYYYYMMDD(GLOBAL_VARIABLE.selected_date);
-			let data = httpRequest.responseText;
+			let data = httpRequestTodo.responseText;
 			let todo = JSON.parse(data);
 			let todoList = todo.list;
 
@@ -240,6 +240,8 @@ function callbackLoadTodo() {
 				});
 				
 				setChanged(false);
+
+				log("CALLBACK_LOAD_TODO: OK.");
 			}
 		}
 		else {
@@ -271,9 +273,9 @@ function deleteTodo() {
 // Callback function after delete todo
 function callbackDeleteTodo() {
 
-	if (httpRequest.readyState === 4) {
+	if (httpRequestTodo.readyState === 4) {
 
-		if (httpRequest.status === 200) {
+		if (httpRequestTodo.status === 200) {
 			clearTodo();
 			createNode();
 			setChanged(false);

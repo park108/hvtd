@@ -71,7 +71,7 @@ body {
 	display: none;
 	position: absolute;
 	margin-left: -167px;
-	margin-top: 34px;
+	margin-top: 37px;
 	background-color: #f1f1f1;
 	width: 200px;
 	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -175,26 +175,31 @@ body {
 }
 
 .node-contents:focus {
-	background-color: rgba(255, 255, 240, 1.0);
+	background-color: rgba(255, 255, 220, 1.0);
 }
 
 .node-status-none {
-	background-color: #ffffff;
+	background-color: white;
 	border-bottom-color: #dddddd;
+	border-right-color: #dddddd;
 }
 
 .node-status-done {
-	background-color: #f5fff5;
-	color: darkgrey;
+	background-color: #fcfffc;
+	color: seagreen;
 	text-decoration: darkgrey solid line-through;
 	border-bottom-color: darkgreen;
+	border-right-color: darkgreen;
 }
 
 .node-status-cancel {
-	background-color: #ffeeee;
-	color: darkgrey;
+	/*background-color: #ffeeee;*/
+	background-color: #fffcfc;
+	/*color: darkgrey;*/
+	color: firebrick;
 	text-decoration: darkgrey solid line-through;
 	border-bottom-color: firebrick;
+	border-right-color: firebrick;
 }
 
 .node-toolbar {

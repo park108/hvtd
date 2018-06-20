@@ -220,6 +220,8 @@ function setSelectedDate() {
 	let weekString = "(" + getWeekText(day) + ")";
 
 	E("selected-date").innerHTML = selectedDateString + " " + weekString;
+
+	log("SET_SELECTED_DATE : " + selectedDateString + " " + weekString)
 }
 
 function setDate(year, month, date) {
@@ -250,13 +252,11 @@ function setUserInfo() {
 	// If has token, create user-icon image and sign-out button in user-info element
 	else {
 
-		if(undefined == E("user-dropdown")) {
-			createUserDropdownMenu();
-		}
+		loadSettings();
 	}
 }
 
-function createUserDropdownMenu() {
+function createUserInfo() {
 
 	let userIcon = document.createElement("img");
 	userIcon.setAttribute("id", "user-icon");
@@ -400,19 +400,14 @@ function toggleUserDropdown() {
 window.onload = function() {
 
 	log("WINDOW.ONLOAD");
-	setSelectedDate();
-	clearTodo();
 
 	if(undefined != window.setTestData) {
 		window.setTestData();
 	}
 
+	clearTodo();
 	setUserInfo();
-
-	if("" != USER.token && null != USER.token) {	
-		loadTodo();
-	}
-
+	setSelectedDate();
 	setCalendarVisibility(true);
 
 	// Set event listners
