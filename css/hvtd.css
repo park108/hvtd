@@ -156,7 +156,8 @@ body {
 }
 
 .node-contents:focus {
-	border-bottom: 1px firebrick solid;
+	background-color: rgba(255, 255, 222, 0.5);
+	border-bottom: 1px rgba(255, 255, 222, 1.0) solid;
 }
 
 .node-status-none {

@@ -356,6 +356,7 @@ function setCalendarVisibility(show) {
 
 function setContentsMargin() {
 
+	let header = E("header");
 	let contents = E("contents");
 
 	contents.style.marginTop = (header.clientHeight + 5) + "px";
