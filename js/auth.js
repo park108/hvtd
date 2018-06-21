@@ -9,7 +9,7 @@ function onSignIn(googleUser) {
 
   USER.id = profile.getEmail(); // Google email for hvtd ID
   USER.name = profile.getName(); // Google name for hvtd Name
-  USER.image = profile.getImageUrl(); // Google image for hvtd image
+  USER.image = profile.getImageUrl().replace("s96-c/", ""); // Google image for hvtd image
 
   let authResponse = googleUser.getAuthResponse();
   USER.token = authResponse.id_token; // Google id_token for hvtd user token
