@@ -27,14 +27,97 @@ let IMG = {
 	"icon_cancel_no": "<img src='./icons/cross_false.svg' />",
 }
 
+let API = {
+	"SETTINGS": {
+		"API_GATEWAY_URL": "https://g72s9v6ioa.execute-api.ap-northeast-2.amazonaws.com"
+		, "STAGE_NAME": "test"
+		, "API_NAME": "settings"
+	},
+	"TODO": {
+		"API_GATEWAY_URL": "https://tfsds3iaxe.execute-api.ap-northeast-2.amazonaws.com"
+		, "STAGE_NAME": "test"
+		, "API_NAME": "todo"
+	}
+}
+
 function log(line) {
 	if(SETTINGS.log) {
-		console.log(line);
+
+		let caller = arguments.callee.caller.toString();
+		caller = caller.substr(0, caller.indexOf('\n'));
+		caller = caller.substr(0, caller.indexOf('{'));
+
+		if(undefined == line) {
+			line = "";
+		}
+
+		console.log(caller + ": " + line);
 	}
 }
 
 function E(id) {
 	return document.getElementById(id);
+}
+
+function getXMLHttpRequestObject() {
+
+	let req;
+
+	if(window.XMLHttpRequest) {
+		req = new XMLHttpRequest();
+	}
+	else if(window.ActiveXObject) { // Above IE 8
+		req = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+
+	return req;
+}
+
+// Get API URL
+function getApiUrl(api, additionalInfo) {
+
+	let gateway = api.API_GATEWAY_URL;
+	let stageName = api.STAGE_NAME;
+	let apiName = api.API_NAME;
+
+	return gateway + "/" + stageName + "/" + apiName + "/" + additionalInfo;
+}
+
+// Call API
+function callAPI(apiUrl, method, data) {
+
+	log(method + " -> " + apiUrl);
+
+	return new Promise(function(resolve, reject) {
+
+		// Prepare request
+		let req = getXMLHttpRequestObject();
+
+		req.open(method, apiUrl);
+		req.setRequestHeader("Content-type", "application/json");
+
+		req.onload = function() {
+
+			if(req.status == 200) {
+				resolve(req.response);
+			}
+			else {
+				reject(Error(req.statusText));
+			}
+		};
+
+		req.onerror = function() {
+			reject(Error("Network Error"));
+		}
+
+		// Send request
+		if("GET" == method) {
+			req.send();
+		}
+		else {
+			req.send(data);	
+		}
+	});
 }
 
 function getMessage(code, param1, param2, param3) {
@@ -64,6 +147,11 @@ function getMessage(code, param1, param2, param3) {
 		else if("EN" == SETTINGS.language) return "Do you clear data?";
 		else return "Do you clear data?";	
 	}
+	else if("005" == code) {
+		if("KO" == SETTINGS.language) return "변경된 내용이 있습니다. 정말 나가시겠습니까?";
+		else if("EN" == SETTINGS.language) return "Changes exist. Are you sure?";
+		else return "Changes exist. Are you sure?";	
+	}
 }
 
 function getText(code, param1, param2, param3) {
@@ -77,6 +165,26 @@ function getText(code, param1, param2, param3) {
 		if("KO" == SETTINGS.language) return "설정";
 		else if("EN" == SETTINGS.language) return "Settings";
 		else return "Settings";	
+	}
+	else if("SETTINGS_LANGUAGE" == code) {
+		if("KO" == SETTINGS.language) return "언어";
+		else if("EN" == SETTINGS.language) return "Language";
+		else return "Language";	
+	}
+	else if("SETTINGS_COLLAPSE" == code) {
+		if("KO" == SETTINGS.language) return "자동 접기";
+		else if("EN" == SETTINGS.language) return "Auto fold";
+		else return "Language";	
+	}
+	else if("LANGUAGE_KO" == code) {
+		if("KO" == SETTINGS.language) return "한글";
+		else if("EN" == SETTINGS.language) return "Korean";
+		else return "Korean";	
+	}
+	else if("LANGUAGE_EN" == code) {
+		if("KO" == SETTINGS.language) return "영어";
+		else if("EN" == SETTINGS.language) return "English";
+		else return "English";	
 	}
 }
 

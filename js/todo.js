@@ -1,43 +1,14 @@
-// Call Todo API
-let httpRequestTodo;
-
-function callTodoAPI(method, yyyymmdd, callback, data) {
-	
-	if(window.XMLHttpRequest) {
-		httpRequestTodo = new XMLHttpRequest();
-	}
-	else if(window.ActiveXObject) { // Above IE 8
-		httpRequestTodo = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-
-	let apiUrl = "https://tfsds3iaxe.execute-api.ap-northeast-2.amazonaws.com" // API Gateway URL
-		+ "/test" // API Stage name
-		+ "/todo" // API Name
-		+ "/" + USER.id // TODO: Param: User account
-		+ "/" + yyyymmdd // Param: yyyymmdd
-
-	httpRequestTodo.onreadystatechange = callback;
-	httpRequestTodo.open(method, apiUrl, true);
-	httpRequestTodo.setRequestHeader("Content-type", "application/json");
-
-	if("GET" == method) {
-		httpRequestTodo.send();
-	}
-	else {
-		httpRequestTodo.send(data);	
-	}
-
-	log("CALL TODO API: " + method + " " + apiUrl + " ... " + "DATA = {" + data + "}");
-}
-
-// Save todo into storage
+// Save todo
 function saveTodo() {
 
 	// No change do nothing
 	if(!isChanged()) {
+		log("No changes");
 		return false;
 	}
-	
+
+	log("Call...");
+
 	// Get selected date
 	let yyyymmdd = getYYYYMMDD(GLOBAL_VARIABLE.selected_date);
 
@@ -75,194 +46,100 @@ function saveTodo() {
 	// Convert data to JSON string
 	let dataString = JSON.stringify(todo);
 
-	// Save data for selected date
-	setChanged(false);
-	callTodoAPI("POST", yyyymmdd, callbackSaveTodo, dataString);
+	// Call API
+	let apiUrl = getApiUrl(API.TODO, USER.id + "/" + yyyymmdd);
 
-	log("SAVE_TODO: " + yyyymmdd);
+	callAPI(apiUrl, "POST", dataString).then(function(response) {
+
+		log(response);
+		setChanged(false);
+
+	}, function(error) {
+
+		log(error);
+
+	});
 }
 
-// Callback function after save todo
-function callbackSaveTodo() {
+// 
 
-	if (httpRequestTodo.readyState === 4) {
-
-		if (httpRequestTodo.status === 200) {
-			log("CALLBACK_SAVE_TODO: OK.");
-		}
-		else {
-			log("CALLBACK_SAVE_TODO: Save failed.");
-		}
-	}
-}
-
-// Load todo for selected date
+// Load todo
 function loadTodo() {
 
+	log("Call...");
+
 	// Get selected date
 	let yyyymmdd = getYYYYMMDD(GLOBAL_VARIABLE.selected_date);
 
-	// Get data for selected date
-	callTodoAPI("GET", yyyymmdd, callbackLoadTodo);
+	// Call API
+	let apiUrl = getApiUrl(API.TODO, USER.id + "/" + yyyymmdd);
 
-	log("LOAD_TODO: " + yyyymmdd);
-}
+	callAPI(apiUrl, "GET").then(function(response) {
 
-// Callback function after load todo
-function callbackLoadTodo() {
+		log(response);
 
-	if (httpRequestTodo.readyState === 4) {
+		let data = JSON.parse(response);
+		let todoList = data.list;
 
-		if (httpRequestTodo.status === 200) {
+		// If has no data, initialize
+		if(undefined == todoList || null == todoList || "" == todoList) {
 
-			let yyyymmdd = getYYYYMMDD(GLOBAL_VARIABLE.selected_date);
-			let data = httpRequestTodo.responseText;
-			let todo = JSON.parse(data);
-			let todoList = todo.list;
-
-			// If has no data
-			if(undefined == todoList || null == todoList || "" == todoList) {
-
-				let length = localStorage.length;
-				let doConfirm = false;
-				let key;
-				let previousKey = "00000000";
-
-				// If enabled Auto Copy, get previous todo key (yyyymmdd)
-				if(SETTINGS.auto_copy && length > 0) {
-
-					for(let i = 0; i < localStorage.length; i++) {
-
-						key = localStorage.key(i);
-
-						if(key < yyyymmdd && previousKey < key) {
-
-							doConfirm = true;
-							previousKey = key;
-						}
-					}
-				}
-
-				// Copy from previous todo if confirmed
-				if(false) {
-
-					// Set previous data string for Confirm popup
-					let previousDataString;
-
-					let previousDateYear = previousKey.substring(0, 4);
-					let previousDateMonth = previousKey.substring(4, 6);
-					let previousDateDate = previousKey.substring(6, 8);
-
-					log(previousDateYear + "-" + previousDateMonth + "-" + previousDateDate)
-
-					let previousDate = new Date(previousDateYear
-						, (previousDateMonth * 1) - 1
-						, (previousDateDate * 1));
-
-					let previousDateWeek = getWeekText(previousDate.getDay());
-
-					// YYYY-MM-DD(WEEK)
-					previousDataString = previousDateYear + "-"
-						+ previousDateMonth + "-"
-						+ previousDateDate
-						+ "(" + previousDateWeek + ")";
-
-					// Open copy confirm modal window
-					openModal(getMessage("002", previousDataString)
-						, function() {
-
-							// Confirm: copy todo from previous todo
-							data = localStorage.getItem(previousKey);
-
-							let todo = JSON.parse(data);
-							let todoList = todo.list;
-							let previousNode = undefined;
-							let startDeleteLevel = 9999;
-
-							todoList.forEach(function(node) {
-
-								// Skip completed node
-								if("N" == node.status
-									&& startDeleteLevel >= node.level) {
-
-									previousNode = createNode(previousNode
-										, node.level
-										, node.status
-										, node.collapse
-										, node.contents);
-
-									startDeleteLevel = 9999;
-								}
-								else {
-
-									if(startDeleteLevel > node.level) {
-
-										startDeleteLevel = node.level;
-									}
-								}
-
-							});
-
-							setChanged(true);
-							closeModal();
-						}, function() {
-
-							// Cancel: New Todo
-							clearTodo();
-							createNode();
-							closeModal();
-						});
-				}
-
-				// New todo
-				else {
-					clearTodo();
-					createNode();
-					closeModal();
-					
-					setChanged(false);
-				}
-
-				log("CALLBACK_LOAD_TODO: OK.");
-			}
-
-			// If has data, set data into page
-			else {
-
-				let previousNode = undefined;
-
-				todoList.forEach(function(node) {
-					previousNode = createNode(previousNode
-						, node.level
-						, node.status
-						, node.collapse
-						, node.contents);
-				});
-				
-				setChanged(false);
-
-				log("CALLBACK_LOAD_TODO: OK.");
-			}
+			clearTodo();
+			createNode();
+			closeModal();
 		}
+
+		// If has data, set data into page
 		else {
-			log("CALLBACK_LOAD_TODO: Load failed.");
+
+			let previousNode = undefined;
+
+			todoList.forEach(function(node) {
+				previousNode = createNode(previousNode
+					, node.level
+					, node.status
+					, node.collapse
+					, node.contents);
+			});			
 		}
-	}
+
+		setChanged(false);
+
+	}, function(error) {
+
+		log(error);
+	});
 }
 
-// Delete todo from data storage
+// Delete todo
 function deleteTodo() {
 
+	log("Call...");
+
 	// Get selected date
 	let yyyymmdd = getYYYYMMDD(GLOBAL_VARIABLE.selected_date);
 
+	// Delete todo after get user confirm
 	openModal(getMessage("004")
 		, function() {
 
-			// Confirm: delete data from storage and initialize page
-			callTodoAPI("DELETE", yyyymmdd, callbackDeleteTodo);
+			// Call API
+			let apiUrl = getApiUrl(API.TODO, USER.id + "/" + yyyymmdd);
 
-			log("DELETE_TODO: " + yyyymmdd);
+			callAPI(apiUrl, "DELETE").then(function(response) {
+
+				log(response);
+
+				clearTodo();
+				createNode();
+				setChanged(false);
+				closeModal();
+
+			}, function(error) {
+
+				log(error);
+
+			});
 		}
 		, 
 			// Cancel: close modal window
@@ -270,27 +147,10 @@ function deleteTodo() {
 		);
 }
 
-// Callback function after delete todo
-function callbackDeleteTodo() {
-
-	if (httpRequestTodo.readyState === 4) {
-
-		if (httpRequestTodo.status === 200) {
-			clearTodo();
-			createNode();
-			setChanged(false);
-			closeModal();
-
-			log("CALLBACK_DELETE_TODO: OK.");
-		}
-		else {
-			log("CALLBACK_DELETE_TODO: Delete failed.");
-		}
-	}
-}
-
 // Clear todo on page
 function clearTodo() {
+
+	log();
 
 	// Get node list
 	let nodeList = getNodeList();
@@ -304,6 +164,4 @@ function clearTodo() {
 
 	// Initialize node id
 	GLOBAL_VARIABLE.node_id = 0;
-
-	log("CLEAR_TODO");
 }

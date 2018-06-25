@@ -221,7 +221,7 @@ function setSelectedDate() {
 
 	E("selected-date").innerHTML = selectedDateString + " " + weekString;
 
-	log("SET_SELECTED_DATE : " + selectedDateString + " " + weekString)
+	log(selectedDateString + " " + weekString)
 }
 
 function setDate(year, month, date) {
@@ -284,6 +284,7 @@ function createUserInfo() {
 	let userDropdownSettings = document.createElement("a");
 	userDropdownSettings.setAttribute("id", "user-dropdown-settings");
 	userDropdownSettings.setAttribute("href", "#");
+	userDropdownSettings.setAttribute("onclick", "openSettings()");
 	userDropdownSettings.innerHTML = getText("USER_DROPDOWN_SETTINGS");
 
 	let userDropdownSignout = document.createElement("a");
@@ -302,7 +303,128 @@ function createUserInfo() {
 	userInfo.appendChild(userIcon);
 	userInfo.appendChild(userDropdown);
 
-	log("Create user drop down menu for " + USER.name);
+	log("Created for " + USER.name);
+}
+
+function openSettings() {
+
+	// Close user dropdown menu
+	toggleUserDropdown();
+
+	// Open settings
+	let settings = E("settings");
+	settings.style.display = "block";
+
+	// Set settings title
+	let settingsTitle = E("settings-title");
+	settingsTitle.innerHTML = getText("USER_DROPDOWN_SETTINGS");
+
+	// Create settings item
+	// 1. Language
+	let settingsItem_language_ko = document.createElement("option");
+	settingsItem_language_ko.setAttribute("value", "KO");
+	settingsItem_language_ko.innerHTML = getText("LANGUAGE_KO");
+	if("KO" == SETTINGS.language) {
+		settingsItem_language_ko.setAttribute("selected", "true");
+	}
+	let settingsItem_language_en = document.createElement("option");
+	settingsItem_language_en.setAttribute("value", "EN");
+	settingsItem_language_en.innerHTML = getText("LANGUAGE_EN");
+	if("EN" == SETTINGS.language) {
+		settingsItem_language_en.setAttribute("selected", "true");
+	}
+
+	let settingsItem_language_select = document.createElement("select");
+	settingsItem_language_select.setAttribute("id", "settings-language");
+	settingsItem_language_select.setAttribute("onchange", "setLanguage(this)");
+	settingsItem_language_select.appendChild(settingsItem_language_ko);
+	settingsItem_language_select.appendChild(settingsItem_language_en);
+
+	let settingsItem_language = getSettingsItem("SETTINGS_LANGUAGE", settingsItem_language_select);
+
+	// 2. Auto collapse
+	let settingsItem_collpase_input = document.createElement("input");
+	settingsItem_collpase_input.setAttribute("class", "settings-checkbox-slider");
+	settingsItem_collpase_input.setAttribute("type", "checkbox");
+	settingsItem_collpase_input.setAttribute("onclick", "setAutoCollapse(this)");
+	if(SETTINGS.auto_collapse) {
+		settingsItem_collpase_input.checked = true;
+	}
+	else {
+		settingsItem_collpase_input.checked = false;
+	}
+
+	let settingsItem_collpase_span = document.createElement("span");
+	settingsItem_collpase_span.setAttribute("class", "slider");
+
+	let settingsItem_collpase_label = document.createElement("label");
+	settingsItem_collpase_label.setAttribute("class", "switch");
+	settingsItem_collpase_label.appendChild(settingsItem_collpase_input);
+	settingsItem_collpase_label.appendChild(settingsItem_collpase_span);
+
+	let settingsItem_collpase = getSettingsItem("SETTINGS_COLLAPSE", settingsItem_collpase_label);
+
+	// Append settings items
+	let settingsList = E("settings-list");
+	settingsList.appendChild(settingsItem_language);
+	settingsList.appendChild(settingsItem_collpase);
+}
+
+function setAutoCollapse(checkbox) {
+
+	if(undefined == checkbox || null == checkbox) {
+		SETTINGS.auto_collapse = !SETTINGS.auto_collapse;
+	}
+	else {
+		SETTINGS.auto_collapse = checkbox.checked;
+	}
+
+	log(SETTINGS.auto_collapse);
+
+	saveSettings();
+}
+
+function setLanguage(languageSelect) {
+
+	if(undefined != languageSelect) {
+
+		let selectedLanguage = languageSelect.options[languageSelect.selectedIndex].value;
+		SETTINGS.language = selectedLanguage;
+
+		log(SETTINGS.language);
+
+		saveSettings();
+	}
+}
+
+function getSettingsItem(code, value) {
+
+	let itemTitle = document.createElement("div");
+	itemTitle.setAttribute("class", "settings-item-title");
+	itemTitle.innerHTML = getText(code);
+
+	let itemValue = document.createElement("div");
+	itemValue.setAttribute("class", "settings-item-value");
+	if(undefined != value && null != value && "" != value) {
+		itemValue.appendChild(value);
+	}
+
+	let item = document.createElement("div");
+	item.setAttribute("class", "settings-item");
+	item.appendChild(itemTitle);
+	item.appendChild(itemValue);
+
+	return item;
+}
+
+function closeSettings() {
+
+	// Remove settings items
+	let settingsList = E("settings-list");
+	settingsList.innerHTML = "";
+
+	let settings = E("settings");
+	settings.style.display = "none";
 }
 
 function createCalendar(d) {
@@ -418,13 +540,14 @@ function toggleUserDropdown() {
 
 window.onload = function() {
 
-	log("WINDOW.ONLOAD");
+	log();
 
 	// Set event listners
 	E("calendar-icon").addEventListener("click", setCalendarVisibility, false);
 	E("clear-icon").addEventListener("click", deleteTodo, false);
 	document.body.addEventListener("keydown", keyInCommon, false);
 	E("modal-close").addEventListener("click", closeModal, false);
+	E("settings-close").addEventListener("click", closeSettings, false);
 
 	// Set test data
 	if(undefined != window.setTestData) {
@@ -438,7 +561,11 @@ window.onload = function() {
 
 window.onbeforeunload = function(e) {
 
+	let changed = isChanged();
+
 	saveTodo();
+
+	return changed ? getMessage("005") : null;
 }
 
 window.onresize = function() {
@@ -448,9 +575,28 @@ window.onresize = function() {
 
 window.onclick = function(e) {
 
+	// Close modal
 	let modal = E("modal");
 
 	if(e.target == modal && "" != USER.token && null != USER.token) {
 		closeModal();
+	}
+
+	// Close user dropdown menu
+	let userIcon = E("user-icon");
+	let userDropdown = E("user-dropdown");
+
+	if(userDropdown.style.display == "block"
+		&& e.target != userIcon
+		&& e.target.id.indexOf("user-dropdown") < 0) {
+
+		toggleUserDropdown();
+	}
+
+	// Close settings
+	let settings = E("settings");
+
+	if(e.target == settings) {
+		closeSettings();
 	}
 }

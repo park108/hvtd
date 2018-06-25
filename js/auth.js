@@ -2,10 +2,10 @@ function onSignIn(googleUser) {
 
   let profile = googleUser.getBasicProfile();
 
-  log('Google ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-  log('Google Name: ' + profile.getName());
-  log('Google Image URL: ' + profile.getImageUrl());
-  log('Google Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+  log('Google ID = ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+  log('Google Name = ' + profile.getName());
+  log('Google Image URL = ' + profile.getImageUrl());
+  log('Google Email = ' + profile.getEmail()); // This is null if the 'email' scope is not present.
 
   USER.id = profile.getEmail(); // Google email for hvtd ID
   USER.name = profile.getName(); // Google name for hvtd Name

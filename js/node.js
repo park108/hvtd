@@ -1,5 +1,5 @@
 function changeData(e) {
-	log("CHANGE_DATA: ID = " + e.target.parentNode.id);
+	log(e.target.parentNode.id);
 	setChanged(true);
 }
 
@@ -146,7 +146,7 @@ function createNode(currentNode, inputLevel, inputStatus, inputCollapse, inputCo
 		currentNode.parentNode.insertBefore(newNode, currentNode.nextSibling);
 	}
 
-	log("CREATE_NODE: Current = " + currentNode.id + ", New = " + newNode.id);
+	log("Current = " + currentNode.id + ", New = " + newNode.id);
 
 	newNodeContents.addEventListener("input", changeData, false);
 	refreshNode(newNode);
@@ -231,7 +231,7 @@ function deleteNode(node, keycode) {
 	// Delete this node
 	node.parentNode.removeChild(node);
 
-	log("DELETE_NODE: ID = " + node.id);
+	log("ID = " + node.id);
 }
 
 function setCaretPositionToFirst(node) {
@@ -315,7 +315,7 @@ function setNodeLevel(node, diff) {
 
 	setChanged(true);
 
-	log("SET_NODE_LEVEL: ID = " + node.id + ", LEVEL = " + (currentNodeLevel + diff));
+	log("ID = " + node.id + ", LEVEL = " + (currentNodeLevel + diff));
 }
 
 function getNodeStatus(node) {
@@ -340,7 +340,7 @@ function setNodeStatus(node, status) {
 	node.setAttribute("status", status);
 	setChanged(true);
 
-	log("SET_NODE_STATUS: ID = " + node.id + ", STATUS = " + status);
+	log("ID = " + node.id + ", STATUS = " + status);
 }
 
 function getNodeCount() {
@@ -815,7 +815,7 @@ function movePreviousNode(node, doCaretSetLast) {
 			setCaretPositionToLast(prevNode);
 		}
 
-		log("MOVE_PREV: " + node.id + " -> " + prevNode.id);
+		log(node.id + " -> " + prevNode.id);
 	}
 }
 
@@ -832,7 +832,7 @@ function moveNextNode(node, doCaretSetLast) {
 			setCaretPositionToLast(nextNode);
 		}
 
-		log("MOVE_NEXT: " + node.id + " -> " + nextNode.id);
+		log(node.id + " -> " + nextNode.id);
 	}
 }
 
@@ -990,7 +990,7 @@ function executeCollapse(checkbox, node, byClick) {
 
 		setChanged(true);
 
-		log((checked ? "COLLAPSE" : "EXPAND") + "_NODE: ID = " + node.id);
+		log("ID = " + node.id + ", collapse = " + checked);
 	}
 }
 
@@ -1021,7 +1021,7 @@ function executeDone(checkbox, node, byClick) {
 		setCaretPositionToLast(node);
 	}
 
-	log((checked ? "DONE" : "UNDONE") + "_NODE: ID = " + node.id);
+	log("ID = " + node.id + ", done = " + checked);
 }
 
 function executeCancel(checkbox, node, byClick) {
@@ -1051,5 +1051,5 @@ function executeCancel(checkbox, node, byClick) {
 		setCaretPositionToLast(node);
 	}
 
-	log((checked ? "CANCEL" : "UNCANCEL") + "_NODE: ID = " + node.id);
+	log("ID = " + node.id + ", cancel = " + checked);
 }
