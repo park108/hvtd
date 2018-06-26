@@ -32,19 +32,28 @@ body {
 	font-weight: 100;
 }
 
-#header-tool-bar {
+#header-toolbar {
 	float: left;
 	padding-left: 10px;
 	height: 40px;
 }
 
-#header-tool-bar img {
+#header-toolbar div {
 	float: left;
 	padding-top: 7px;
 	padding-left: 3px;
 	width: 26px;
 	height: 26px;
 	cursor: pointer;
+}
+
+#header-toolbar img {
+	width: 100%;
+	height: 100%;
+}
+
+#header-toolbar-save {
+	display: none;
 }
 
 /* User */
@@ -221,9 +230,7 @@ body {
 }
 
 .node-status-cancel {
-	/*background-color: #ffeeee;*/
 	background-color: #fffcfc;
-	/*color: darkgrey;*/
 	color: firebrick;
 	text-decoration: darkgrey solid line-through;
 	border-bottom-color: firebrick;
@@ -291,7 +298,7 @@ body {
 
 .close:hover,
 .close:focus {
-    color: #000;
+    color: black;
     text-decoration: none;
     cursor: pointer;
 }
@@ -301,24 +308,33 @@ button {
 	font-size: 1em;
 	text-align: center;
 	border: 0;
+	cursor: pointer;
 }
 
 #modal-button-set {
 	width: 100%;
 }
 
-#modal-ok {
-	width: 45%;
-	background-color: #44cc66;
-	color: #ffffff;
-	cursor: pointer;
+.button-ok {
+	color: white;
+	background-color: midnightblue;
 }
 
-#modal-cancel {
-	width: 45%;
-	background-color: #cc6644;
-	color: #ffffff;
-	cursor: pointer;
+.button-cancel {
+	color: white;
+	background-color: maroon;
+}
+
+.button-set-single {
+	width: 100%;
+}
+
+.button-set-twin {
+	width: 49%;
+}
+
+.button-set-triple {
+	width: 33%;
 }
 
 /* Settings */
@@ -375,50 +391,52 @@ select {
 
 /* The switch - the box around the slider */
 .switch {
-  position: relative;
-  display: inline-block;
-  width: 40px;
-  height: 20px;
+	position: relative;
+	display: inline-block;
+	width: 40px;
+	height: 20px;
 }
 
 /* Hide default HTML checkbox */
-.switch .settings-checkbox-slider {display:none;}
+.switch .settings-checkbox-slider {
+	display: none;
+}
 
 /* The slider */
 .slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #ccc;
+	-webkit-transition: .4s;
+	transition: .4s;
 }
 
 .slider:before {
-  position: absolute;
-  content: "";
-  height: 16px;
-  width: 16px;
-  left: 2px;
-  bottom: 2px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+	position: absolute;
+	content: "";
+	height: 16px;
+	width: 16px;
+	left: 2px;
+	bottom: 2px;
+	background-color: white;
+	-webkit-transition: .4s;
+	transition: .4s;
 }
 
 .settings-checkbox-slider:checked + .slider {
-  background-color: #2196F3;
+	background-color: #2196F3;
 }
 
 .settings-checkbox-slider:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+	box-shadow: 0 0 1px #2196F3;
 }
 
 .settings-checkbox-slider:checked + .slider:before {
-  -webkit-transform: translateX(20px);
-  -ms-transform: translateX(20px);
-  transform: translateX(20px);
+	-webkit-transform: translateX(20px);
+	-ms-transform: translateX(20px);
+	transform: translateX(20px);
 }

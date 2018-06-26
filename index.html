@@ -6,6 +6,7 @@
 		<meta name="viewport" content="width=device-width, user-scalable=no">
 		<meta name="google-signin-client_id" content="543839835071-ep9ea13ttnl2hrokspj5onipan4h184t.apps.googleusercontent.com">
 		<link rel="stylesheet" type="text/css" href="./css/hvtd.css">
+		<link rel="stylesheet" type="text/css" href="./css/tooltip.css">
 		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 	</head>
 	<body>
@@ -13,14 +14,21 @@
 			<div id="title">
 				<div id="selected-date">
 				</div>
-				<div id="header-tool-bar">
-					<img id="calendar-icon" src='./icons/calendar.svg' />
-					<img id="clear-icon" src='./icons/trash_bin.svg' />
+				<div id="header-toolbar">
+					<div id="header-toolbar-calendar" class="tooltip-bottom">
+						<img src='icons/calendar.svg' />
+					</div>
+					<div id="header-toolbar-clear" class="tooltip-bottom">
+						<img src='icons/trash_bin.svg' />
+					</div>
+					<div id="header-toolbar-save" class="tooltip-bottom">
+						<img src='icons/floppy-disk.svg' />
+					</div>
 				</div>
 				<div id="user-info">
 				</div>
 			</div>
-			<div id="calendar" style="display: none;">
+			<div id="calendar">
 			</div>
 		</div>
 
@@ -30,42 +38,42 @@
 		</div>
 
 		<div id="modal" class="modal">
-
 			<div class="modal-content">
 				<span id="modal-close" class="close">&times;</span>
 				<p id="modal-message"></p>
-				<div class="modal-button-set">
-					<button id="modal-ok">Ok</button>
-					<button id="modal-cancel">Cancel</button>
-					<div id="modal-signin" class='g-signin2' data-onsuccess='onSignIn' data-onfailure='onSignInFailure'></div>
+				<div id="modal-button-set">
+					<div id="modal-button-signin" class="g-signin2" data-onsuccess="onSignIn" data-onfailure="onSignInFailure"></div>
 				</div>
 			</div>
-
 		</div>
 
 		<div id="settings">
-
 			<div id="settings-content">
 				<span id="settings-close" class="close">&times;</span>
 				<p id="settings-title"></p>
 				<div id="settings-list">
 				</div>
+				<button id="settings-close-button" class="button-ok button-set-single"></button>
 			</div>
-
 		</div>
 
-		<script src="./js/common.js"></script>
+		<script src="./js/hvtd-common.js"></script>
 		<script src="./js/test_setting.js"></script>
-		<script src="./js/node.js"></script>
-		<script src="./js/settings.js"></script>
-		<script src="./js/todo.js"></script>
-		<script src="./js/hvtd.js"></script>
+		<script src="./js/hvtd-node.js"></script>
+		<script src="./js/hvtd-settings.js"></script>
+		<script src="./js/hvtd-settings-control.js"></script>
+		<script src="./js/hvtd-todo.js"></script>
+		<script src="./js/hvtd-calendar.js"></script>
+		<script src="./js/hvtd-user-info.js"></script>
+		<script src="./js/hvtd-key-in-control.js"></script>
+		<script src="./js/hvtd-main.js"></script>
 
 		<script src="./js/aws/aws-cognito-sdk.min.js"></script>
 		<script src="./js/aws/amazon-cognito-identity.min.js"></script>
 		<script src="https://sdk.amazonaws.com/js/aws-sdk-2.258.1.min.js"></script>
 		<script src="https://apis.google.com/js/platform.js" async defer></script>
-		<script src="./js/auth.js"></script>
+		
+		<script src="./js/hvtd-auth.js"></script>
 
 	</body>
 </html>

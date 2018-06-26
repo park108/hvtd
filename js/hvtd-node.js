@@ -1,6 +1,7 @@
 function changeData(e) {
 	log(e.target.parentNode.id);
 	setChanged(true);
+	setSaveIconVisibillity();
 }
 
 function hasData() {
@@ -100,7 +101,7 @@ function createNode(currentNode, inputLevel, inputStatus, inputCollapse, inputCo
 	newCheckboxCollpase.setAttribute("id", "collapse" + GLOBAL_VARIABLE.node_id);
 	newCheckboxCollpase.setAttribute("type", "checkbox");
 	newCheckboxCollpase.setAttribute("class", "node-toolbar-checkbox");
-	newCheckboxCollpase.setAttribute("onclick", "return executeToobarCommand(this)");
+	newCheckboxCollpase.setAttribute("onclick", "return executeToolbarCommand(this)");
 	newCheckboxCollpase.checked = collapse;
 	let newLabelDone = document.createElement("label");
 	newLabelDone.setAttribute("for", "done" + GLOBAL_VARIABLE.node_id);
@@ -110,7 +111,7 @@ function createNode(currentNode, inputLevel, inputStatus, inputCollapse, inputCo
 	newCheckboxDone.setAttribute("id", "done" + GLOBAL_VARIABLE.node_id);
 	newCheckboxDone.setAttribute("type", "checkbox");
 	newCheckboxDone.setAttribute("class", "node-toolbar-checkbox");
-	newCheckboxDone.setAttribute("onclick", "return executeToobarCommand(this)");
+	newCheckboxDone.setAttribute("onclick", "return executeToolbarCommand(this)");
 	newCheckboxDone.checked = ("D" == status);
 	let newLabelCancel = document.createElement("label");
 	newLabelCancel.setAttribute("for", "cancel" + GLOBAL_VARIABLE.node_id);
@@ -120,7 +121,7 @@ function createNode(currentNode, inputLevel, inputStatus, inputCollapse, inputCo
 	newCheckboxCancel.setAttribute("id", "cancel" + GLOBAL_VARIABLE.node_id);
 	newCheckboxCancel.setAttribute("type", "checkbox");
 	newCheckboxCancel.setAttribute("class", "node-toolbar-checkbox");
-	newCheckboxCancel.setAttribute("onclick", "return executeToobarCommand(this)");
+	newCheckboxCancel.setAttribute("onclick", "return executeToolbarCommand(this)");
 	newCheckboxCancel.checked = ("C" == status);
 
 	// Combine into newNode
@@ -954,7 +955,7 @@ function moveNodeToNext(node) {
 	setChanged(true);
 }
 
-function executeToobarCommand(checkbox) {
+function executeToolbarCommand(checkbox) {
 
 	let id = checkbox.id;
 
@@ -989,6 +990,7 @@ function executeCollapse(checkbox, node, byClick) {
 		}
 
 		setChanged(true);
+		setSaveIconVisibillity();
 
 		log("ID = " + node.id + ", collapse = " + checked);
 	}
@@ -1020,6 +1022,8 @@ function executeDone(checkbox, node, byClick) {
 	if(!byClick) {
 		setCaretPositionToLast(node);
 	}
+	
+	setSaveIconVisibillity();
 
 	log("ID = " + node.id + ", done = " + checked);
 }
@@ -1050,6 +1054,8 @@ function executeCancel(checkbox, node, byClick) {
 	if(!byClick) {
 		setCaretPositionToLast(node);
 	}
+	
+	setSaveIconVisibillity();
 
 	log("ID = " + node.id + ", cancel = " + checked);
 }

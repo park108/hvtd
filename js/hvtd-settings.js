@@ -55,15 +55,21 @@ function loadSettings() {
 			SETTINGS = settings;
 		}
 
+	}, function(error) {
+
+		log(error);
+		
+	}).then(function() {
 
 		// Set objects after load settings
 		createUserInfo();
-		setSelectedDate();
+		setSelectedDateText();
 		setCalendarVisibility(true);
+		setTooltip();
 		
 		loadTodo();
 
-	}, function(error) {
+	}).catch(function(error) {
 
 		log(error);
 	});

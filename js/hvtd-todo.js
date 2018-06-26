@@ -53,6 +53,7 @@ function saveTodo() {
 
 		log(response);
 		setChanged(false);
+		setSaveIconVisibillity();
 
 	}, function(error) {
 
@@ -60,8 +61,6 @@ function saveTodo() {
 
 	});
 }
-
-// 
 
 // Load todo
 function loadTodo() {
@@ -77,6 +76,14 @@ function loadTodo() {
 	callAPI(apiUrl, "GET").then(function(response) {
 
 		log(response);
+
+		return response;
+
+	}, function(error) {
+
+		log(error);
+
+	}).then(function(response) {
 
 		let data = JSON.parse(response);
 		let todoList = data.list;
@@ -104,8 +111,9 @@ function loadTodo() {
 		}
 
 		setChanged(false);
+		setSaveIconVisibillity();
 
-	}, function(error) {
+	}).catch(function(error) {
 
 		log(error);
 	});
@@ -130,12 +138,19 @@ function deleteTodo() {
 
 				log(response);
 
+			}, function(error) {
+
+				log(error);
+
+			}).then(function() {
+
 				clearTodo();
 				createNode();
 				setChanged(false);
+				setSaveIconVisibillity();
 				closeModal();
-
-			}, function(error) {
+				
+			}).catch(function(error) {
 
 				log(error);
 

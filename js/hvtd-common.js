@@ -120,6 +120,45 @@ function callAPI(apiUrl, method, data) {
 	});
 }
 
+function setTooltip() {
+
+	let calendar = E("header-toolbar-calendar");
+	if(undefined != calendar) {
+		calendar.setAttribute("data-tooltip", getTooltip("000"));
+	}
+
+	let clear = E("header-toolbar-clear");
+	if(undefined != clear) {
+		clear.setAttribute("data-tooltip", getTooltip("001"));
+	}
+
+	let save = E("header-toolbar-save");
+	if(undefined != save) {
+		save.setAttribute("data-tooltip", getTooltip("002"));
+	}
+}
+
+// Get tooltip
+function getTooltip(code) {
+
+	if("000" == code) {
+		if("KO" == SETTINGS.language) return "Ctrl+Shift+C: 달력 접기/펴기";
+		else if("EN" == SETTINGS.language) return "Ctrl+Shift+C: Fold/Unfold Calendar";
+		else return "Ctrl+Shift+C: Fold/Unfold Calendar";	
+	}
+	else if("001" == code) {
+		if("KO" == SETTINGS.language) return "삭제";
+		else if("EN" == SETTINGS.language) return "Delete";
+		else return "Delete";
+	}
+	else if("002" == code) {
+		if("KO" == SETTINGS.language) return "Ctrl+S: 저장";
+		else if("EN" == SETTINGS.language) return "Ctrl+S: Save";
+		else return "Ctrl+S: Save";
+	}
+}
+
+// Get message
 function getMessage(code, param1, param2, param3) {
 
 	if("000" == code) {
@@ -154,6 +193,7 @@ function getMessage(code, param1, param2, param3) {
 	}
 }
 
+// Get text
 function getText(code, param1, param2, param3) {
 
 	if("USER_DROPDOWN_SIGNOUT" == code) {
@@ -186,8 +226,19 @@ function getText(code, param1, param2, param3) {
 		else if("EN" == SETTINGS.language) return "English";
 		else return "English";	
 	}
+	else if("OK" == code) {
+		if("KO" == SETTINGS.language) return "확인";
+		else if("EN" == SETTINGS.language) return "OK";
+		else return "OK";	
+	}
+	else if("CANCEL" == code) {
+		if("KO" == SETTINGS.language) return "취소";
+		else if("EN" == SETTINGS.language) return "Cancel";
+		else return "Cancel";	
+	}
 }
 
+// Get week text
 function getWeekText(week) {
 	if(0 == week) {
 		if("KO" == SETTINGS.language) return "일";
@@ -226,18 +277,20 @@ function getWeekText(week) {
 	}
 }
 
+// Data has changed
 function isChanged() {
 	return GLOBAL_VARIABLE.changed;	
 }
 
+// Set is data changed
 function setChanged(isChanged) {
 
 	if(GLOBAL_VARIABLE.changed != isChanged) {
-
 		GLOBAL_VARIABLE.changed = isChanged;
 	}
 }
 
+// Get carat position
 function getCaretOffset() {
 
 	let selection = window.getSelection();
@@ -250,6 +303,7 @@ function getCaretOffset() {
 	}
 }
 
+// Get selected date YYYYMMDD format
 function getYYYYMMDD(inputDate) {
 	
 	let year = inputDate.getFullYear();
@@ -267,55 +321,86 @@ function getYYYYMMDD(inputDate) {
 	return year + month + date;
 }
 
+// Open modal popup
 function openModal(message, callback1, callback2) {
 
+	// Set modal display
 	let modal = E("modal");
-	let messageDom = E("modal-message");
-
-	messageDom.innerHTML = message;
 	modal.style.display = "block";
 
-	// Set button OK
-	let newButton;
-	let buttonOk = E("modal-ok");
+	// Set message
+	let messageDom = E("modal-message");
+	messageDom.innerHTML = message;
 
-	if(undefined == callback1 || null == callback1) {
-		buttonOk.style.display = "none";
-	}
-	else {
-		buttonOk.style.display = "";
-		newButton = buttonOk.cloneNode(true); // For reset event listner
-		buttonOk.parentNode.replaceChild(newButton, buttonOk);
-		newButton.addEventListener("click", callback1, false);	
+	// Get modal-button-set
+	let buttonSet = E("modal-button-set");
+	let hasButtonOk = false;
+	let hasButtonCancel = false;
+
+	// Set button OK
+	if(undefined != callback1 && null != callback1) {
+		let buttonOk = document.createElement("button");
+		buttonOk.setAttribute("id", "modal-button-ok");
+		buttonOk.classList.add("button-ok");
+		buttonOk.addEventListener("click", callback1, false);
+		buttonOk.innerHTML = getText("OK");
+		buttonSet.appendChild(buttonOk);
+
+		hasButtonOk = true;
 	}
 
 	// Set button Cancel
-	let buttonCancel = E("modal-cancel");
-	
-	if(undefined == callback2 || null == callback2) {
-		buttonCancel.style.display = "none";
+	if(undefined != callback2 || null != callback2) {
+		let buttonCancel = document.createElement("button");
+		buttonCancel.setAttribute("id", "modal-button-cancel");
+		buttonCancel.classList.add("button-cancel");
+		buttonCancel.addEventListener("click", callback2, false);
+		buttonCancel.innerHTML = getText("CANCEL");
+		buttonSet.appendChild(buttonCancel);
+
+		hasButtonCancel = true;
 	}
-	else {
-		buttonCancel.style.display = "";
-		newButton = buttonCancel.cloneNode(true); // For reset event listner
-		buttonCancel.parentNode.replaceChild(newButton, buttonCancel);
-		newButton.addEventListener("click", callback2, false);
+
+	// Set class
+	if(hasButtonOk && hasButtonCancel) {
+		E("modal-button-ok").classList.add("button-set-twin");
+		E("modal-button-cancel").classList.add("button-set-twin");
+	}
+	else if(hasButtonOk && !hasButtonCancel) {
+		E("modal-button-ok").classList.add("button-set-single");
+	}
+	else if(!hasButtonOk && hasButtonCancel) {
+		E("modal-button-cancel").classList.add("button-set-single");
 	}
 
 	// Set button Signin
-	let buttonSignin = E("modal-signin");
+	let buttonSignin = E("modal-button-signin");
+	let buttonClose = E("modal-close");
+
 	if("" == USER.token || null == USER.token) {
 		buttonSignin.style.display = "";
-		E("modal-close").style.display = "none";
+		buttonClose.style.display = "none";
 	}
 	else {
 		buttonSignin.style.display = "none";
-		E("modal-close").style.display = "";
+		buttonClose.style.display = "";
 	}
 }
 
+// Close modal popup
 function closeModal() {
 
 	let modal = E("modal");
 	modal.style.display = "none";
+
+	let buttonSet = E("modal-button-set");
+	let buttonOk = E("modal-button-ok");
+	let buttonCancel = E("modal-button-cancel");
+
+	if(undefined != buttonOk) {
+		buttonSet.removeChild(buttonOk);
+	}
+	if(undefined != buttonCancel) {
+		buttonSet.removeChild(buttonCancel);	
+	}
 }
