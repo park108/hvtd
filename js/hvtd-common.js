@@ -317,8 +317,8 @@ function setChanged(isChanged) {
 	}
 }
 
-// Get carat position
-function getCaretOffset() {
+// Get caret position
+function getCaretPosition() {
 
 	let selection = window.getSelection();
 
@@ -328,6 +328,22 @@ function getCaretOffset() {
 	else {
 		return -1;
 	}
+}
+
+// Set caret position
+function setCaretPosition(e, pos) {
+
+	log("ID = " + e.id + ", POS = " + pos);
+
+    if(e != null) {
+
+    	let range = document.createRange();
+    	let sel = window.getSelection();
+		range.setStart(e.childNodes[0], pos);
+		range.collapse(true);
+		sel.removeAllRanges();
+		sel.addRange(range);
+    }
 }
 
 // Get selected date YYYYMMDD format

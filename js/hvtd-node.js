@@ -719,9 +719,17 @@ function getNextSiblingNode(node) {
 }
 
 function setLeftMarginByNodeLevel(node) {
+
 	let level = getNodeLevel(node);
-	node.style.margin = "0px 0px 0px " + (20 * (level - 1)) + "px";
-	node.style.width = "calc(100% - " + (20 * (level - 1)) + "px)"
+	let marginTop = 0;
+	let marginLeft = (20 * (level - 1));
+
+	if(1 == level) {
+		marginTop = 5;
+	} 
+
+	node.style.margin = marginTop + "px 0px 0px " + marginLeft + "px";
+	node.style.width = "calc(100% - " + marginLeft + "px)"
 }
 
 function getContents(node) {

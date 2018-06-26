@@ -23,7 +23,15 @@ function keyInContents(e) {
 	
 	// Enter
 	if(13 == e.which) {
-		createNode(currentNode);
+
+		let position = getCaretPosition();
+		let contents = getContents(currentNode);
+		let remainContents = contents.innerHTML.substring(0, position);
+		let splittedContents = contents.innerHTML.substring(position, contents.length);
+
+		createNode(currentNode, undefined, undefined, undefined, splittedContents);
+		contents.innerHTML = remainContents;
+
 		setSaveIconVisibillity();
 		return false;
 	}
@@ -46,7 +54,7 @@ function keyInContents(e) {
 
 	// Space
 	else if(32 == e.which) {
-		if(0 == getCaretOffset()) {
+		if(0 == getCaretPosition()) {
 
 			if(e.shiftKey) {
 				setNodeLevel(currentNode, -1);
@@ -66,9 +74,11 @@ function keyInContents(e) {
 	// Backspace
 	else if(8 == e.which) {
 
-		if(0 == getCaretOffset() ) {
+		if(0 == getCaretPosition() ) {
 
-			if(isNodeCanDelete(currentNode) && 0 == getContents(currentNode).innerHTML.length) {
+			let currentContents = getContents(currentNode);
+
+			if(isNodeCanDelete(currentNode) && 0 == currentContents.innerHTML.length) {
 
 				if(hasChildNode(currentNode)) {
 
@@ -86,6 +96,17 @@ function keyInContents(e) {
 				}
 			}
 
+			else if(0 < currentContents.innerHTML.length && undefined != getPreviousNode(currentNode) && !hasChildNode(currentNode)) {
+
+				let prevNode = getPreviousNode(currentNode);
+				let prevContents = getContents(prevNode);
+				let prevContentsLength = prevContents.innerHTML.length;
+				prevContents.innerHTML = prevContents.innerHTML + currentContents.innerHTML;
+				deleteNode(currentNode, e.which);
+				setCaretPosition(prevContents, prevContentsLength);
+				setSaveIconVisibillity();
+			}
+
 			return false;
 		}
 	}
@@ -93,7 +114,7 @@ function keyInContents(e) {
 	// Delete
 	else if(46 == e.which) {
 
-		if(0 == getCaretOffset()) {
+		if(0 == getCaretPosition()) {
 
 			if(isNodeCanDelete(currentNode) && 0 == getContents(currentNode).innerHTML.length) {
 			
@@ -121,7 +142,7 @@ function keyInContents(e) {
 	else if(37 == e.which) {
 
 		// When caret is first position of Node
-		if(0 == getCaretOffset()) {
+		if(0 == getCaretPosition()) {
 
 			if(hasChildNode(currentNode)) {
 
@@ -153,7 +174,7 @@ function keyInContents(e) {
 		let lastString = (0 == cnt) ? "" : children[cnt - 1];
 
 		// When caret is last position of Node
-		if(lastString.length == getCaretOffset()) {
+		if(lastString.length == getCaretPosition()) {
 
 			if(hasChildNode(currentNode)) {
 
@@ -185,7 +206,20 @@ function keyInContents(e) {
 			setSaveIconVisibillity();
 		}
 		else {
+			let currentPos = getCaretPosition();
+
 			movePreviousNode(currentNode);
+
+			let prevNode = getPreviousVisibleNode(currentNode);
+
+			if(undefined != prevNode) {
+
+				let prevContents = getContents(prevNode);
+				let prevContentsLength = prevContents.innerHTML.length;
+				let newPos = prevContentsLength > currentPos ? currentPos : prevContentsLength;
+
+				setCaretPosition(prevContents, newPos);
+			}
 		}
 
 		return false;
@@ -199,7 +233,20 @@ function keyInContents(e) {
 			setSaveIconVisibillity();
 		}
 		else {
+			let currentPos =  getCaretPosition();
+
 			moveNextNode(currentNode);
+
+			let nextNode = getNextVisibleNode(currentNode);
+
+			if(undefined != nextNode) {
+				
+				let nextContents = getContents(nextNode);
+				let nextContentsLength = nextContents.innerHTML.length;
+				let newPos = nextContentsLength > currentPos ? currentPos : nextContentsLength;
+
+				setCaretPosition(nextContents, newPos);
+			}
 		}
 
 		return false;

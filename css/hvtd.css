@@ -182,7 +182,7 @@ body {
 .node-frame {
 	position: relative;
 	width: 100%;
-	margin-bottom: 6px;
+	margin: 5px 0px 0px 0px;
 	min-height: 2em;
 	overflow: hidden;
 
@@ -191,6 +191,9 @@ body {
 
 	border-right-style: solid;
 	border-right-width: 1px;
+
+	border-radius: 5px;
+	box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
 }
 
 .node-frame-collapsed {
@@ -263,17 +266,17 @@ body {
 
 /* The Modal (background) */
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 100; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 100; /* Sit on top */
+	padding-top: 50px; /* Location of the box */
+	padding-bottom: 50px; /* Location of the box */
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: calc(100% - 100px); /* Height for scrolling */
+	background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+	overflow: auto; /* Enable scroll if needed */
 }
 
 .modal-content {
@@ -288,10 +291,10 @@ body {
 }
 
 .close {
-    color: #aaaaaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
+	color: #aaaaaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
 	cursor: pointer;
 }
 
@@ -340,15 +343,15 @@ button {
 #settings {
 	display: none; /* Hidden by default */
 	position: fixed; /* Stay in place */
-	z-index: 100; /* Sit on top */
-	padding-top: 100px; /* Location of the box */
+	z-index: 200; /* Sit on top */
+	padding-top: 50px;
+	padding-bottom: 50px;
 	left: 0;
 	top: 0;
 	width: 100%; /* Full width */
-	height: 100%; /* Full height */
-	overflow: auto; /* Enable scroll if needed */
-	background-color: rgb(0,0,0); /* Fallback color */
+	height: calc(100% - 100px); /* Height for scrolling */
 	background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+	overflow: auto;
 }
 
 #settings-content {
@@ -376,6 +379,7 @@ button {
 
 .settings-item-title {
 	float: left;
+	min-width: 150px;
 	width: 30%;
 	max-width: 300px;
 }
