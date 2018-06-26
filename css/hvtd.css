@@ -12,9 +12,7 @@ body {
 	width: 100%;
 	z-index: 100;
 
-	border-bottom-color: #dddddd;
-	border-bottom-style: solid;
-	border-bottom-width: 2px;
+	box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.2);
 }
 
 #title {
@@ -130,7 +128,7 @@ body {
 
 /* Calendar */
 #calendar {
-	padding: 10px;
+	padding: 5px;
 	background-color: #ffffff;
 }
 
@@ -286,6 +284,7 @@ body {
 	max-width: 600px;
 	width: 80%;
 	min-width: 300px;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
 }
 
 .close {
@@ -330,11 +329,11 @@ button {
 }
 
 .button-set-twin {
-	width: 49%;
+	width: 50%;
 }
 
 .button-set-triple {
-	width: 33%;
+	width: 33.33%;
 }
 
 /* Settings */
@@ -360,11 +359,13 @@ button {
 	max-width: 600px;
 	width: 80%;
 	min-width: 300px;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
 }
 
 #settings-list {
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
+	border-top: 2px black solid;
 }
 
 .settings-item {
@@ -375,7 +376,8 @@ button {
 
 .settings-item-title {
 	float: left;
-	width: 100px;
+	width: 30%;
+	max-width: 300px;
 }
 
 .settings-item-value {

@@ -3,6 +3,7 @@ let SETTINGS = {
 	"language": "EN",
 	"auto_copy": false,
 	"auto_collapse": false,
+	"tooltip": true,
 }
 
 let GLOBAL_VARIABLE = {
@@ -41,6 +42,7 @@ let API = {
 }
 
 function log(line) {
+
 	if(SETTINGS.log) {
 
 		let caller = arguments.callee.caller.toString();
@@ -120,21 +122,41 @@ function callAPI(apiUrl, method, data) {
 	});
 }
 
-function setTooltip() {
+function setTooltipText() {
 
-	let calendar = E("header-toolbar-calendar");
-	if(undefined != calendar) {
-		calendar.setAttribute("data-tooltip", getTooltip("000"));
+	if(SETTINGS.tooltip) {
+
+		let calendar = E("header-toolbar-calendar");
+		if(undefined != calendar) {
+			calendar.setAttribute("data-tooltip", getTooltip("000"));
+		}
+
+		let clear = E("header-toolbar-clear");
+		if(undefined != clear) {
+			clear.setAttribute("data-tooltip", getTooltip("001"));
+		}
+
+		let save = E("header-toolbar-save");
+		if(undefined != save) {
+			save.setAttribute("data-tooltip", getTooltip("002"));
+		}
 	}
+	else {
 
-	let clear = E("header-toolbar-clear");
-	if(undefined != clear) {
-		clear.setAttribute("data-tooltip", getTooltip("001"));
-	}
+		let calendar = E("header-toolbar-calendar");
+		if(undefined != calendar) {
+			calendar.removeAttribute("data-tooltip");
+		}
 
-	let save = E("header-toolbar-save");
-	if(undefined != save) {
-		save.setAttribute("data-tooltip", getTooltip("002"));
+		let clear = E("header-toolbar-clear");
+		if(undefined != clear) {
+			clear.removeAttribute("data-tooltip");
+		}
+
+		let save = E("header-toolbar-save");
+		if(undefined != save) {
+			save.removeAttribute("data-tooltip");
+		}
 	}
 }
 
@@ -216,6 +238,11 @@ function getText(code, param1, param2, param3) {
 		else if("EN" == SETTINGS.language) return "Auto fold";
 		else return "Language";	
 	}
+	else if("SETTINGS_TOOLTIP" == code) {
+		if("KO" == SETTINGS.language) return "도움말 출력";
+		else if("EN" == SETTINGS.language) return "Popup tooltip";
+		else return "Popup Tooltip";	
+	}
 	else if("LANGUAGE_KO" == code) {
 		if("KO" == SETTINGS.language) return "한글";
 		else if("EN" == SETTINGS.language) return "Korean";
@@ -234,7 +261,7 @@ function getText(code, param1, param2, param3) {
 	else if("CANCEL" == code) {
 		if("KO" == SETTINGS.language) return "취소";
 		else if("EN" == SETTINGS.language) return "Cancel";
-		else return "Cancel";	
+		else return "Cancel";
 	}
 }
 

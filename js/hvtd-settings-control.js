@@ -45,19 +45,42 @@ function openSettings() {
 	}
 
 	let settingsItem_collpase_span = document.createElement("span");
-	settingsItem_collpase_span.setAttribute("class", "slider");
+	settingsItem_collpase_span.classList.add("slider");
 
 	let settingsItem_collpase_label = document.createElement("label");
-	settingsItem_collpase_label.setAttribute("class", "switch");
+	settingsItem_collpase_label.classList.add("switch");
 	settingsItem_collpase_label.appendChild(settingsItem_collpase_input);
 	settingsItem_collpase_label.appendChild(settingsItem_collpase_span);
 
 	let settingsItem_collpase = getSettingsItem("settings-autocollapse-label", settingsItem_collpase_label);
 
+	// 3. Tooltip
+	let settingsItem_tooltip_input = document.createElement("input");
+	settingsItem_tooltip_input.classList.add("settings-checkbox-slider");
+	settingsItem_tooltip_input.setAttribute("type", "checkbox");
+	settingsItem_tooltip_input.setAttribute("onclick", "setTooltip(this)");
+	if(SETTINGS.tooltip) {
+		settingsItem_tooltip_input.checked = true;
+	}
+	else {
+		settingsItem_tooltip_input.checked = false;
+	}
+
+	let settingsItem_tooltip_span = document.createElement("span");
+	settingsItem_tooltip_span.classList.add("slider");
+
+	let settingsItem_tooltip_label = document.createElement("label");
+	settingsItem_tooltip_label.classList.add("switch");
+	settingsItem_tooltip_label.appendChild(settingsItem_tooltip_input);
+	settingsItem_tooltip_label.appendChild(settingsItem_tooltip_span);
+
+	let settingsItem_tooltip = getSettingsItem("settings-tooltip-label", settingsItem_tooltip_label);
+
 	// Append settings items
 	let settingsList = E("settings-list");
 	settingsList.appendChild(settingsItem_language);
 	settingsList.appendChild(settingsItem_collpase);
+	settingsList.appendChild(settingsItem_tooltip);
 
 	// Set components text
 	setText();
@@ -113,6 +136,12 @@ function setText() {
 		settingsAutoCollapse.innerHTML = getText("SETTINGS_COLLAPSE");
 	}
 
+	// Tooltip
+	let settingsTooltip =  E("settings-tooltip-label");
+	if(undefined != settingsTooltip) {
+		settingsTooltip.innerHTML = getText("SETTINGS_TOOLTIP");
+	}
+
 	// Close button
 	let settingsCloseButton = E("settings-close-button");
 	if(undefined != settingsCloseButton) {
@@ -130,20 +159,6 @@ function closeSettings() {
 	settings.style.display = "none";
 }
 
-function setAutoCollapse(checkbox) {
-
-	if(undefined == checkbox || null == checkbox) {
-		SETTINGS.auto_collapse = !SETTINGS.auto_collapse;
-	}
-	else {
-		SETTINGS.auto_collapse = checkbox.checked;
-	}
-
-	log(SETTINGS.auto_collapse);
-
-	saveSettings();
-}
-
 function setLanguage(selectedLanguage) {
 
 	if(undefined != selectedLanguage) {
@@ -158,6 +173,35 @@ function setLanguage(selectedLanguage) {
 		// Change text
 		setSelectedDateText();
 		setText();
-		setTooltip();
+		setTooltipText();
 	}
+}
+
+function setAutoCollapse(checkbox) {
+
+	if(undefined == checkbox || null == checkbox) {
+		SETTINGS.auto_collapse = !SETTINGS.auto_collapse;
+	}
+	else {
+		SETTINGS.auto_collapse = checkbox.checked;
+	}
+
+	log(SETTINGS.auto_collapse);
+
+	saveSettings();
+}
+
+function setTooltip(checkbox) {
+
+	if(undefined == checkbox || null == checkbox) {
+		SETTINGS.tooltip = !SETTINGS.tooltip;
+	}
+	else {
+		SETTINGS.tooltip = checkbox.checked;
+	}
+
+	log(SETTINGS.tooltip);
+
+	setTooltipText();
+	saveSettings();
 }

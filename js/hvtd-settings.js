@@ -46,7 +46,8 @@ function loadSettings() {
 			SETTINGS.log = false;
 			SETTINGS.language = "EN";
 			SETTINGS.auto_copy = true;
-			SETTINGS.false = true;
+			SETTINGS.auto_collapse = true;
+			SETTINGS.tooltip = true;
 		}
 
 		// If has data, set data into settings value
@@ -65,7 +66,7 @@ function loadSettings() {
 		createUserInfo();
 		setSelectedDateText();
 		setCalendarVisibility(true);
-		setTooltip();
+		setTooltipText();
 		
 		loadTodo();
 
