@@ -144,6 +144,9 @@ function setTooltipText() {
 
 		component = E("navigation-toolbar-collapseall");
 		if(undefined != component) component.setAttribute("data-tooltip", getTooltip("004"));
+
+		component = E("user-icon");
+		if(undefined != component) component.setAttribute("data-tooltip", getTooltip("005"));
 	}
 	else {
 
@@ -160,6 +163,9 @@ function setTooltipText() {
 		if(undefined != component) component.removeAttribute("data-tooltip");
 
 		component = E("navigation-toolbar-collapseall");
+		if(undefined != component) component.removeAttribute("data-tooltip");
+
+		component = E("user-icon");
 		if(undefined != component) component.removeAttribute("data-tooltip");
 	}
 }
@@ -191,6 +197,11 @@ function getTooltip(code) {
 		if("KO" == SETTINGS.language) return "Alt 2 : 모두 접기";
 		else if("EN" == SETTINGS.language) return "Alt 2 : Collapse All";
 		else return "Alt 2 : Collapse All";
+	}
+	else if("005" == code) {
+		if("KO" == SETTINGS.language) return "사용자 정보";
+		else if("EN" == SETTINGS.language) return "User Information";
+		else return "User Information";
 	}
 }
 

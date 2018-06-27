@@ -39,15 +39,22 @@ function handleTouchEnd(evt) {
 	let moveUp = isVerticalMove && yDiff < 0;
 	let moveDown = isVerticalMove && yDiff > 0;
 
+	// Swipe to Right
 	if(moveRight && Math.abs(xDiff) > touchSensitivity) {
 		setYesterday();
 	}
+
+	// Swipe to Left
 	else if(moveLeft && Math.abs(xDiff) > touchSensitivity) {
 		setTomorrow();
 	}
+
+	// Swipe to Up
 	else if(moveUp && Math.abs(yDiff) > touchSensitivity) {
 		log("Swipe to Up");
 	}
+
+	// Swipe to Down
 	else if(moveDown && Math.abs(yDiff) > touchSensitivity) {
 		log("Swipe to Down");
 	}
