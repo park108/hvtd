@@ -174,8 +174,8 @@ function getTooltip(code) {
 	}
 	else if("001" == code) {
 		if("KO" == SETTINGS.language) return "삭제";
-		else if("EN" == SETTINGS.language) return "Delete";
-		else return "Delete";
+		else if("EN" == SETTINGS.language) return "Clear";
+		else return "Clear";
 	}
 	else if("002" == code) {
 		if("KO" == SETTINGS.language) return "Alt S : 저장";
@@ -276,6 +276,21 @@ function getText(code, param1, param2, param3) {
 		if("KO" == SETTINGS.language) return "취소";
 		else if("EN" == SETTINGS.language) return "Cancel";
 		else return "Cancel";
+	}
+	else if("FOLD_UNFOLD_CALENDAR" == code) {
+		if("KO" == SETTINGS.language) return "달력 접기/펴기";
+		else if("EN" == SETTINGS.language) return "Fold/Unfold Calendar";
+		else return "Fold/Unfold Calendar";
+	}
+	else if("CLEAR" == code) {
+		if("KO" == SETTINGS.language) return "삭제";
+		else if("EN" == SETTINGS.language) return "Clear";
+		else return "Clear";
+	}
+	else if("SAVE" == code) {
+		if("KO" == SETTINGS.language) return "저장";
+		else if("EN" == SETTINGS.language) return "Save";
+		else return "Save";
 	}
 	else if("EXPAND_ALL" == code) {
 		if("KO" == SETTINGS.language) return "모두 펼치기";

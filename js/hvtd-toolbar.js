@@ -128,29 +128,114 @@ function toggleMoreDropdown() {
 		moreDropdown.setAttribute("id", "more-dropdown");
 		moreDropdown.classList.add("dropdown");
 
+		let anchor;
+		let label;
+		let shortcut;
+
+		if("none" == E("navigation-toolbar-calendar").style.display) {
+
+			anchor = document.createElement("a");
+			anchor.setAttribute("id", "more-dropdown-calendar");
+			anchor.setAttribute("href", "#");
+			anchor.setAttribute("onclick", "setCalendarVisibility()");
+
+			label = document.createElement("div");
+			label.classList.add("dropdown-label");
+			label.innerHTML = getText("FOLD_UNFOLD_CALENDAR");
+
+			shortcut = document.createElement("div");
+			shortcut.classList.add("dropdown-shortcut");
+			shortcut.innerHTML = "Alt C";
+
+			anchor.appendChild(label);
+			anchor.appendChild(shortcut);
+
+			moreDropdown.appendChild(anchor);
+		}
+
+		if("none" == E("navigation-toolbar-clear").style.display) {
+
+			anchor = document.createElement("a");
+			anchor.setAttribute("id", "more-dropdown-clear");
+			anchor.setAttribute("href", "#");
+			anchor.setAttribute("onclick", "deleteTodo()");
+
+			label = document.createElement("div");
+			label.classList.add("dropdown-label");
+			label.innerHTML = getText("CLEAR");
+
+			shortcut = document.createElement("div");
+			shortcut.classList.add("dropdown-shortcut");
+			shortcut.innerHTML = "";
+
+			anchor.appendChild(label);
+			anchor.appendChild(shortcut);
+
+			moreDropdown.appendChild(anchor);
+		}
+
+		if("none" == E("navigation-toolbar-save").style.display && isChanged()) {
+
+			anchor = document.createElement("a");
+			anchor.setAttribute("id", "more-dropdown-save");
+			anchor.setAttribute("href", "#");
+			anchor.setAttribute("onclick", "saveTodo()");
+
+			label = document.createElement("div");
+			label.classList.add("dropdown-label");
+			label.innerHTML = getText("SAVE");
+
+			shortcut = document.createElement("div");
+			shortcut.classList.add("dropdown-shortcut");
+			shortcut.innerHTML = "Alt S";
+
+			anchor.appendChild(label);
+			anchor.appendChild(shortcut);
+
+			moreDropdown.appendChild(anchor);
+		}
+
 		if("none" == E("navigation-toolbar-expandall").style.display) {
 
-			let moreDropdownExpandAll = document.createElement("a");
-			moreDropdownExpandAll.setAttribute("id", "more-dropdown-expandall");
-			moreDropdownExpandAll.setAttribute("href", "#");
-			moreDropdownExpandAll.setAttribute("onclick", "expandAll()");
-			moreDropdownExpandAll.innerHTML = getText("EXPAND_ALL");
+			anchor = document.createElement("a");
+			anchor.setAttribute("id", "more-dropdown-expandall");
+			anchor.setAttribute("href", "#");
+			anchor.setAttribute("onclick", "expandAll()");
 
-			moreDropdown.appendChild(moreDropdownExpandAll);
+			label = document.createElement("div");
+			label.classList.add("dropdown-label");
+			label.innerHTML = getText("EXPAND_ALL");
+
+			shortcut = document.createElement("div");
+			shortcut.classList.add("dropdown-shortcut");
+			shortcut.innerHTML = "Alt 1";
+
+			anchor.appendChild(label);
+			anchor.appendChild(shortcut);
+
+			moreDropdown.appendChild(anchor);
 		}
 
 		if("none" == E("navigation-toolbar-collapseall").style.display) {
 
-			let moreDropdownCollapseAll = document.createElement("a");
-			moreDropdownCollapseAll.setAttribute("id", "more-dropdown-collapseall");
-			moreDropdownCollapseAll.setAttribute("href", "#");
-			moreDropdownCollapseAll.setAttribute("onclick", "collapseAll()");
-			moreDropdownCollapseAll.innerHTML = getText("COLLAPSE_ALL");
+			anchor = document.createElement("a");
+			anchor.setAttribute("id", "more-dropdown-collapseall");
+			anchor.setAttribute("href", "#");
+			anchor.setAttribute("onclick", "collapseAll()");
 
-			moreDropdown.appendChild(moreDropdownCollapseAll);
+			label = document.createElement("div");
+			label.classList.add("dropdown-label");
+			label.innerHTML = getText("COLLAPSE_ALL");
+
+			shortcut = document.createElement("div");
+			shortcut.classList.add("dropdown-shortcut");
+			shortcut.innerHTML = "Alt 2";
+
+			anchor.appendChild(label);
+			anchor.appendChild(shortcut);
+
+			moreDropdown.appendChild(anchor);
 		}
-
-		moreButton.appendChild(moreDropdown);
 
 		moreDropdown.style.display = "block";
 	}

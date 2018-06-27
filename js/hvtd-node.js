@@ -1102,6 +1102,8 @@ function expandAll() {
 		}
 		
 	});
+
+	toggleMoreDropdown();
 }
 
 function collapseAll() {
@@ -1125,4 +1127,6 @@ function collapseAll() {
 		}
 		
 	});
+
+	toggleMoreDropdown();	
 }
