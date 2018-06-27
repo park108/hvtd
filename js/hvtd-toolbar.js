@@ -237,6 +237,8 @@ function toggleMoreDropdown() {
 			moreDropdown.appendChild(anchor);
 		}
 
+		moreButton.appendChild(moreDropdown);
+
 		moreDropdown.style.display = "block";
 	}
 	else {
