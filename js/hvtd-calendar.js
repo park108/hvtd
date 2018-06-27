@@ -133,3 +133,23 @@ function setDate(year, month, date) {
 	setSelectedDateText();
 	loadTodo();
 }
+
+function setYesterday() {
+
+	saveTodo();
+
+	let yesterday = GLOBAL_VARIABLE.selected_date;
+	yesterday.setDate(yesterday.getDate() - 1);
+
+	setDate(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate());
+}
+
+function setTomorrow() {
+
+	saveTodo();
+
+	let tomorrow = GLOBAL_VARIABLE.selected_date;
+	tomorrow.setDate(tomorrow.getDate() + 1);
+
+	setDate(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
+}

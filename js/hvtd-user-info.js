@@ -68,6 +68,7 @@ function toggleUserDropdown() {
 
 		userDropdown = document.createElement("div");
 		userDropdown.setAttribute("id", "user-dropdown");
+		userDropdown.classList.add("dropdown");
 		userDropdown.appendChild(userDropdownInfo);
 		userDropdown.appendChild(userDropdownSettings);
 		userDropdown.appendChild(userDropdownSignout);

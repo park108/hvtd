@@ -76,7 +76,6 @@ function createNode(currentNode, inputLevel, inputStatus, inputCollapse, inputCo
 	newNode.setAttribute("level", level);
 	newNode.setAttribute("status", status);
 	newNode.setAttribute("class", "node-frame");
-	// newNode.addEventListener("keydown", keyInContents, false);
 	newNode.setAttribute("onkeydown", "return keyInContents(event)");
 
 	// Node Contents
@@ -725,7 +724,7 @@ function setLeftMarginByNodeLevel(node) {
 	let marginLeft = (20 * (level - 1));
 
 	if(1 == level) {
-		marginTop = 5;
+		marginTop = 8;
 	} 
 
 	node.style.margin = marginTop + "px 0px 0px " + marginLeft + "px";
@@ -734,6 +733,20 @@ function setLeftMarginByNodeLevel(node) {
 
 function getContents(node) {
 	return E("contents" + node.id);
+}
+
+function getContentsString(node) {
+
+	let contents = getContents(node).innerHTML;
+
+	contents = contents.replace(/&nbsp;/g, " ");
+	contents = contents.replace(/&lt;/g, "<");
+	contents = contents.replace(/&gt;/g, ">");
+	contents = contents.replace(/&amp;/g, "&");
+	contents = contents.replace(/&quot;/g, "\"");
+	contents = contents.replace(/&shy;/g, "-");
+
+	return contents;
 }
 
 function removeTags(contents, position) {
@@ -1066,4 +1079,50 @@ function executeCancel(checkbox, node, byClick) {
 	setSaveIconVisibillity();
 
 	log("ID = " + node.id + ", cancel = " + checked);
+}
+
+function expandAll() {
+
+	log();
+
+	let nodeList = getNodeList();
+	let checkbox;
+
+	// Expand all node
+	nodeList.forEach(function(node) {
+
+		if(hasChildNode(node)) {
+
+			checkbox = E("collapse" + node.id);
+
+			if(checkbox.checked) {
+				checkbox.checked = false;
+				executeCollapse(checkbox, node, false);
+			}
+		}
+		
+	});
+}
+
+function collapseAll() {
+
+	log();
+
+	let nodeList = getNodeList();
+	let checkbox;
+
+	// Collapse all node
+	nodeList.forEach(function(node) {
+
+		if(hasChildNode(node)) {
+
+			checkbox = E("collapse" + node.id);
+			
+			if(!checkbox.checked) {
+				checkbox.checked = true;
+				executeCollapse(checkbox, node, false);
+			}
+		}
+		
+	});
 }

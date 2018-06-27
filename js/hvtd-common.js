@@ -10,6 +10,7 @@ let GLOBAL_VARIABLE = {
 	"node_id": 0,
 	"changed": false,
 	"selected_date": null,
+	"max_position": 0,
 }
 
 let USER = {
@@ -122,41 +123,44 @@ function callAPI(apiUrl, method, data) {
 	});
 }
 
+// Set tooltip text
 function setTooltipText() {
+
+	let component;
 
 	if(SETTINGS.tooltip) {
 
-		let calendar = E("header-toolbar-calendar");
-		if(undefined != calendar) {
-			calendar.setAttribute("data-tooltip", getTooltip("000"));
-		}
+		component = E("navigation-toolbar-calendar");
+		if(undefined != component) component.setAttribute("data-tooltip", getTooltip("000"));
 
-		let clear = E("header-toolbar-clear");
-		if(undefined != clear) {
-			clear.setAttribute("data-tooltip", getTooltip("001"));
-		}
+		component = E("navigation-toolbar-clear");
+		if(undefined != component) component.setAttribute("data-tooltip", getTooltip("001"));
 
-		let save = E("header-toolbar-save");
-		if(undefined != save) {
-			save.setAttribute("data-tooltip", getTooltip("002"));
-		}
+		component = E("navigation-toolbar-save");
+		if(undefined != component) component.setAttribute("data-tooltip", getTooltip("002"));
+
+		component = E("navigation-toolbar-expandall");
+		if(undefined != component) component.setAttribute("data-tooltip", getTooltip("003"));
+
+		component = E("navigation-toolbar-collapseall");
+		if(undefined != component) component.setAttribute("data-tooltip", getTooltip("004"));
 	}
 	else {
 
-		let calendar = E("header-toolbar-calendar");
-		if(undefined != calendar) {
-			calendar.removeAttribute("data-tooltip");
-		}
+		component = E("navigation-toolbar-calendar");
+		if(undefined != component) component.removeAttribute("data-tooltip");
 
-		let clear = E("header-toolbar-clear");
-		if(undefined != clear) {
-			clear.removeAttribute("data-tooltip");
-		}
+		component = E("navigation-toolbar-clear");
+		if(undefined != component) component.removeAttribute("data-tooltip");
 
-		let save = E("header-toolbar-save");
-		if(undefined != save) {
-			save.removeAttribute("data-tooltip");
-		}
+		component = E("navigation-toolbar-save");
+		if(undefined != component) component.removeAttribute("data-tooltip");
+
+		component = E("navigation-toolbar-expandall");
+		if(undefined != component) component.removeAttribute("data-tooltip");
+
+		component = E("navigation-toolbar-collapseall");
+		if(undefined != component) component.removeAttribute("data-tooltip");
 	}
 }
 
@@ -164,9 +168,9 @@ function setTooltipText() {
 function getTooltip(code) {
 
 	if("000" == code) {
-		if("KO" == SETTINGS.language) return "Ctrl+Shift+C: 달력 접기/펴기";
-		else if("EN" == SETTINGS.language) return "Ctrl+Shift+C: Fold/Unfold Calendar";
-		else return "Ctrl+Shift+C: Fold/Unfold Calendar";	
+		if("KO" == SETTINGS.language) return "Alt C : 달력 접기/펴기";
+		else if("EN" == SETTINGS.language) return "Alt C : Fold/Unfold Calendar";
+		else return "Alt C : Fold/Unfold Calendar";
 	}
 	else if("001" == code) {
 		if("KO" == SETTINGS.language) return "삭제";
@@ -174,9 +178,19 @@ function getTooltip(code) {
 		else return "Delete";
 	}
 	else if("002" == code) {
-		if("KO" == SETTINGS.language) return "Ctrl+S: 저장";
-		else if("EN" == SETTINGS.language) return "Ctrl+S: Save";
-		else return "Ctrl+S: Save";
+		if("KO" == SETTINGS.language) return "Alt S : 저장";
+		else if("EN" == SETTINGS.language) return "Alt S : Save";
+		else return "Alt S : Save";
+	}
+	else if("003" == code) {
+		if("KO" == SETTINGS.language) return "Alt 1 : 모두 펼치기";
+		else if("EN" == SETTINGS.language) return "Alt 1 : Expand All";
+		else return "Alt 1 : Expand All";
+	}
+	else if("004" == code) {
+		if("KO" == SETTINGS.language) return "Alt 2 : 모두 접기";
+		else if("EN" == SETTINGS.language) return "Alt 2 : Collapse All";
+		else return "Alt 2 : Collapse All";
 	}
 }
 
@@ -235,13 +249,13 @@ function getText(code, param1, param2, param3) {
 	}
 	else if("SETTINGS_COLLAPSE" == code) {
 		if("KO" == SETTINGS.language) return "자동 접기";
-		else if("EN" == SETTINGS.language) return "Auto fold";
-		else return "Language";	
+		else if("EN" == SETTINGS.language) return "Auto collapse";
+		else return "Auto collapse";	
 	}
 	else if("SETTINGS_TOOLTIP" == code) {
 		if("KO" == SETTINGS.language) return "도움말 출력";
-		else if("EN" == SETTINGS.language) return "Popup tooltip";
-		else return "Popup Tooltip";	
+		else if("EN" == SETTINGS.language) return "Show tooltip";
+		else return "Show Tooltip";	
 	}
 	else if("LANGUAGE_KO" == code) {
 		if("KO" == SETTINGS.language) return "한글";
@@ -262,6 +276,16 @@ function getText(code, param1, param2, param3) {
 		if("KO" == SETTINGS.language) return "취소";
 		else if("EN" == SETTINGS.language) return "Cancel";
 		else return "Cancel";
+	}
+	else if("EXPAND_ALL" == code) {
+		if("KO" == SETTINGS.language) return "모두 펼치기";
+		else if("EN" == SETTINGS.language) return "Expand All";
+		else return "Expand All";
+	}
+	else if("COLLAPSE_ALL" == code) {
+		if("KO" == SETTINGS.language) return "모두 접기";
+		else if("EN" == SETTINGS.language) return "Collapse All";
+		else return "Collapse All";
 	}
 }
 

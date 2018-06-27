@@ -1,24 +1,49 @@
 function keyInCommon(e) {
 
-	// Ctrl + S: Save
-	if(e.ctrlKey && 83 == e.which) {
+	// Alt + S: Save
+	if(e.altKey && 83 == e.which) {
 		saveTodo();
 		return false;
 	}
 
-	// Ctrl + Shift + C: Calendar expand/collapse
-	else if(e.ctrlKey &&  e.shiftKey && 67 == e.which) {
+	// Alt + C: Calendar expand/collapse
+	else if(e.altKey && 67 == e.which) {
 		setCalendarVisibility();
+		return false;
+	}
+
+	// Alt + 1: Expand all
+	else if(e.altKey && 49 == e.which) {
+		expandAll();
+		return false;
+	}
+
+	// Alt + 2: Collapse all
+	else if(e.altKey && 50 == e.which) {
+		collapseAll();
 		return false;
 	}
 }
 
 function keyInContents(e) {
 
+	log(e.which);
+
+	// Return false in key combination in keyInCommon()
+	if(e.altKey && 83 == e.which) return false;
+	else if(e.altKey && 67 == e.which) return false;
+	else if(e.altKey && 49 == e.which) return false;
+	else if(e.altKey && 50 == e.which) return false;
+
 	let currentNode = window.getSelection().focusNode.parentNode;
 
 	if(-1 < currentNode.id.indexOf("contents")) {
 		currentNode = currentNode.parentNode;
+	}
+
+	// Reset max caret position
+	if(38 != e.which && 40 != e.which) {
+		GLOBAL_VARIABLE.max_position = 0;
 	}
 	
 	// Enter
@@ -26,8 +51,14 @@ function keyInContents(e) {
 
 		let position = getCaretPosition();
 		let contents = getContents(currentNode);
-		let remainContents = contents.innerHTML.substring(0, position);
-		let splittedContents = contents.innerHTML.substring(position, contents.length);
+		let contentsString = getContentsString(currentNode);
+		let remainContents = contentsString.substring(0, position);
+		let splittedContents = contentsString.substring(position, contentsString.length);
+
+		log("POS = " + position);
+		log("CURR_CONTENTS = " + contentsString);
+		log("REMN_CONTENTS = " + remainContents);
+		log("SPLT_CONTENTS = " + splittedContents);
 
 		createNode(currentNode, undefined, undefined, undefined, splittedContents);
 		contents.innerHTML = remainContents;
@@ -214,11 +245,21 @@ function keyInContents(e) {
 
 			if(undefined != prevNode) {
 
-				let prevContents = getContents(prevNode);
-				let prevContentsLength = prevContents.innerHTML.length;
-				let newPos = prevContentsLength > currentPos ? currentPos : prevContentsLength;
+				if(GLOBAL_VARIABLE.max_position < currentPos) {
+					GLOBAL_VARIABLE.max_position = currentPos;
+				}
 
-				setCaretPosition(prevContents, newPos);
+				let prevContents = getContents(prevNode);
+				let prevContentsString = getContentsString(prevNode);
+				let prevContentsLength = prevContentsString.length;
+				let newPos = prevContentsLength > GLOBAL_VARIABLE.max_position ? GLOBAL_VARIABLE.max_position : prevContentsLength;
+				log("maxPos= " + GLOBAL_VARIABLE.max_position);
+				log("prevPos= " + prevContentsLength);
+				log("newPos= " + newPos);
+
+				if(newPos > 0) {
+					setCaretPosition(prevContents, newPos);
+				}
 			}
 		}
 
@@ -240,12 +281,22 @@ function keyInContents(e) {
 			let nextNode = getNextVisibleNode(currentNode);
 
 			if(undefined != nextNode) {
+
+				if(GLOBAL_VARIABLE.max_position < currentPos) {
+					GLOBAL_VARIABLE.max_position = currentPos;
+				}
 				
 				let nextContents = getContents(nextNode);
-				let nextContentsLength = nextContents.innerHTML.length;
-				let newPos = nextContentsLength > currentPos ? currentPos : nextContentsLength;
+				let nextContentsString = getContentsString(nextNode);
+				let nextContentsLength = nextContentsString.length;
+				let newPos = nextContentsLength > GLOBAL_VARIABLE.max_position ? GLOBAL_VARIABLE.max_position : nextContentsLength;
+				log("maxPos= " + GLOBAL_VARIABLE.max_position);
+				log("nextPos= " + nextContentsLength);
+				log("newPos= " + newPos);
 
-				setCaretPosition(nextContents, newPos);
+				if(newPos > 0) {
+					setCaretPosition(nextContents, newPos);
+				}
 			}
 		}
 
