@@ -7,80 +7,106 @@ function openSettings() {
 	let settings = E("settings");
 	settings.style.display = "block";
 
+	// Get settings list
+	let settingsList = E("settings-list");
+
 	// Create settings item
+	let select, option, checkbox, span, label, item;
+
 	// 1. Language
-	let settingsItem_language_ko = document.createElement("option");
-	settingsItem_language_ko.setAttribute("id", "settings-language-ko");
-	settingsItem_language_ko.setAttribute("value", "KO");
-	settingsItem_language_ko.innerHTML = getText("LANGUAGE_KO");
+	select = document.createElement("select");
+	select.setAttribute("id", "settings-language");
+	select.setAttribute("onchange", "setLanguage(this)");
+
+	option = document.createElement("option");
+	option.setAttribute("id", "settings-language-ko");
+	option.setAttribute("value", "KO");
+	option.innerHTML = getText("LANGUAGE_KO");
 	if("KO" == SETTINGS.language) {
-		settingsItem_language_ko.setAttribute("selected", "true");
+		option.setAttribute("selected", "true");
 	}
-	let settingsItem_language_en = document.createElement("option");
-	settingsItem_language_en.setAttribute("id", "settings-language-en");
-	settingsItem_language_en.setAttribute("value", "EN");
-	settingsItem_language_en.innerHTML = getText("LANGUAGE_EN");
+	select.appendChild(option);
+
+	option = document.createElement("option");
+	option.setAttribute("id", "settings-language-en");
+	option.setAttribute("value", "EN");
+	option.innerHTML = getText("LANGUAGE_EN");
 	if("EN" == SETTINGS.language) {
-		settingsItem_language_en.setAttribute("selected", "true");
+		option.setAttribute("selected", "true");
 	}
+	select.appendChild(option);
 
-	let settingsItem_language_select = document.createElement("select");
-	settingsItem_language_select.setAttribute("id", "settings-language");
-	settingsItem_language_select.setAttribute("onchange", "setLanguage(this)");
-	settingsItem_language_select.appendChild(settingsItem_language_ko);
-	settingsItem_language_select.appendChild(settingsItem_language_en);
-
-	let settingsItem_language = getSettingsItem("settings-language-label", settingsItem_language_select);
+	item = getSettingsItem("settings-language-label", select);
+	settingsList.appendChild(item);
 
 	// 2. Auto collapse
-	let settingsItem_collpase_input = document.createElement("input");
-	settingsItem_collpase_input.classList.add("settings-checkbox-slider");
-	settingsItem_collpase_input.setAttribute("type", "checkbox");
-	settingsItem_collpase_input.setAttribute("onclick", "setAutoCollapse(this)");
+	checkbox = document.createElement("input");
+	checkbox.classList.add("settings-checkbox-slider");
+	checkbox.setAttribute("type", "checkbox");
+	checkbox.setAttribute("onclick", "setAutoCollapse(this)");
 	if(SETTINGS.auto_collapse) {
-		settingsItem_collpase_input.checked = true;
+		checkbox.checked = true;
 	}
 	else {
-		settingsItem_collpase_input.checked = false;
+		checkbox.checked = false;
 	}
 
-	let settingsItem_collpase_span = document.createElement("span");
-	settingsItem_collpase_span.classList.add("slider");
+	span = document.createElement("span");
+	span.classList.add("slider");
 
-	let settingsItem_collpase_label = document.createElement("label");
-	settingsItem_collpase_label.classList.add("switch");
-	settingsItem_collpase_label.appendChild(settingsItem_collpase_input);
-	settingsItem_collpase_label.appendChild(settingsItem_collpase_span);
+	label = document.createElement("label");
+	label.classList.add("switch");
+	label.appendChild(checkbox);
+	label.appendChild(span);
 
-	let settingsItem_collpase = getSettingsItem("settings-autocollapse-label", settingsItem_collpase_label);
+	item = getSettingsItem("settings-autocollapse-label", label);
+	settingsList.appendChild(item);
 
-	// 3. Tooltip
-	let settingsItem_tooltip_input = document.createElement("input");
-	settingsItem_tooltip_input.classList.add("settings-checkbox-slider");
-	settingsItem_tooltip_input.setAttribute("type", "checkbox");
-	settingsItem_tooltip_input.setAttribute("onclick", "setTooltip(this)");
+	// 3. Show calendar
+	checkbox = document.createElement("input");
+	checkbox.classList.add("settings-checkbox-slider");
+	checkbox.setAttribute("type", "checkbox");
+	checkbox.setAttribute("onclick", "setShowCalendar(this)");
+	if(SETTINGS.show_calendar) {
+		checkbox.checked = true;
+	}
+	else {
+		checkbox.checked = false;
+	}
+
+	span = document.createElement("span");
+	span.classList.add("slider");
+
+	label = document.createElement("label");
+	label.classList.add("switch");
+	label.appendChild(checkbox);
+	label.appendChild(span);
+
+	item = getSettingsItem("settings-showcalendar-label", label);
+	settingsList.appendChild(item);
+
+	// 4. Tooltip
+	checkbox = document.createElement("input");
+	checkbox.classList.add("settings-checkbox-slider");
+	checkbox.setAttribute("type", "checkbox");
+	checkbox.setAttribute("onclick", "setTooltip(this)");
 	if(SETTINGS.tooltip) {
-		settingsItem_tooltip_input.checked = true;
+		checkbox.checked = true;
 	}
 	else {
-		settingsItem_tooltip_input.checked = false;
+		checkbox.checked = false;
 	}
 
-	let settingsItem_tooltip_span = document.createElement("span");
-	settingsItem_tooltip_span.classList.add("slider");
+	span = document.createElement("span");
+	span.classList.add("slider");
 
-	let settingsItem_tooltip_label = document.createElement("label");
-	settingsItem_tooltip_label.classList.add("switch");
-	settingsItem_tooltip_label.appendChild(settingsItem_tooltip_input);
-	settingsItem_tooltip_label.appendChild(settingsItem_tooltip_span);
+	label = document.createElement("label");
+	label.classList.add("switch");
+	label.appendChild(checkbox);
+	label.appendChild(span);
 
-	let settingsItem_tooltip = getSettingsItem("settings-tooltip-label", settingsItem_tooltip_label);
-
-	// Append settings items
-	let settingsList = E("settings-list");
-	settingsList.appendChild(settingsItem_language);
-	settingsList.appendChild(settingsItem_collpase);
-	settingsList.appendChild(settingsItem_tooltip);
+	item = getSettingsItem("settings-tooltip-label", label);
+	settingsList.appendChild(item);
 
 	// Set components text
 	setText();
@@ -108,44 +134,52 @@ function getSettingsItem(id, value) {
 
 function setText() {
 
+	let item;
+
 	// Title
-	let settingsTitle = E("settings-title");
-	if(undefined != settingsTitle) {
-		settingsTitle.innerHTML = getText("USER_DROPDOWN_SETTINGS");
+	item = E("settings-title");
+	if(undefined != item) {
+		item.innerHTML = getText("USER_DROPDOWN_SETTINGS");
 	}
 
 	// Language
-	let settingsLangaugeLabel = E("settings-language-label");
-	if(undefined != settingsLangaugeLabel) {
-		settingsLangaugeLabel.innerHTML = getText("SETTINGS_LANGUAGE");
+	item = E("settings-language-label");
+	if(undefined != item) {
+		item.innerHTML = getText("SETTINGS_LANGUAGE");
 	}
 
-	let settingsLanguageKo =  E("settings-language-ko");
-	if(undefined != settingsLanguageKo) {
-		settingsLanguageKo.innerHTML = getText("LANGUAGE_KO");
+	item =  E("settings-language-ko");
+	if(undefined != item) {
+		item.innerHTML = getText("LANGUAGE_KO");
 	}
 
-	let settingsLanguageEn =  E("settings-language-en");
-	if(undefined != settingsLanguageEn) {
-		settingsLanguageEn.innerHTML = getText("LANGUAGE_EN");
+	item =  E("settings-language-en");
+	if(undefined != item) {
+		item.innerHTML = getText("LANGUAGE_EN");
 	}
 
 	// Auto collapse
-	let settingsAutoCollapse =  E("settings-autocollapse-label");
-	if(undefined != settingsAutoCollapse) {
-		settingsAutoCollapse.innerHTML = getText("SETTINGS_COLLAPSE");
+	item =  E("settings-autocollapse-label");
+	if(undefined != item) {
+		item.innerHTML = getText("SETTINGS_COLLAPSE");
+	}
+
+	// Show calendar
+	item =  E("settings-showcalendar-label");
+	if(undefined != item) {
+		item.innerHTML = getText("SETTINGS_SHOWCALENDAR");
 	}
 
 	// Tooltip
-	let settingsTooltip =  E("settings-tooltip-label");
-	if(undefined != settingsTooltip) {
-		settingsTooltip.innerHTML = getText("SETTINGS_TOOLTIP");
+	item =  E("settings-tooltip-label");
+	if(undefined != item) {
+		item.innerHTML = getText("SETTINGS_TOOLTIP");
 	}
 
 	// Close button
-	let settingsCloseButton = E("settings-close-button");
-	if(undefined != settingsCloseButton) {
-		settingsCloseButton.innerHTML = getText("OK");
+	item = E("settings-close-button");
+	if(undefined != item) {
+		item.innerHTML = getText("OK");
 	}
 }
 
@@ -187,6 +221,20 @@ function setAutoCollapse(checkbox) {
 	}
 
 	log(SETTINGS.auto_collapse);
+
+	saveSettings();
+}
+
+function setShowCalendar(checkbox) {
+
+	if(undefined == checkbox || null == checkbox) {
+		SETTINGS.show_calendar = !SETTINGS.show_calendar;
+	}
+	else {
+		SETTINGS.show_calendar = checkbox.checked;
+	}
+
+	log(SETTINGS.show_calendar);
 
 	saveSettings();
 }

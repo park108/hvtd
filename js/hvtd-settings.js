@@ -45,8 +45,8 @@ function loadSettings() {
 
 			SETTINGS.log = false;
 			SETTINGS.language = "EN";
-			SETTINGS.auto_copy = true;
 			SETTINGS.auto_collapse = true;
+			SETTINGS.show_calendar = true;
 			SETTINGS.tooltip = true;
 		}
 
@@ -65,7 +65,7 @@ function loadSettings() {
 		// Set objects after load settings
 		createUserInfo();
 		setSelectedDateText();
-		setCalendarVisibility(true);
+		setCalendarVisibility(SETTINGS.show_calendar);
 		setTooltipText();
 		
 		loadTodo();

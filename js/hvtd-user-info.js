@@ -18,10 +18,15 @@ function setUserInfo() {
 
 function createUserInfo() {
 
-	let userIcon = document.createElement("img");
+	let iconImage = document.createElement("img");
+	iconImage.setAttribute("id", "user-icon-image");
+	iconImage.setAttribute("src", USER.image);
+
+	let userIcon = document.createElement("div");
 	userIcon.setAttribute("id", "user-icon");
-	userIcon.setAttribute("src", USER.image);
 	userIcon.setAttribute("onclick", "toggleUserDropdown()");
+	userIcon.classList.add("tooltip-left");
+	userIcon.appendChild(iconImage);
 
 	let userInfo = E("user-info");
 	userInfo.appendChild(userIcon);

@@ -78,16 +78,16 @@
 [data-tooltip]:after {
 	z-index: 1000;
 	padding: 8px;
-	width: 200px;
-	background-color: #000;
-	background-color: hsla(0, 0%, 20%, 0.9);
+	width: 160px;
+	background-color: black;
+	background-color: hsla(0, 0%, 20%, 0.8);
 	
 	content: attr(data-tooltip);
-	color: #fff;
-	font-size: 14px;
+	color: white;
+	font-size: 0.8em;
 	line-height: 1.2;
 
-	border-radius: 5px;
+	border-radius: 3px;
 	text-align: center;
 }
 
@@ -110,7 +110,7 @@
 	margin-left: -6px;
 	margin-bottom: -12px;
 	border-top-color: #000;
-	border-top-color: hsla(0, 0%, 20%, 0.9);
+	border-top-color: hsla(0, 0%, 20%, 0.8);
 }
 
 /* Horizontally align top/bottom tooltips */
@@ -147,11 +147,12 @@
 
 .tooltip-left:before {
 	margin-left: 0;
+	margin-top: 5px;
 	margin-right: -12px;
 	margin-bottom: 0;
 	border-top-color: transparent;
 	border-left-color: #000;
-	border-left-color: hsla(0, 0%, 20%, 0.9);
+	border-left-color: hsla(0, 0%, 20%, 0.8);
 }
 
 .tooltip-left:hover:before,
@@ -176,7 +177,7 @@
 	margin-bottom: 0;
 	border-top-color: transparent;
 	border-bottom-color: #000;
-	border-bottom-color: hsla(0, 0%, 20%, 0.9);
+	border-bottom-color: hsla(0, 0%, 20%, 0.8);
 }
 
 .tooltip-bottom:hover:before,
@@ -200,7 +201,7 @@
 	margin-left: -12px;
 	border-top-color: transparent;
 	border-right-color: #000;
-	border-right-color: hsla(0, 0%, 20%, 0.9);
+	border-right-color: hsla(0, 0%, 20%, 0.8);
 }
 
 .tooltip-right:hover:before,

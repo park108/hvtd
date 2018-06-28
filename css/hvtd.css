@@ -105,6 +105,12 @@ body {
 	height: 30px;
 }
 
+#user-icon img {
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+}
+
 #user-dropdown {
 	margin-top: 37px;
 }
@@ -194,7 +200,7 @@ body {
 .node-frame {
 	position: relative;
 	width: 100%;
-	margin: 5px 0px 0px 0px;
+	margin: 0;
 	min-height: 2em;
 	overflow: hidden;
 
@@ -238,16 +244,16 @@ body {
 	background-color: #fcfffc;
 	color: seagreen;
 	text-decoration: darkgrey solid line-through;
-	border-bottom-color: darkgreen;
-	border-right-color: darkgreen;
+	border-bottom-color: #dddddd;
+	border-right-color: #dddddd;
 }
 
 .node-status-cancel {
 	background-color: #fffcfc;
 	color: firebrick;
 	text-decoration: darkgrey solid line-through;
-	border-bottom-color: firebrick;
-	border-right-color: firebrick;
+	border-bottom-color: #dddddd;
+	border-right-color: #dddddd;
 }
 
 .node-toolbar {

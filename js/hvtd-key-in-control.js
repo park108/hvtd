@@ -23,6 +23,18 @@ function keyInCommon(e) {
 		collapseAll();
 		return false;
 	}
+
+	// Ctrl + Alt + Left arrow: go to yesterday
+	else if(e.ctrlKey && e.altKey && 37 == e.which) {
+		setYesterday();
+		return false;
+	}
+
+	// Ctrl + Alt + Right arrow: go to tomorrow
+	else if(e.ctrlKey && e.altKey && 39 == e.which) {
+		setTomorrow();
+		return false;
+	}
 }
 
 function keyInContents(e) {
@@ -34,6 +46,8 @@ function keyInContents(e) {
 	else if(e.altKey && 67 == e.which) return false;
 	else if(e.altKey && 49 == e.which) return false;
 	else if(e.altKey && 50 == e.which) return false;
+	else if(e.ctrlKey && e.altKey && 37 == e.which) return false;
+	else if(e.ctrlKey && e.altKey && 39 == e.which) return false;
 
 	let currentNode = window.getSelection().focusNode.parentNode;
 

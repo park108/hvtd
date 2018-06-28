@@ -116,12 +116,14 @@ window.onclick = function(e) {
 	}
 
 	// Close user dropdown menu
+	let userIconImage = E("user-icon-image");
 	let userIcon = E("user-icon");
 	let userDropdown = E("user-dropdown");
 
 	if(undefined != userDropdown
 		&& userDropdown.style.display == "block"
 		&& e.target != userIcon
+		&& e.target != userIconImage
 		&& e.target.id.indexOf("user-dropdown") < 0) {
 
 		toggleUserDropdown();

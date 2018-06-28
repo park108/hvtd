@@ -1,8 +1,8 @@
 let SETTINGS = {
 	"log": false,
 	"language": "EN",
-	"auto_copy": false,
 	"auto_collapse": false,
+	"show_calendar": false,
 	"tooltip": true,
 }
 
@@ -262,6 +262,11 @@ function getText(code, param1, param2, param3) {
 		if("KO" == SETTINGS.language) return "자동 접기";
 		else if("EN" == SETTINGS.language) return "Auto collapse";
 		else return "Auto collapse";	
+	}
+	else if("SETTINGS_SHOWCALENDAR" == code) {
+		if("KO" == SETTINGS.language) return "달력 보이기";
+		else if("EN" == SETTINGS.language) return "Show calendar";
+		else return "Show calendar";	
 	}
 	else if("SETTINGS_TOOLTIP" == code) {
 		if("KO" == SETTINGS.language) return "도움말 출력";
