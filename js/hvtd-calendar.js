@@ -121,35 +121,56 @@ function setSelectedDateText() {
 
 function setDate(year, month, date) {
 
-	saveTodo();
+	// Check semaphore
+	if(!GLOBAL_VARIABLE.now_loading) {
 
-	GLOBAL_VARIABLE.selected_date = new Date(year, month, date);
-	createCalendar(GLOBAL_VARIABLE.selected_date);
+		saveTodo();
 
-	setChanged(false);
-	setSaveIconVisibillity();
+		GLOBAL_VARIABLE.selected_date = new Date(year, month, date);
+		createCalendar(GLOBAL_VARIABLE.selected_date);
 
-	clearTodo();
-	setSelectedDateText();
-	loadTodo();
+		setChanged(false);
+		setSaveIconVisibillity();
+
+		clearTodo();
+		setSelectedDateText();
+		loadTodo();
+	}
+	else {
+		log("Now loading... Can't move another todo");
+	}
 }
 
 function setYesterday() {
 
-	saveTodo();
+	// Check semaphore
+	if(!GLOBAL_VARIABLE.now_loading) {
 
-	let yesterday = GLOBAL_VARIABLE.selected_date;
-	yesterday.setDate(yesterday.getDate() - 1);
+		saveTodo();
 
-	setDate(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate());
+		let yesterday = GLOBAL_VARIABLE.selected_date;
+		yesterday.setDate(yesterday.getDate() - 1);
+
+		setDate(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate());
+	}
+	else {
+		log("Now loading... Can't move yesterday");
+	}
 }
 
 function setTomorrow() {
 
-	saveTodo();
+	// Check semaphore
+	if(!GLOBAL_VARIABLE.now_loading) {
 
-	let tomorrow = GLOBAL_VARIABLE.selected_date;
-	tomorrow.setDate(tomorrow.getDate() + 1);
+		saveTodo();
 
-	setDate(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
+		let tomorrow = GLOBAL_VARIABLE.selected_date;
+		tomorrow.setDate(tomorrow.getDate() + 1);
+
+		setDate(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
+	}
+	else {
+		log("Now loading... Can't move tomorrow");
+	}
 }

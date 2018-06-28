@@ -13,6 +13,10 @@ let GLOBAL_VARIABLE = {
 	"selected_date": null,
 	"max_position": 0,
 	"auto_save_timer": null,
+	"now_loading": false,
+	"touch_sensitivity": 100,
+	"touch_x": null,
+	"touch_y": null,
 }
 
 let USER = {
@@ -33,12 +37,12 @@ let IMG = {
 
 let API = {
 	"SETTINGS": {
-		"API_GATEWAY_URL": "https://g72s9v6ioa.execute-api.ap-northeast-2.amazonaws.com"
+		"GATEWAY_URL": "https://g72s9v6ioa.execute-api.ap-northeast-2.amazonaws.com"
 		, "STAGE_NAME": "test"
 		, "API_NAME": "settings"
 	},
 	"TODO": {
-		"API_GATEWAY_URL": "https://tfsds3iaxe.execute-api.ap-northeast-2.amazonaws.com"
+		"GATEWAY_URL": "https://tfsds3iaxe.execute-api.ap-northeast-2.amazonaws.com"
 		, "STAGE_NAME": "test"
 		, "API_NAME": "todo"
 	}
@@ -83,7 +87,7 @@ function getXMLHttpRequestObject() {
 // Get API URL
 function getApiUrl(api, additionalInfo) {
 
-	let gateway = api.API_GATEWAY_URL;
+	let gateway = api.GATEWAY_URL;
 	let stageName = api.STAGE_NAME;
 	let apiName = api.API_NAME;
 
@@ -127,244 +131,30 @@ function callAPI(apiUrl, method, data) {
 	});
 }
 
-// Set tooltip text
-function setTooltipText() {
+function setInnerHtml(id, text) {
 
-	let component;
+	let item = E(id);
 
-	if(SETTINGS.tooltip) {
-
-		component = E("navigation-toolbar-calendar");
-		if(undefined != component) component.setAttribute("data-tooltip", getTooltip("000"));
-
-		component = E("navigation-toolbar-clear");
-		if(undefined != component) component.setAttribute("data-tooltip", getTooltip("001"));
-
-		component = E("navigation-toolbar-save");
-		if(undefined != component) component.setAttribute("data-tooltip", getTooltip("002"));
-
-		component = E("navigation-toolbar-expandall");
-		if(undefined != component) component.setAttribute("data-tooltip", getTooltip("003"));
-
-		component = E("navigation-toolbar-collapseall");
-		if(undefined != component) component.setAttribute("data-tooltip", getTooltip("004"));
-
-		component = E("user-icon");
-		if(undefined != component) component.setAttribute("data-tooltip", getTooltip("005"));
-	}
-	else {
-
-		component = E("navigation-toolbar-calendar");
-		if(undefined != component) component.removeAttribute("data-tooltip");
-
-		component = E("navigation-toolbar-clear");
-		if(undefined != component) component.removeAttribute("data-tooltip");
-
-		component = E("navigation-toolbar-save");
-		if(undefined != component) component.removeAttribute("data-tooltip");
-
-		component = E("navigation-toolbar-expandall");
-		if(undefined != component) component.removeAttribute("data-tooltip");
-
-		component = E("navigation-toolbar-collapseall");
-		if(undefined != component) component.removeAttribute("data-tooltip");
-
-		component = E("user-icon");
-		if(undefined != component) component.removeAttribute("data-tooltip");
+	if(undefined != item) {
+		item.innerHTML = text;
 	}
 }
 
-// Get tooltip
-function getTooltip(code) {
+function setDomAttribute(id, attr, value) {
 
-	if("000" == code) {
-		if("KO" == SETTINGS.language) return "Alt C : 달력 접기/펴기";
-		else if("EN" == SETTINGS.language) return "Alt C : Fold/Unfold Calendar";
-		else return "Alt C : Fold/Unfold Calendar";
-	}
-	else if("001" == code) {
-		if("KO" == SETTINGS.language) return "삭제";
-		else if("EN" == SETTINGS.language) return "Clear";
-		else return "Clear";
-	}
-	else if("002" == code) {
-		if("KO" == SETTINGS.language) return "Alt S : 저장";
-		else if("EN" == SETTINGS.language) return "Alt S : Save";
-		else return "Alt S : Save";
-	}
-	else if("003" == code) {
-		if("KO" == SETTINGS.language) return "Alt 1 : 모두 펼치기";
-		else if("EN" == SETTINGS.language) return "Alt 1 : Expand All";
-		else return "Alt 1 : Expand All";
-	}
-	else if("004" == code) {
-		if("KO" == SETTINGS.language) return "Alt 2 : 모두 접기";
-		else if("EN" == SETTINGS.language) return "Alt 2 : Collapse All";
-		else return "Alt 2 : Collapse All";
-	}
-	else if("005" == code) {
-		if("KO" == SETTINGS.language) return "사용자 정보";
-		else if("EN" == SETTINGS.language) return "User Information";
-		else return "User Information";
+	let item = E(id);
+
+	if(undefined != item) {
+		item.setAttribute(attr, value);
 	}
 }
 
-// Get message
-function getMessage(code, param1, param2, param3) {
+function removeDomAttribute(id, attr) {
 
-	if("000" == code) {
-		if("KO" == SETTINGS.language) return "hvtd에 로그인 하세요.";
-		else if("EN" == SETTINGS.language) return "Sign in to hvtd";
-		else return "Sign in to hvtd";	
-	}
-	else if("001" == code) {
-		if("KO" == SETTINGS.language) return "하위 항목까지 모두 삭제 하시겠습니까?";
-		else if("EN" == SETTINGS.language) return "It has children. Do you delete it?";
-		else return "It has children. Do you delete it?";
-	}
-	else if("002" == code) {
-		if("KO" == SETTINGS.language) return "이전 데이터를 복사하시겠습니까? (" + param1 + ")";
-		else if("EN" == SETTINGS.language) return "Do you copy last todo?(" + param1 + ")";
-		else return "Do you copy last todo?(" + param1 + ")";
-	}
-	else if("003" == code) {
-		if("KO" == SETTINGS.language) return "";
-		else if("EN" == SETTINGS.language) return "";
-		else return "";	
-	}
-	else if("004" == code) {
-		if("KO" == SETTINGS.language) return "초기화 하시겠습니까?";
-		else if("EN" == SETTINGS.language) return "Do you clear data?";
-		else return "Do you clear data?";	
-	}
-	else if("005" == code) {
-		if("KO" == SETTINGS.language) return "변경된 내용이 있습니다. 정말 나가시겠습니까?";
-		else if("EN" == SETTINGS.language) return "Changes exist. Are you sure?";
-		else return "Changes exist. Are you sure?";	
-	}
-}
+	let item = E(id);
 
-// Get text
-function getText(code, param1, param2, param3) {
-
-	if("USER_DROPDOWN_SIGNOUT" == code) {
-		if("KO" == SETTINGS.language) return "로그아웃";
-		else if("EN" == SETTINGS.language) return "Sign Out";
-		else return "Sign Out";	
-	}
-	else if("USER_DROPDOWN_SETTINGS" == code) {
-		if("KO" == SETTINGS.language) return "설정";
-		else if("EN" == SETTINGS.language) return "Settings";
-		else return "Settings";	
-	}
-	else if("SETTINGS_LANGUAGE" == code) {
-		if("KO" == SETTINGS.language) return "언어";
-		else if("EN" == SETTINGS.language) return "Language";
-		else return "Language";	
-	}
-	else if("SETTINGS_COLLAPSE" == code) {
-		if("KO" == SETTINGS.language) return "자동 접기";
-		else if("EN" == SETTINGS.language) return "Auto collapse";
-		else return "Auto collapse";	
-	}
-	else if("SETTINGS_SHOWCALENDAR" == code) {
-		if("KO" == SETTINGS.language) return "달력 보이기";
-		else if("EN" == SETTINGS.language) return "Show calendar";
-		else return "Show calendar";	
-	}
-	else if("SETTINGS_AUTOSAVE" == code) {
-		if("KO" == SETTINGS.language) return "자동 저장 간격";
-		else if("EN" == SETTINGS.language) return "Auto save interval";
-		else return "Auto save interval";	
-	}
-	else if("SETTINGS_TOOLTIP" == code) {
-		if("KO" == SETTINGS.language) return "도움말 출력";
-		else if("EN" == SETTINGS.language) return "Show tooltip";
-		else return "Show Tooltip";	
-	}
-	else if("LANGUAGE_KO" == code) {
-		if("KO" == SETTINGS.language) return "한글";
-		else if("EN" == SETTINGS.language) return "Korean";
-		else return "Korean";	
-	}
-	else if("LANGUAGE_EN" == code) {
-		if("KO" == SETTINGS.language) return "영어";
-		else if("EN" == SETTINGS.language) return "English";
-		else return "English";	
-	}
-	else if("OK" == code) {
-		if("KO" == SETTINGS.language) return "확인";
-		else if("EN" == SETTINGS.language) return "OK";
-		else return "OK";	
-	}
-	else if("CANCEL" == code) {
-		if("KO" == SETTINGS.language) return "취소";
-		else if("EN" == SETTINGS.language) return "Cancel";
-		else return "Cancel";
-	}
-	else if("FOLD_UNFOLD_CALENDAR" == code) {
-		if("KO" == SETTINGS.language) return "달력 접기/펴기";
-		else if("EN" == SETTINGS.language) return "Fold/Unfold Calendar";
-		else return "Fold/Unfold Calendar";
-	}
-	else if("CLEAR" == code) {
-		if("KO" == SETTINGS.language) return "삭제";
-		else if("EN" == SETTINGS.language) return "Clear";
-		else return "Clear";
-	}
-	else if("SAVE" == code) {
-		if("KO" == SETTINGS.language) return "저장";
-		else if("EN" == SETTINGS.language) return "Save";
-		else return "Save";
-	}
-	else if("EXPAND_ALL" == code) {
-		if("KO" == SETTINGS.language) return "모두 펼치기";
-		else if("EN" == SETTINGS.language) return "Expand All";
-		else return "Expand All";
-	}
-	else if("COLLAPSE_ALL" == code) {
-		if("KO" == SETTINGS.language) return "모두 접기";
-		else if("EN" == SETTINGS.language) return "Collapse All";
-		else return "Collapse All";
-	}
-}
-
-// Get week text
-function getWeekText(week) {
-	if(0 == week) {
-		if("KO" == SETTINGS.language) return "일";
-		else if("EN" == SETTINGS.language) return "SUN";
-		else return "SUN";
-	}
-	else if(1 == week) {
-		if("KO" == SETTINGS.language) return "월";
-		else if("EN" == SETTINGS.language) return "MON";
-		else return "SUN";
-	}
-	else if(2 == week) {
-		if("KO" == SETTINGS.language) return "화";
-		else if("EN" == SETTINGS.language) return "TUE";
-		else return "TUE";
-	}
-	else if(3 == week) {
-		if("KO" == SETTINGS.language) return "수";
-		else if("EN" == SETTINGS.language) return "WED";
-		else return "WED";
-	}
-	else if(4 == week) {
-		if("KO" == SETTINGS.language) return "목";
-		else if("EN" == SETTINGS.language) return "THU";
-		else return "THU";
-	}
-	else if(5 == week) {
-		if("KO" == SETTINGS.language) return "금";
-		else if("EN" == SETTINGS.language) return "FRI";
-		else return "FRI";
-	}
-	else if(6 == week) {
-		if("KO" == SETTINGS.language) return "토";
-		else if("EN" == SETTINGS.language) return "SAT";
-		else return "SAT";
+	if(undefined != item) {
+		item.removeAttribute(attr);
 	}
 }
 
@@ -376,7 +166,10 @@ function isChanged() {
 // Set is data changed
 function setChanged(isChanged) {
 
-	if(GLOBAL_VARIABLE.changed != isChanged) {
+	GLOBAL_VARIABLE.changed = false;
+
+	// Check semaphore
+	if(!GLOBAL_VARIABLE.now_loading && isChanged) {
 		GLOBAL_VARIABLE.changed = isChanged;
 	}
 }
@@ -450,7 +243,7 @@ function openModal(message, callback1, callback2) {
 		buttonOk.setAttribute("id", "modal-button-ok");
 		buttonOk.classList.add("button-ok");
 		buttonOk.addEventListener("click", callback1, false);
-		buttonOk.innerHTML = getText("OK");
+		buttonOk.innerHTML = getKeyword("OK");
 		buttonSet.appendChild(buttonOk);
 
 		hasButtonOk = true;
@@ -462,7 +255,7 @@ function openModal(message, callback1, callback2) {
 		buttonCancel.setAttribute("id", "modal-button-cancel");
 		buttonCancel.classList.add("button-cancel");
 		buttonCancel.addEventListener("click", callback2, false);
-		buttonCancel.innerHTML = getText("CANCEL");
+		buttonCancel.innerHTML = getKeyword("CANCEL");
 		buttonSet.appendChild(buttonCancel);
 
 		hasButtonCancel = true;

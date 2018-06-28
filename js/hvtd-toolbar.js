@@ -141,7 +141,7 @@ function toggleMoreDropdown() {
 
 			label = document.createElement("div");
 			label.classList.add("dropdown-label");
-			label.innerHTML = getText("FOLD_UNFOLD_CALENDAR");
+			label.innerHTML = getKeyword("FOLD_UNFOLD_CALENDAR");
 
 			shortcut = document.createElement("div");
 			shortcut.classList.add("dropdown-shortcut");
@@ -162,7 +162,7 @@ function toggleMoreDropdown() {
 
 			label = document.createElement("div");
 			label.classList.add("dropdown-label");
-			label.innerHTML = getText("CLEAR");
+			label.innerHTML = getKeyword("CLEAR");
 
 			shortcut = document.createElement("div");
 			shortcut.classList.add("dropdown-shortcut");
@@ -183,7 +183,7 @@ function toggleMoreDropdown() {
 
 			label = document.createElement("div");
 			label.classList.add("dropdown-label");
-			label.innerHTML = getText("SAVE");
+			label.innerHTML = getKeyword("SAVE");
 
 			shortcut = document.createElement("div");
 			shortcut.classList.add("dropdown-shortcut");
@@ -204,7 +204,7 @@ function toggleMoreDropdown() {
 
 			label = document.createElement("div");
 			label.classList.add("dropdown-label");
-			label.innerHTML = getText("EXPAND_ALL");
+			label.innerHTML = getKeyword("EXPAND_ALL");
 
 			shortcut = document.createElement("div");
 			shortcut.classList.add("dropdown-shortcut");
@@ -225,7 +225,7 @@ function toggleMoreDropdown() {
 
 			label = document.createElement("div");
 			label.classList.add("dropdown-label");
-			label.innerHTML = getText("COLLAPSE_ALL");
+			label.innerHTML = getKeyword("COLLAPSE_ALL");
 
 			shortcut = document.createElement("div");
 			shortcut.classList.add("dropdown-shortcut");

@@ -6,28 +6,24 @@ function setContentsMargin() {
 	contents.style.marginTop = (header.clientHeight + 5) + "px";
 }
 
-let touchSensitivity = 100;
-let touchX = null;
-let touchY = null;
-
-function handleTouchStart(evt) {
+function handleTouchStart(e) {
 	
-	let touches = evt.changedTouches;
-	touchX = touches[0].clientX;
-	touchY = touches[0].clientY;
+	let touches = e.changedTouches;
+	GLOBAL_VARIABLE.touch_x = touches[0].clientX;
+	GLOBAL_VARIABLE.touch_y = touches[0].clientY;
 
-	log("COORD = " + touchX + ", " + touchY);
+	log("COORD = " + GLOBAL_VARIABLE.touch_x + ", " + GLOBAL_VARIABLE.touchY);
 }
 
-function handleTouchEnd(evt) {
+function handleTouchEnd(e) {
 
-	if(null == touchX || null == touchY) {
+	if(null == GLOBAL_VARIABLE.touch_x || null == GLOBAL_VARIABLE.touch_y) {
 		return false;
 	}
 
-	let touches = evt.changedTouches;
-	xDiff = touches[0].clientX - touchX;
-	yDiff = touches[0].clientY - touchY;
+	let touches = e.changedTouches;
+	xDiff = touches[0].clientX - GLOBAL_VARIABLE.touch_x;
+	yDiff = touches[0].clientY - GLOBAL_VARIABLE.touch_y;
 
 	log("DIFF = " + xDiff + ", " + yDiff);
 
@@ -40,27 +36,27 @@ function handleTouchEnd(evt) {
 	let moveDown = isVerticalMove && yDiff > 0;
 
 	// Swipe to Right
-	if(moveRight && Math.abs(xDiff) > touchSensitivity) {
+	if(moveRight && Math.abs(xDiff) > GLOBAL_VARIABLE.touch_sensitivity) {
 		setYesterday();
 	}
 
 	// Swipe to Left
-	else if(moveLeft && Math.abs(xDiff) > touchSensitivity) {
+	else if(moveLeft && Math.abs(xDiff) > GLOBAL_VARIABLE.touch_sensitivity) {
 		setTomorrow();
 	}
 
 	// Swipe to Up
-	else if(moveUp && Math.abs(yDiff) > touchSensitivity) {
+	else if(moveUp && Math.abs(yDiff) > GLOBAL_VARIABLE.touch_sensitivity) {
 		log("Swipe to Up");
 	}
 
 	// Swipe to Down
-	else if(moveDown && Math.abs(yDiff) > touchSensitivity) {
+	else if(moveDown && Math.abs(yDiff) > GLOBAL_VARIABLE.touch_sensitivity) {
 		log("Swipe to Down");
 	}
 
-	touchX = null;
-	touchY = null;
+	GLOBAL_VARIABLE.touch_x = null;
+	GLOBAL_VARIABLE.touch_y = null;
 }
 
 window.onload = function() {
@@ -92,11 +88,7 @@ window.onload = function() {
 
 window.onbeforeunload = function(e) {
 
-	let changed = isChanged();
-
-	saveTodo();
-
-	return changed ? getMessage("005") : null;
+	return isChanged() ? getMessage("005") : null;
 }
 
 window.onresize = function() {

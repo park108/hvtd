@@ -468,12 +468,13 @@ select {
 #settings-list input[type=number] {
 	text-align: right;
 	font-size: 1em;
-	width: 100%;
+	width: 60%;
+	margin-right: 5px;
 	min-width: 50px;
 }
 
 .input-deactivate {
 	background-color: #ccc;
 	color: #666;
-	border-color: #ccc;
+	border-color: rgba(0,0,0,0);
 }

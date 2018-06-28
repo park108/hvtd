@@ -6,6 +6,12 @@ function saveTodo() {
 		log("No changes");
 		return false;
 	}
+	else if(GLOBAL_VARIABLE.now_loading) {
+		log("Now loading... Can't save");
+		return false;
+	}
+
+	setChanged(false);
 
 	log("Call...");
 
@@ -52,7 +58,6 @@ function saveTodo() {
 	callAPI(apiUrl, "POST", dataString).then(function(response) {
 
 		log(response);
-		setChanged(false);
 		setSaveIconVisibillity();
 
 	}, function(error) {
@@ -72,6 +77,15 @@ function loadTodo() {
 
 	// Call API
 	let apiUrl = getApiUrl(API.TODO, USER.id + "/" + yyyymmdd);
+
+	// Check semaphore to prevent duplicate loading
+	if(GLOBAL_VARIABLE.now_loading) {
+		log("Now loading... Can't load another todo");
+		return false;
+	}
+
+	// Set semaphore
+	GLOBAL_VARIABLE.now_loading = true;
 
 	callAPI(apiUrl, "GET").then(function(response) {
 
@@ -116,6 +130,11 @@ function loadTodo() {
 	}).catch(function(error) {
 
 		log(error);
+
+	}).finally(function() {
+
+		// Release semaphore
+		GLOBAL_VARIABLE.now_loading = false;
 	});
 }
 

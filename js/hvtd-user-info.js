@@ -63,13 +63,13 @@ function toggleUserDropdown() {
 		userDropdownSettings.setAttribute("id", "user-dropdown-settings");
 		userDropdownSettings.setAttribute("href", "#");
 		userDropdownSettings.setAttribute("onclick", "openSettings()");
-		userDropdownSettings.innerHTML = getText("USER_DROPDOWN_SETTINGS");
+		userDropdownSettings.innerHTML = getKeyword("USER_DROPDOWN_SETTINGS");
 
 		let userDropdownSignout = document.createElement("a");
 		userDropdownSignout.setAttribute("id", "user-dropdown-signout");
 		userDropdownSignout.setAttribute("href", "#");
 		userDropdownSignout.setAttribute("onclick", "signOut()");
-		userDropdownSignout.innerHTML = getText("USER_DROPDOWN_SIGNOUT");
+		userDropdownSignout.innerHTML = getKeyword("USER_DROPDOWN_SIGNOUT");
 
 		userDropdown = document.createElement("div");
 		userDropdown.setAttribute("id", "user-dropdown");
