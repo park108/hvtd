@@ -3,6 +3,7 @@ let SETTINGS = {
 	"language": "EN",
 	"auto_collapse": false,
 	"show_calendar": false,
+	"auto_save_interval": 0,
 	"tooltip": true,
 }
 
@@ -11,6 +12,7 @@ let GLOBAL_VARIABLE = {
 	"changed": false,
 	"selected_date": null,
 	"max_position": 0,
+	"auto_save_timer": null,
 }
 
 let USER = {
@@ -54,7 +56,9 @@ function log(line) {
 			line = "";
 		}
 
-		console.log(caller + ": " + line);
+		let timestamp = new Date();
+
+		console.log("[" + timestamp + "] " + caller + ": " + line);
 	}
 }
 
@@ -267,6 +271,11 @@ function getText(code, param1, param2, param3) {
 		if("KO" == SETTINGS.language) return "달력 보이기";
 		else if("EN" == SETTINGS.language) return "Show calendar";
 		else return "Show calendar";	
+	}
+	else if("SETTINGS_AUTOSAVE" == code) {
+		if("KO" == SETTINGS.language) return "자동 저장 간격";
+		else if("EN" == SETTINGS.language) return "Auto save interval";
+		else return "Auto save interval";	
 	}
 	else if("SETTINGS_TOOLTIP" == code) {
 		if("KO" == SETTINGS.language) return "도움말 출력";

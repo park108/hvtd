@@ -47,6 +47,7 @@ function loadSettings() {
 			SETTINGS.language = "EN";
 			SETTINGS.auto_collapse = true;
 			SETTINGS.show_calendar = true;
+			SETTINGS.auto_save_interval = 0;
 			SETTINGS.tooltip = true;
 		}
 
@@ -67,6 +68,7 @@ function loadSettings() {
 		setSelectedDateText();
 		setCalendarVisibility(SETTINGS.show_calendar);
 		setTooltipText();
+		setAutoSaveInterval(SETTINGS.auto_save_interval);
 		
 		loadTodo();
 

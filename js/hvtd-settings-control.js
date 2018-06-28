@@ -85,7 +85,21 @@ function openSettings() {
 	item = getSettingsItem("settings-showcalendar-label", label);
 	settingsList.appendChild(item);
 
-	// 4. Tooltip
+	// 4. Auto save
+	input = document.createElement("input");
+	input.setAttribute("id", "settings-autosave-interval");
+	input.setAttribute("type", "number");
+	input.setAttribute("min", "0");
+	input.setAttribute("onchange", "setAutoSave(this)");
+	input.value = SETTINGS.auto_save_interval;
+	if(0 == input.value) {
+		input.classList.add("input-deactivate");
+	}
+
+	item = getSettingsItem("settings-autosave-label", input);
+	settingsList.appendChild(item);
+
+	// 5. Tooltip
 	checkbox = document.createElement("input");
 	checkbox.classList.add("settings-checkbox-slider");
 	checkbox.setAttribute("type", "checkbox");
@@ -169,6 +183,11 @@ function setText() {
 	if(undefined != item) {
 		item.innerHTML = getText("SETTINGS_SHOWCALENDAR");
 	}
+	// Auto save
+	item =  E("settings-autosave-label");
+	if(undefined != item) {
+		item.innerHTML = getText("SETTINGS_AUTOSAVE");
+	}
 
 	// Tooltip
 	item =  E("settings-tooltip-label");
@@ -237,6 +256,49 @@ function setShowCalendar(checkbox) {
 	log(SETTINGS.show_calendar);
 
 	saveSettings();
+}
+
+function setAutoSave(interval) {
+
+	if(undefined != interval) {
+
+		let minutes = interval.value * 1;
+		SETTINGS.auto_save_interval = minutes;
+
+		log(SETTINGS.auto_save_interval);
+		if(0 == minutes) {
+			interval.classList.add("input-deactivate");
+		}
+		else {
+			interval.classList.remove("input-deactivate");
+		}
+
+		saveSettings();
+
+		// Change auto save interval
+		setAutoSaveInterval(minutes);
+	}
+}
+
+function setAutoSaveInterval(minutes) {
+
+	let minNumber = minutes * 1;
+
+	if(Number.isInteger(minNumber)) {
+
+		// Clear current timer
+		if(null != GLOBAL_VARIABLE.auto_save_timer) {
+			clearInterval(GLOBAL_VARIABLE.auto_save_timer);
+		}
+
+		let milliSecond = minNumber * 60 * 1000;
+
+		// Set timer if set auto save interval
+		if(0 < milliSecond) {
+			GLOBAL_VARIABLE.auto_save_timer = setInterval(saveTodo, milliSecond);
+			log("SET INTERVAL for AUTO SAVE by = " + minNumber + " / ID = " + GLOBAL_VARIABLE.auto_save_timer);
+		}
+	}
 }
 
 function setTooltip(checkbox) {

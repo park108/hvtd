@@ -63,7 +63,6 @@ function handleTouchEnd(evt) {
 	touchY = null;
 }
 
-
 window.onload = function() {
 
 	log();
