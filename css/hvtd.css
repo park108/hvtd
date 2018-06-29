@@ -55,19 +55,28 @@ body {
 	display: none;
 }
 
+#navigation-toolbar-today p {
+	background-color: #666666;
+}
+
 .toolbar-icon-span {
 	float: left;
 	margin-top: 2px;
-	width: 20px;
-	height: 14px;
-	font-size: 14px;
-	padding-top: 3px;
+	padding-top: 2px;
 	padding-bottom: 3px;
+	width: 20px;
+	height: 12px;
+
 	text-align: center;
+	font-size: 12px;
+	font-weight: 700;
 	color: #666666;
-	cursor: pointer;
+
 	border-radius: 20%;
 	border: 2px #666666 solid;
+	border-top-width: 5px;
+
+	cursor: pointer;
 }
 
 /* Dropdown menu */
