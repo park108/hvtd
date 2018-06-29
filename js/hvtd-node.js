@@ -539,7 +539,7 @@ function refreshNode(node) {
 	let parentsIdList = getParentIdList(node);
 
 	// Refresh this node
-	setLeftMarginByNodeLevel(node);
+	setNodeFrameMargin(node);
 	setNodeStyleByStatus(node);
 	setNodeStyleByCollapse(node);
 	setNodeVisibility(node);
@@ -549,7 +549,7 @@ function refreshNode(node) {
 
 	childrenIdList.forEach(function(id) {
 		childNode = E(id);
-		setLeftMarginByNodeLevel(childNode);
+		setNodeFrameMargin(childNode);
 		setNodeStyleByStatus(childNode);
 		setNodeStyleByCollapse(childNode);
 		setNodeVisibility(childNode);
@@ -560,7 +560,7 @@ function refreshNode(node) {
 
 	parentsIdList.forEach(function(id) {
 		parentNode = E(id);
-		setLeftMarginByNodeLevel(parentNode);
+		setNodeFrameMargin(parentNode);
 		setNodeStyleByStatus(parentNode);
 		setNodeStyleByCollapse(parentNode);
 	});
@@ -569,7 +569,7 @@ function refreshNode(node) {
 	let prevNode = getPreviousNode(node);
 
 	if(undefined != prevNode) {
-		setLeftMarginByNodeLevel(prevNode);
+		setNodeFrameMargin(prevNode);
 		setNodeStyleByStatus(prevNode);
 		setNodeStyleByCollapse(prevNode);
 	}
@@ -715,22 +715,6 @@ function getNextSiblingNode(node) {
 	}
 
 	return nextSiblingNode;
-}
-
-function setLeftMarginByNodeLevel(node) {
-
-	let level = getNodeLevel(node);
-	let sideMargin = 5;
-	let marginTop = (1 == level) ? 8 : 0;
-	let marginLeft = (20 * (level - 1))
-
-	node.style.marginTop = marginTop + "px";
-	node.style.marginLeft = (marginLeft + sideMargin) + "px" ;
-	node.style.marginBottom = "0px";
-	node.style.marginRight = sideMargin + "px";
-
-	let space = marginLeft + (sideMargin * 2);
-	node.style.width = "calc(100% - " + space + "px)";
 }
 
 function getContents(node) {
@@ -1105,7 +1089,7 @@ function expandAll() {
 		
 	});
 
-	toggleMoreDropdown();
+	closeMoreDropdown();
 }
 
 function collapseAll() {
@@ -1130,5 +1114,5 @@ function collapseAll() {
 		
 	});
 
-	toggleMoreDropdown();	
+	closeMoreDropdown();	
 }

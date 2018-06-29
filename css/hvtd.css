@@ -55,6 +55,21 @@ body {
 	display: none;
 }
 
+.toolbar-icon-span {
+	float: left;
+	margin-top: 2px;
+	width: 20px;
+	height: 14px;
+	font-size: 14px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	text-align: center;
+	color: #666666;
+	cursor: pointer;
+	border-radius: 20%;
+	border: 2px #666666 solid;
+}
+
 /* Dropdown menu */
 .dropdown {
 	display: none;

@@ -113,7 +113,7 @@ function openSettings() {
 	checkbox = document.createElement("input");
 	checkbox.classList.add("settings-checkbox-slider");
 	checkbox.setAttribute("type", "checkbox");
-	checkbox.setAttribute("onclick", "setTooltip(this)");
+	checkbox.setAttribute("onclick", "setShowTooltip(this)");
 	if(SETTINGS.tooltip) {
 		checkbox.checked = true;
 	}
@@ -287,7 +287,7 @@ function setAutoSaveInterval(minutes) {
 	}
 }
 
-function setTooltip(checkbox) {
+function setShowTooltip(checkbox) {
 
 	if(undefined == checkbox || null == checkbox) {
 		SETTINGS.tooltip = !SETTINGS.tooltip;

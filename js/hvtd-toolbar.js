@@ -1,4 +1,4 @@
-function setNavigationLayout() {
+function setToolbarButtonLayout() {
 
 	// Calculate room
 	let navigation = E("navigation");
@@ -81,7 +81,7 @@ function setSaveIconVisibillity() {
 		E("navigation-toolbar-save").style.display = "none";	
 	}
 
-	setNavigationLayout();
+	setToolbarButtonLayout();
 }
 
 function createMoreButton() {
@@ -244,4 +244,19 @@ function toggleMoreDropdown() {
 	else {
 		moreButton.removeChild(moreDropdown);
 	}
+}
+
+function closeMoreDropdown() {
+
+	let moreButton = E("navigation-toolbar-more");
+	let moreDropdown = E("more-dropdown");
+
+	if(undefined != moreButton && undefined != moreDropdown) {
+		moreButton.removeChild(moreDropdown);
+	}
+}
+
+function setTodayIconDate() {
+
+	E("toolbar-icon-today").innerHTML = new Date().getDate();
 }

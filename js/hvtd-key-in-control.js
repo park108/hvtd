@@ -1,14 +1,20 @@
 function keyInCommon(e) {
 
-	// Alt + S: Save
-	if(e.altKey && 83 == e.which) {
-		saveTodo();
+	// Alt + T: Go today
+	if(e.altKey && 84 == e.which) {
+		setToday();
 		return false;
 	}
 
 	// Alt + C: Calendar expand/collapse
 	else if(e.altKey && 67 == e.which) {
 		setCalendarVisibility();
+		return false;
+	}
+
+	// Alt + S: Save
+	else if(e.altKey && 83 == e.which) {
+		saveTodo();
 		return false;
 	}
 
@@ -42,8 +48,9 @@ function keyInContents(e) {
 	log(e.which);
 
 	// Return false in key combination in keyInCommon()
-	if(e.altKey && 83 == e.which) return false;
+	if(e.altKey && 84 == e.which) return false;
 	else if(e.altKey && 67 == e.which) return false;
+	else if(e.altKey && 83 == e.which) return false;
 	else if(e.altKey && 49 == e.which) return false;
 	else if(e.altKey && 50 == e.which) return false;
 	else if(e.ctrlKey && e.altKey && 37 == e.which) return false;
@@ -316,4 +323,57 @@ function keyInContents(e) {
 
 		return false;
 	}
+}
+
+function handleTouchStart(e) {
+	
+	let touches = e.changedTouches;
+	GLOBAL_VARIABLE.touch_x = touches[0].clientX;
+	GLOBAL_VARIABLE.touch_y = touches[0].clientY;
+
+	log("COORD = " + GLOBAL_VARIABLE.touch_x + ", " + GLOBAL_VARIABLE.touchY);
+}
+
+function handleTouchEnd(e) {
+
+	if(null == GLOBAL_VARIABLE.touch_x || null == GLOBAL_VARIABLE.touch_y) {
+		return false;
+	}
+
+	let touches = e.changedTouches;
+	xDiff = touches[0].clientX - GLOBAL_VARIABLE.touch_x;
+	yDiff = touches[0].clientY - GLOBAL_VARIABLE.touch_y;
+
+	log("DIFF = " + xDiff + ", " + yDiff);
+
+	let isHorizontalMove = (Math.abs(xDiff) > Math.abs(yDiff)); 
+	let isVerticalMove = !isHorizontalMove;
+
+	let moveRight = isHorizontalMove && xDiff > 0;
+	let moveLeft = isHorizontalMove && xDiff < 0;
+	let moveUp = isVerticalMove && yDiff < 0;
+	let moveDown = isVerticalMove && yDiff > 0;
+
+	// Swipe to Right
+	if(moveRight && Math.abs(xDiff) > GLOBAL_VARIABLE.touch_sensitivity) {
+		setYesterday();
+	}
+
+	// Swipe to Left
+	else if(moveLeft && Math.abs(xDiff) > GLOBAL_VARIABLE.touch_sensitivity) {
+		setTomorrow();
+	}
+
+	// Swipe to Up
+	else if(moveUp && Math.abs(yDiff) > GLOBAL_VARIABLE.touch_sensitivity) {
+		log("Swipe to Up");
+	}
+
+	// Swipe to Down
+	else if(moveDown && Math.abs(yDiff) > GLOBAL_VARIABLE.touch_sensitivity) {
+		log("Swipe to Down");
+	}
+
+	GLOBAL_VARIABLE.touch_x = null;
+	GLOBAL_VARIABLE.touch_y = null;
 }

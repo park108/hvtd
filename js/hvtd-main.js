@@ -1,64 +1,3 @@
-function setContentsMargin() {
-
-	let header = E("header");
-	let contents = E("contents");
-
-	contents.style.marginTop = (header.clientHeight + 5) + "px";
-}
-
-function handleTouchStart(e) {
-	
-	let touches = e.changedTouches;
-	GLOBAL_VARIABLE.touch_x = touches[0].clientX;
-	GLOBAL_VARIABLE.touch_y = touches[0].clientY;
-
-	log("COORD = " + GLOBAL_VARIABLE.touch_x + ", " + GLOBAL_VARIABLE.touchY);
-}
-
-function handleTouchEnd(e) {
-
-	if(null == GLOBAL_VARIABLE.touch_x || null == GLOBAL_VARIABLE.touch_y) {
-		return false;
-	}
-
-	let touches = e.changedTouches;
-	xDiff = touches[0].clientX - GLOBAL_VARIABLE.touch_x;
-	yDiff = touches[0].clientY - GLOBAL_VARIABLE.touch_y;
-
-	log("DIFF = " + xDiff + ", " + yDiff);
-
-	let isHorizontalMove = (Math.abs(xDiff) > Math.abs(yDiff)); 
-	let isVerticalMove = !isHorizontalMove;
-
-	let moveRight = isHorizontalMove && xDiff > 0;
-	let moveLeft = isHorizontalMove && xDiff < 0;
-	let moveUp = isVerticalMove && yDiff < 0;
-	let moveDown = isVerticalMove && yDiff > 0;
-
-	// Swipe to Right
-	if(moveRight && Math.abs(xDiff) > GLOBAL_VARIABLE.touch_sensitivity) {
-		setYesterday();
-	}
-
-	// Swipe to Left
-	else if(moveLeft && Math.abs(xDiff) > GLOBAL_VARIABLE.touch_sensitivity) {
-		setTomorrow();
-	}
-
-	// Swipe to Up
-	else if(moveUp && Math.abs(yDiff) > GLOBAL_VARIABLE.touch_sensitivity) {
-		log("Swipe to Up");
-	}
-
-	// Swipe to Down
-	else if(moveDown && Math.abs(yDiff) > GLOBAL_VARIABLE.touch_sensitivity) {
-		log("Swipe to Down");
-	}
-
-	GLOBAL_VARIABLE.touch_x = null;
-	GLOBAL_VARIABLE.touch_y = null;
-}
-
 window.onload = function() {
 
 	log();
@@ -67,6 +6,7 @@ window.onload = function() {
 	document.body.addEventListener("keydown", keyInCommon, false);
 	document.addEventListener("touchstart", handleTouchStart, false);
 	document.addEventListener("touchend", handleTouchEnd, false);
+	E("navigation-toolbar-today").addEventListener("click", setToday, false);
 	E("navigation-toolbar-calendar").addEventListener("click", setCalendarVisibility, false);
 	E("navigation-toolbar-clear").addEventListener("click", deleteTodo, false);
 	E("navigation-toolbar-save").addEventListener("click", saveTodo, false);
@@ -83,6 +23,7 @@ window.onload = function() {
 
 	// Clear todo and set user info
 	clearTodo();
+	setTodayIconDate();
 	setUserInfo();
 }
 
@@ -93,7 +34,7 @@ window.onbeforeunload = function(e) {
 
 window.onresize = function() {
 
-	setNavigationLayout();
+	setToolbarButtonLayout();
 	setContentsMargin();
 }
 
@@ -130,7 +71,7 @@ window.onclick = function(e) {
 
 		log(e.target.id);
 
-		toggleMoreDropdown();
+		closeMoreDropdown();
 	}
 
 	// Close settings

@@ -24,6 +24,10 @@ let TEXTS = {
 			"KO": "사용자 정보",
 			"EN": "User Information",
 		},
+		"006": {
+			"KO": "Alt T : 오늘로 이동",
+			"EN": "Alt T : Go today",
+		},
 	},
 	"MESSAGE": {
 		"000": {
@@ -144,6 +148,7 @@ function setTooltipText() {
 	let component;
 
 	if(SETTINGS.tooltip) {
+		setDomAttribute("navigation-toolbar-today", "data-tooltip", getTooltip("006"));
 		setDomAttribute("navigation-toolbar-calendar", "data-tooltip", getTooltip("000"));
 		setDomAttribute("navigation-toolbar-clear", "data-tooltip", getTooltip("001"));
 		setDomAttribute("navigation-toolbar-save", "data-tooltip", getTooltip("002"));
@@ -152,6 +157,7 @@ function setTooltipText() {
 		setDomAttribute("user-icon", "data-tooltip", getTooltip("005"));
 	}
 	else {
+		removeDomAttribute("navigation-toolbar-today", "data-tooltip");
 		removeDomAttribute("navigation-toolbar-calendar", "data-tooltip");
 		removeDomAttribute("navigation-toolbar-clear", "data-tooltip");
 		removeDomAttribute("navigation-toolbar-save", "data-tooltip");

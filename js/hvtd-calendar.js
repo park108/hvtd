@@ -174,3 +174,27 @@ function setTomorrow() {
 		log("Now loading... Can't move tomorrow");
 	}
 }
+
+function setToday() {
+
+	// Check semaphore
+	if(!GLOBAL_VARIABLE.now_loading) {
+
+		let today = new Date();
+
+		if(GLOBAL_VARIABLE.selected_date.getFullYear() == today.getFullYear()
+			&& GLOBAL_VARIABLE.selected_date.getMonth() == today.getMonth()
+			&& GLOBAL_VARIABLE.selected_date.getDate() == today.getDate()) {
+
+			log("Already today!");
+		}
+		else {
+
+			saveTodo();
+			setDate(today.getFullYear(), today.getMonth(), today.getDate());
+		}
+	}
+	else {
+		log("Now loading... Can't move today");
+	}
+}
