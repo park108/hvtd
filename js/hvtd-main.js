@@ -38,7 +38,7 @@ window.onresize = function() {
     	clearTimeout(GLOBAL_VARIABLE.resize_timer);
     }
 
-    GLOBAL_VARIABLE.resize_timer = setTimeout(afterResize, 0);
+    GLOBAL_VARIABLE.resize_timer = setTimeout(afterResize, 200);
 }
 
 window.onclick = function(e) {
