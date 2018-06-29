@@ -810,6 +810,34 @@ function removeTags(contents, position) {
 	}, 0);
 }
 
+function moveFirstNode() {
+
+	let list = getNodeList();
+
+	if(list.length > 0) {
+
+		let node = list[0];
+		setCaretPositionToFirst(node);
+	}
+}
+
+function moveLastNode() {
+
+	let list = getNodeList();
+	let node;
+
+	while(list.length > 0) {
+
+		node = list.pop();
+
+		if(isNodeVisible(node)) {
+			
+			setCaretPositionToLast(node);
+			break;
+		}
+	}
+}
+
 function movePreviousNode(node, doCaretSetLast) {
 
 	let prevNode = getPreviousVisibleNode(node);

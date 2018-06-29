@@ -41,6 +41,18 @@ function keyInCommon(e) {
 		setTomorrow();
 		return false;
 	}
+
+	// Ctrl + Up arrow: go to first node
+	else if(e.ctrlKey && 38 == e.which) {
+		moveFirstNode();
+		return false;
+	}
+
+	// Ctrl + Down arrow: go to last node
+	else if(e.ctrlKey && 40 == e.which) {
+		moveLastNode();
+		return false;
+	}
 }
 
 function keyInContents(e) {
@@ -55,6 +67,8 @@ function keyInContents(e) {
 	else if(e.altKey && 50 == e.which) return false;
 	else if(e.ctrlKey && e.altKey && 37 == e.which) return false;
 	else if(e.ctrlKey && e.altKey && 39 == e.which) return false;
+	else if(e.ctrlKey && 38 == e.which) return false;
+	else if(e.ctrlKey && 40 == e.which) return false;
 
 	let currentNode = window.getSelection().focusNode.parentNode;
 
