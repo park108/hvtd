@@ -1,3 +1,9 @@
+function afterResize() {
+
+	setToolbarButtonLayout();
+	setContentsMargin();
+}
+
 function setContentsMargin() {
 
 	let header = E("header");

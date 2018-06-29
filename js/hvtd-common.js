@@ -17,6 +17,7 @@ let GLOBAL_VARIABLE = {
 	"touch_sensitivity": 100,
 	"touch_x": null,
 	"touch_y": null,
+	"resize_timer": null,
 }
 
 let USER = {

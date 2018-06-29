@@ -34,8 +34,11 @@ window.onbeforeunload = function(e) {
 
 window.onresize = function() {
 
-	setToolbarButtonLayout();
-	setContentsMargin();
+	if(null != GLOBAL_VARIABLE.resize_timer) {
+    	clearTimeout(GLOBAL_VARIABLE.resize_timer);
+    }
+
+    GLOBAL_VARIABLE.resize_timer = setTimeout(afterResize, 0);
 }
 
 window.onclick = function(e) {
