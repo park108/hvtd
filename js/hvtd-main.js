@@ -7,6 +7,7 @@ window.onload = function() {
 	document.addEventListener("touchstart", handleTouchStart, false);
 	document.addEventListener("touchend", handleTouchEnd, false);
 	E("navigation-toolbar-today").addEventListener("click", setToday, false);
+	E("navigation-toolbar-copy").addEventListener("click", loadPreviousTodo, false);
 	E("navigation-toolbar-calendar").addEventListener("click", setCalendarVisibility, false);
 	E("navigation-toolbar-clear").addEventListener("click", deleteTodo, false);
 	E("navigation-toolbar-save").addEventListener("click", saveTodo, false);

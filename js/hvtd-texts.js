@@ -28,6 +28,10 @@ let TEXTS = {
 			"KO": "Alt T : 오늘로 이동",
 			"EN": "Alt T : Go today",
 		},
+		"007": {
+			"KO": "이전 미완료건 복사",
+			"EN": "Copy Previous Incomplete",
+		},
 	},
 	"MESSAGE": {
 		"000": {
@@ -133,6 +137,10 @@ let TEXTS = {
 			"KO": "모두 접기",
 			"EN": "Collapse All",
 		},
+		"COPY_PREVIOUS": {
+			"KO": "이전 미완료건 복사",
+			"EN": "Copy Previous Incomplete",
+		},
 	},
 }
 
@@ -149,6 +157,7 @@ function setTooltipText() {
 
 	if(SETTINGS.tooltip) {
 		setDomAttribute("navigation-toolbar-today", "data-tooltip", getTooltip("006"));
+		setDomAttribute("navigation-toolbar-copy", "data-tooltip", getTooltip("007"));
 		setDomAttribute("navigation-toolbar-calendar", "data-tooltip", getTooltip("000"));
 		setDomAttribute("navigation-toolbar-clear", "data-tooltip", getTooltip("001"));
 		setDomAttribute("navigation-toolbar-save", "data-tooltip", getTooltip("002"));
@@ -158,6 +167,7 @@ function setTooltipText() {
 	}
 	else {
 		removeDomAttribute("navigation-toolbar-today", "data-tooltip");
+		removeDomAttribute("navigation-toolbar-copy", "data-tooltip");
 		removeDomAttribute("navigation-toolbar-calendar", "data-tooltip");
 		removeDomAttribute("navigation-toolbar-clear", "data-tooltip");
 		removeDomAttribute("navigation-toolbar-save", "data-tooltip");

@@ -181,6 +181,101 @@ function deleteTodo() {
 		);
 }
 
+// Load previous todo
+function loadPreviousTodo() {
+
+	log("Call...");
+
+	// Get selected date
+	let yyyymmdd = getYYYYMMDD(GLOBAL_VARIABLE.selected_date);
+
+	// Call API
+	let apiUrl = getApiUrl(API.TODO, USER.id + "/" + yyyymmdd + "/previous");
+
+	// Check semaphore to prevent duplicate loading
+	if(GLOBAL_VARIABLE.now_loading) {
+		log("Now loading... Can't load previous todo");
+		return false;
+	}
+
+	// Set semaphore
+	GLOBAL_VARIABLE.now_loading = true;
+
+	callAPI(apiUrl, "GET").then(function(response) {
+
+		log(response);
+
+		return response;
+
+	}, function(error) {
+
+		log(error);
+
+	}).then(function(response) {
+
+		let data = JSON.parse(response);
+		let count = data.count;
+		let todoList = data.item.list;
+
+		// If has no data, nothing to do.
+		if(0 == count) {
+
+			alert("has no previous todo");
+		}
+
+		// If has data, set data into page
+		else {
+
+			let previousNode = undefined;
+
+			if(hasData()) {
+				previousNode = getNodeList().pop();
+			}
+			else {
+				clearTodo();
+			}
+			
+			let isNone = false;
+
+			todoList.forEach(function(node) {
+
+				if(1 == node.level) {
+
+					if("N" == node.status) {
+
+						isNone = true;
+					}
+					else {
+
+						isNone = false;
+					}
+				}
+
+				if(isNone) {
+
+					previousNode = createNode(previousNode
+						, node.level
+						, node.status
+						, node.collapse
+						, node.contents);
+				}
+			});			
+		}
+
+		setSaveIconVisibillity();
+
+	}).catch(function(error) {
+
+		log(error);
+
+	}).finally(function() {
+
+		// Release semaphore
+		GLOBAL_VARIABLE.now_loading = false;
+		setChanged(true);
+	});
+}
+
 // Clear todo on page
 function clearTodo() {
 

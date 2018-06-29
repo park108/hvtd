@@ -153,6 +153,27 @@ function toggleMoreDropdown() {
 			moreDropdown.appendChild(anchor);
 		}
 
+		if("none" == E("navigation-toolbar-copy").style.display) {
+
+			anchor = document.createElement("a");
+			anchor.setAttribute("id", "more-dropdown-copy");
+			anchor.setAttribute("href", "#");
+			anchor.setAttribute("onclick", "loadPreviousTodo()");
+
+			label = document.createElement("div");
+			label.classList.add("dropdown-label");
+			label.innerHTML = getKeyword("COPY_PREVIOUS");
+
+			shortcut = document.createElement("div");
+			shortcut.classList.add("dropdown-shortcut");
+			shortcut.innerHTML = "";
+
+			anchor.appendChild(label);
+			anchor.appendChild(shortcut);
+
+			moreDropdown.appendChild(anchor);
+		}
+
 		if("none" == E("navigation-toolbar-clear").style.display) {
 
 			anchor = document.createElement("a");
