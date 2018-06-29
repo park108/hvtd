@@ -48,6 +48,7 @@ function loadSettings() {
 			SETTINGS.auto_collapse = true;
 			SETTINGS.show_calendar = true;
 			SETTINGS.auto_save_interval = 0;
+			SETTINGS.show_toolbar = true;
 			SETTINGS.tooltip = true;
 		}
 
@@ -69,6 +70,7 @@ function loadSettings() {
 		setCalendarVisibility(SETTINGS.show_calendar);
 		setTooltipText();
 		setAutoSaveInterval(SETTINGS.auto_save_interval);
+		setToolbarButtonLayout();
 		
 		loadTodo();
 

@@ -32,6 +32,10 @@ let TEXTS = {
 			"KO": "이전 미완료건 복사",
 			"EN": "Copy Previous Incomplete",
 		},
+		"008": {
+			"KO": "추가 기능",
+			"EN": "More Functions",
+		},
 	},
 	"MESSAGE": {
 		"000": {
@@ -97,6 +101,10 @@ let TEXTS = {
 			"KO": "분",
 			"EN": "min.",
 		},
+		"SETTINGS_TOOLBAR": {
+			"KO": "툴바 출력",
+			"EN": "Show toolbar",
+		},
 		"SETTINGS_TOOLTIP": {
 			"KO": "도움말 출력",
 			"EN": "Show tooltip",
@@ -141,6 +149,10 @@ let TEXTS = {
 			"KO": "이전 미완료건 복사",
 			"EN": "Copy Previous Incomplete",
 		},
+		"GO_TODAY": {
+			"KO": "오늘로 이동",
+			"EN": "Go Today",
+		},
 	},
 }
 
@@ -163,6 +175,7 @@ function setTooltipText() {
 		setDomAttribute("navigation-toolbar-save", "data-tooltip", getTooltip("002"));
 		setDomAttribute("navigation-toolbar-expandall", "data-tooltip", getTooltip("003"));
 		setDomAttribute("navigation-toolbar-collapseall", "data-tooltip", getTooltip("004"));
+		setDomAttribute("navigation-toolbar-more", "data-tooltip", getTooltip("008"));
 		setDomAttribute("user-icon", "data-tooltip", getTooltip("005"));
 	}
 	else {
@@ -173,6 +186,7 @@ function setTooltipText() {
 		removeDomAttribute("navigation-toolbar-save", "data-tooltip");
 		removeDomAttribute("navigation-toolbar-expandall", "data-tooltip");
 		removeDomAttribute("navigation-toolbar-collapseall", "data-tooltip");
+		removeDomAttribute("navigation-toolbar-more", "data-tooltip");
 		removeDomAttribute("user-icon", "data-tooltip");
 	}
 }

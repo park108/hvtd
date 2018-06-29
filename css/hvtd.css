@@ -85,11 +85,18 @@ body {
 .dropdown {
 	display: none;
 	position: absolute;
-	right: 10px;
 	background-color: #f1f1f1;
 	width: 200px;
 	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 	z-index: 200;
+}
+
+#user-dropdown {
+	right: 10px;
+}
+
+#more-dropdown {
+	left: calc(9.6em + 10px);
 }
 
 .dropdown a {
@@ -109,6 +116,8 @@ body {
 
 .dropdown-shortcut {
 	float: right;
+	text-decoration: underline;
+	font-weight: 500;
 }
 
 .dropdown a:hover {

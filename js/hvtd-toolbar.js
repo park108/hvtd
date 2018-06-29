@@ -38,7 +38,8 @@ function setToolbarButtonLayout() {
 	log("BUTTON COUNT = " + totalButtons);
 
 	// Display buttons
-	let buttonSize = 0;
+	let buttonSize = 30;
+	let index = 0;
 	remainButtons = totalButtons;
 
 	buttons.forEach(function(button) {
@@ -49,25 +50,38 @@ function setToolbarButtonLayout() {
 			// Hide button
 			button.style.display = "none";
 
-			// Show more button if has no room
-			if(remainButtons > 1 && room < (buttonSize * 2)) {
-
-				createMoreButton();
+			// If set hide toolbar, show only more button
+			if(!SETTINGS.show_toolbar) {
+				if(0 == index) {
+					createMoreButton();
+				}
 			}
 
-			// No change, no show save button
-			else if("navigation-toolbar-save" == button.id && !isChanged()) {
-			}
-
-			// Show button
 			else {
 
-				button.style.display = "block"; // Show
-				buttonSize = button.clientWidth;
-				room -= buttonSize; // Room shrink..
+				// Show more button if has no room
+				if(remainButtons > 1 && room < (buttonSize * 2)) {
+					createMoreButton();
+				}
 
-				--remainButtons; // Remain button decrease
+				// No change, no show save button
+				else if("navigation-toolbar-save" == button.id && !isChanged()) {
+				}
+
+				// Show button
+				else {
+
+					log("SHOW(" + index + ") = " + button.id);
+
+					button.style.display = "block"; // Show
+					buttonSize = button.clientWidth;
+					room -= buttonSize; // Room shrink..
+
+					--remainButtons; // Remain button decrease
+				}
 			}
+
+			++index;
 		}
 	});
 }
@@ -85,6 +99,8 @@ function setSaveIconVisibillity() {
 }
 
 function createMoreButton() {
+
+	log();
 
 	let moreDiv = E("navigation-toolbar-more");
 
@@ -132,20 +148,20 @@ function toggleMoreDropdown() {
 		let label;
 		let shortcut;
 
-		if("none" == E("navigation-toolbar-calendar").style.display) {
+		if("none" == E("navigation-toolbar-today").style.display) {
 
 			anchor = document.createElement("a");
-			anchor.setAttribute("id", "more-dropdown-calendar");
+			anchor.setAttribute("id", "more-dropdown-today");
 			anchor.setAttribute("href", "#");
-			anchor.setAttribute("onclick", "setCalendarVisibility()");
+			anchor.setAttribute("onclick", "setToday()");
 
 			label = document.createElement("div");
 			label.classList.add("dropdown-label");
-			label.innerHTML = getKeyword("FOLD_UNFOLD_CALENDAR");
+			label.innerHTML = getKeyword("GO_TODAY");
 
 			shortcut = document.createElement("div");
 			shortcut.classList.add("dropdown-shortcut");
-			shortcut.innerHTML = "Alt C";
+			shortcut.innerHTML = "Alt T";
 
 			anchor.appendChild(label);
 			anchor.appendChild(shortcut);
@@ -174,6 +190,27 @@ function toggleMoreDropdown() {
 			moreDropdown.appendChild(anchor);
 		}
 
+		if("none" == E("navigation-toolbar-save").style.display && isChanged()) {
+
+			anchor = document.createElement("a");
+			anchor.setAttribute("id", "more-dropdown-save");
+			anchor.setAttribute("href", "#");
+			anchor.setAttribute("onclick", "saveTodo()");
+
+			label = document.createElement("div");
+			label.classList.add("dropdown-label");
+			label.innerHTML = getKeyword("SAVE");
+
+			shortcut = document.createElement("div");
+			shortcut.classList.add("dropdown-shortcut");
+			shortcut.innerHTML = "Alt S";
+
+			anchor.appendChild(label);
+			anchor.appendChild(shortcut);
+
+			moreDropdown.appendChild(anchor);
+		}
+
 		if("none" == E("navigation-toolbar-clear").style.display) {
 
 			anchor = document.createElement("a");
@@ -195,20 +232,20 @@ function toggleMoreDropdown() {
 			moreDropdown.appendChild(anchor);
 		}
 
-		if("none" == E("navigation-toolbar-save").style.display && isChanged()) {
+		if("none" == E("navigation-toolbar-calendar").style.display) {
 
 			anchor = document.createElement("a");
-			anchor.setAttribute("id", "more-dropdown-save");
+			anchor.setAttribute("id", "more-dropdown-calendar");
 			anchor.setAttribute("href", "#");
-			anchor.setAttribute("onclick", "saveTodo()");
+			anchor.setAttribute("onclick", "setCalendarVisibility()");
 
 			label = document.createElement("div");
 			label.classList.add("dropdown-label");
-			label.innerHTML = getKeyword("SAVE");
+			label.innerHTML = getKeyword("FOLD_UNFOLD_CALENDAR");
 
 			shortcut = document.createElement("div");
 			shortcut.classList.add("dropdown-shortcut");
-			shortcut.innerHTML = "Alt S";
+			shortcut.innerHTML = "Alt C";
 
 			anchor.appendChild(label);
 			anchor.appendChild(shortcut);

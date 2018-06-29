@@ -231,12 +231,10 @@ function loadPreviousTodo() {
 			if(hasData()) {
 				previousNode = getNodeList().pop();
 			}
-			else {
-				clearTodo();
-			}
 			
 			let isNone = false;
 
+			// Copy only incomplete node(Level 1 node has status none)
 			todoList.forEach(function(node) {
 
 				if(1 == node.level) {
@@ -253,13 +251,18 @@ function loadPreviousTodo() {
 
 				if(isNone) {
 
+					// If has no data, remove space node for input
+					if(undefined == previousNode) {
+						clearTodo();
+					}
+
 					previousNode = createNode(previousNode
 						, node.level
 						, node.status
 						, node.collapse
 						, node.contents);
 				}
-			});			
+			});		
 		}
 
 		setSaveIconVisibillity();

@@ -4,6 +4,7 @@ let SETTINGS = {
 	"auto_collapse": false,
 	"show_calendar": false,
 	"auto_save_interval": 0,
+	"show_toolbar": true,
 	"tooltip": true,
 }
 

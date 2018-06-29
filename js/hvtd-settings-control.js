@@ -109,7 +109,30 @@ function openSettings() {
 	item = getSettingsItem("settings-autosave-label", div);
 	settingsList.appendChild(item);
 
-	// 5. Tooltip
+	// 5. Show toolbar
+	checkbox = document.createElement("input");
+	checkbox.classList.add("settings-checkbox-slider");
+	checkbox.setAttribute("type", "checkbox");
+	checkbox.setAttribute("onclick", "setShowToolbar(this)");
+	if(SETTINGS.show_toolbar) {
+		checkbox.checked = true;
+	}
+	else {
+		checkbox.checked = false;
+	}
+
+	span = document.createElement("span");
+	span.classList.add("slider");
+
+	label = document.createElement("label");
+	label.classList.add("switch");
+	label.appendChild(checkbox);
+	label.appendChild(span);
+
+	item = getSettingsItem("settings-toolbar-label", label);
+	settingsList.appendChild(item);
+
+	// 6. Show tooltip
 	checkbox = document.createElement("input");
 	checkbox.classList.add("settings-checkbox-slider");
 	checkbox.setAttribute("type", "checkbox");
@@ -167,6 +190,7 @@ function setText() {
 	setInnerHtml("settings-showcalendar-label", getKeyword("SETTINGS_SHOWCALENDAR"));
 	setInnerHtml("settings-autosave-label", getKeyword("SETTINGS_AUTOSAVE"));
 	setInnerHtml("settings-autosave-unit", getKeyword("SETTINGS_AUTOSAVE_UNIT"));
+	setInnerHtml("settings-toolbar-label", getKeyword("SETTINGS_TOOLBAR"));
 	setInnerHtml("settings-tooltip-label", getKeyword("SETTINGS_TOOLTIP"));
 	setInnerHtml("settings-close-button", getKeyword("OK"));
 }
@@ -287,6 +311,23 @@ function setAutoSaveInterval(minutes) {
 	}
 }
 
+function setShowToolbar(checkbox) {
+
+	if(undefined == checkbox || null == checkbox) {
+		SETTINGS.show_toolbar = !SETTINGS.show_toolbar;
+	}
+	else {
+		SETTINGS.show_toolbar = checkbox.checked;
+	}
+
+	log(SETTINGS.show_toolbar);
+
+	saveSettings();
+
+	// Reset toolbar button layout
+	setToolbarButtonLayout();
+}
+
 function setShowTooltip(checkbox) {
 
 	if(undefined == checkbox || null == checkbox) {
@@ -298,6 +339,8 @@ function setShowTooltip(checkbox) {
 
 	log(SETTINGS.tooltip);
 
-	setTooltipText();
 	saveSettings();
+
+	// Reset tooltip text
+	setTooltipText();
 }
