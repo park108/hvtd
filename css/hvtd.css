@@ -24,10 +24,11 @@ body {
 	float: left;
 	padding-top: 10px;
 	padding-left: 10px;
-	width: 9em;
+	width: 8em;
 	height: 30px;
 	font-size: 1.2em;
 	font-weight: 100;
+	white-space: nowrap;
 }
 
 #navigation-toolbar {
@@ -40,6 +41,7 @@ body {
 	float: left;
 	padding-top: 7px;
 	padding-left: 3px;
+	padding-right: 3px;
 	width: 26px;
 	height: 26px;
 	cursor: pointer;
