@@ -2,7 +2,7 @@ let TEXTS = {
 	"TOOLTIP": {
 		"000": {
 			"KO": "Alt C : 달력 접기/펴기",
-			"EN": "Alt C : Fold/Unfold Calendar",
+			"EN": "Alt C : Toggle Calendar",
 		},
 		"001": {
 			"KO": "삭제",
@@ -30,11 +30,7 @@ let TEXTS = {
 		},
 		"007": {
 			"KO": "이전 미완료건 복사",
-			"EN": "Copy Previous Incomplete",
-		},
-		"008": {
-			"KO": "추가 기능",
-			"EN": "More Functions",
+			"EN": "Copy Previous",
 		},
 	},
 	"MESSAGE": {
@@ -93,6 +89,10 @@ let TEXTS = {
 			"KO": "달력 보이기",
 			"EN": "Show calendar",
 		},
+		"SETTINGS_COPY_COMPLETE_CHILD": {
+			"KO": "완료 자식 노드 복사",
+			"EN": "Copy completed child",
+		},
 		"SETTINGS_AUTOSAVE": {
 			"KO": "자동 저장 간격",
 			"EN": "Auto save interval",
@@ -125,9 +125,9 @@ let TEXTS = {
 			"KO": "취소",
 			"EN": "Cancel",
 		},
-		"FOLD_UNFOLD_CALENDAR": {
+		"TOGGLE_CALENDAR": {
 			"KO": "달력 접기/펴기",
-			"EN": "Fold/Unfold Calendar",
+			"EN": "Toggle Calendar",
 		},
 		"CLEAR": {
 			"KO": "삭제",
@@ -147,7 +147,7 @@ let TEXTS = {
 		},
 		"COPY_PREVIOUS": {
 			"KO": "이전 미완료건 복사",
-			"EN": "Copy Previous Incomplete",
+			"EN": "Copy Previous",
 		},
 		"GO_TODAY": {
 			"KO": "오늘로 이동",
@@ -175,7 +175,6 @@ function setTooltipText() {
 		setDomAttribute("navigation-toolbar-save", "data-tooltip", getTooltip("002"));
 		setDomAttribute("navigation-toolbar-expandall", "data-tooltip", getTooltip("003"));
 		setDomAttribute("navigation-toolbar-collapseall", "data-tooltip", getTooltip("004"));
-		setDomAttribute("navigation-toolbar-more", "data-tooltip", getTooltip("008"));
 		setDomAttribute("user-icon", "data-tooltip", getTooltip("005"));
 	}
 	else {
@@ -186,7 +185,6 @@ function setTooltipText() {
 		removeDomAttribute("navigation-toolbar-save", "data-tooltip");
 		removeDomAttribute("navigation-toolbar-expandall", "data-tooltip");
 		removeDomAttribute("navigation-toolbar-collapseall", "data-tooltip");
-		removeDomAttribute("navigation-toolbar-more", "data-tooltip");
 		removeDomAttribute("user-icon", "data-tooltip");
 	}
 }

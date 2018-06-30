@@ -1117,7 +1117,7 @@ function expandAll() {
 		
 	});
 
-	closeMoreDropdown();
+	document.activeElement.blur(); // Lose focus
 }
 
 function collapseAll() {
@@ -1142,5 +1142,5 @@ function collapseAll() {
 		
 	});
 
-	closeMoreDropdown();	
+	document.activeElement.blur(); // Lose focus
 }

@@ -13,7 +13,7 @@ function openSettings() {
 	// Create settings item
 	let select, option, checkbox, span, label, item, div;
 
-	// 1. Language
+	// Language
 	select = document.createElement("select");
 	select.setAttribute("id", "settings-language");
 	select.setAttribute("onchange", "setLanguage(this)");
@@ -39,7 +39,7 @@ function openSettings() {
 	item = getSettingsItem("settings-language-label", select);
 	settingsList.appendChild(item);
 
-	// 2. Auto collapse
+	// Auto collapse
 	checkbox = document.createElement("input");
 	checkbox.classList.add("settings-checkbox-slider");
 	checkbox.setAttribute("type", "checkbox");
@@ -62,7 +62,7 @@ function openSettings() {
 	item = getSettingsItem("settings-autocollapse-label", label);
 	settingsList.appendChild(item);
 
-	// 3. Show calendar
+	// Show calendar
 	checkbox = document.createElement("input");
 	checkbox.classList.add("settings-checkbox-slider");
 	checkbox.setAttribute("type", "checkbox");
@@ -85,7 +85,30 @@ function openSettings() {
 	item = getSettingsItem("settings-showcalendar-label", label);
 	settingsList.appendChild(item);
 
-	// 4. Auto save
+	// Copy completed child
+	checkbox = document.createElement("input");
+	checkbox.classList.add("settings-checkbox-slider");
+	checkbox.setAttribute("type", "checkbox");
+	checkbox.setAttribute("onclick", "setCopyCompletedChild(this)");
+	if(SETTINGS.auto_collapse) {
+		checkbox.checked = true;
+	}
+	else {
+		checkbox.checked = false;
+	}
+
+	span = document.createElement("span");
+	span.classList.add("slider");
+
+	label = document.createElement("label");
+	label.classList.add("switch");
+	label.appendChild(checkbox);
+	label.appendChild(span);
+
+	item = getSettingsItem("settings-copycompletedchild-label", label);
+	settingsList.appendChild(item);
+
+	// Auto save
 	div = document.createElement("div");
 
 	input = document.createElement("input");
@@ -109,7 +132,7 @@ function openSettings() {
 	item = getSettingsItem("settings-autosave-label", div);
 	settingsList.appendChild(item);
 
-	// 5. Show toolbar
+	// Show toolbar
 	checkbox = document.createElement("input");
 	checkbox.classList.add("settings-checkbox-slider");
 	checkbox.setAttribute("type", "checkbox");
@@ -132,7 +155,7 @@ function openSettings() {
 	item = getSettingsItem("settings-toolbar-label", label);
 	settingsList.appendChild(item);
 
-	// 6. Show tooltip
+	// Show tooltip
 	checkbox = document.createElement("input");
 	checkbox.classList.add("settings-checkbox-slider");
 	checkbox.setAttribute("type", "checkbox");
@@ -188,6 +211,7 @@ function setText() {
 	setInnerHtml("settings-language-en", getKeyword("LANGUAGE_EN"));
 	setInnerHtml("settings-autocollapse-label", getKeyword("SETTINGS_COLLAPSE"));
 	setInnerHtml("settings-showcalendar-label", getKeyword("SETTINGS_SHOWCALENDAR"));
+	setInnerHtml("settings-copycompletedchild-label", getKeyword("SETTINGS_COPY_COMPLETE_CHILD"));	
 	setInnerHtml("settings-autosave-label", getKeyword("SETTINGS_AUTOSAVE"));
 	setInnerHtml("settings-autosave-unit", getKeyword("SETTINGS_AUTOSAVE_UNIT"));
 	setInnerHtml("settings-toolbar-label", getKeyword("SETTINGS_TOOLBAR"));
@@ -247,6 +271,20 @@ function setShowCalendar(checkbox) {
 	}
 
 	log(SETTINGS.show_calendar);
+
+	saveSettings();
+}
+
+function setCopyCompletedChild(checkbox) {
+
+	if(undefined == checkbox || null == checkbox) {
+		SETTINGS.copy_complete_child = !SETTINGS.copy_complete_child;
+	}
+	else {
+		SETTINGS.copy_complete_child = checkbox.checked;
+	}
+
+	log(SETTINGS.copy_complete_child);
 
 	saveSettings();
 }

@@ -3,6 +3,7 @@ let SETTINGS = {
 	"language": "EN",
 	"auto_collapse": false,
 	"show_calendar": false,
+	"copy_complete_child": false,
 	"auto_save_interval": 0,
 	"show_toolbar": true,
 	"tooltip": true,

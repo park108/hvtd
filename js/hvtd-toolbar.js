@@ -153,7 +153,7 @@ function toggleMoreDropdown() {
 			anchor = document.createElement("a");
 			anchor.setAttribute("id", "more-dropdown-today");
 			anchor.setAttribute("href", "#");
-			anchor.setAttribute("onclick", "setToday()");
+			anchor.setAttribute("onclick", "setToday(); closeMoreDropdown();");
 
 			label = document.createElement("div");
 			label.classList.add("dropdown-label");
@@ -174,7 +174,7 @@ function toggleMoreDropdown() {
 			anchor = document.createElement("a");
 			anchor.setAttribute("id", "more-dropdown-copy");
 			anchor.setAttribute("href", "#");
-			anchor.setAttribute("onclick", "loadPreviousTodo()");
+			anchor.setAttribute("onclick", "loadPreviousTodo(); closeMoreDropdown();");
 
 			label = document.createElement("div");
 			label.classList.add("dropdown-label");
@@ -195,7 +195,7 @@ function toggleMoreDropdown() {
 			anchor = document.createElement("a");
 			anchor.setAttribute("id", "more-dropdown-save");
 			anchor.setAttribute("href", "#");
-			anchor.setAttribute("onclick", "saveTodo()");
+			anchor.setAttribute("onclick", "saveTodo(); closeMoreDropdown();");
 
 			label = document.createElement("div");
 			label.classList.add("dropdown-label");
@@ -216,7 +216,7 @@ function toggleMoreDropdown() {
 			anchor = document.createElement("a");
 			anchor.setAttribute("id", "more-dropdown-clear");
 			anchor.setAttribute("href", "#");
-			anchor.setAttribute("onclick", "deleteTodo()");
+			anchor.setAttribute("onclick", "deleteTodo(); closeMoreDropdown();");
 
 			label = document.createElement("div");
 			label.classList.add("dropdown-label");
@@ -237,11 +237,11 @@ function toggleMoreDropdown() {
 			anchor = document.createElement("a");
 			anchor.setAttribute("id", "more-dropdown-calendar");
 			anchor.setAttribute("href", "#");
-			anchor.setAttribute("onclick", "setCalendarVisibility()");
+			anchor.setAttribute("onclick", "setCalendarVisibility(); closeMoreDropdown();");
 
 			label = document.createElement("div");
 			label.classList.add("dropdown-label");
-			label.innerHTML = getKeyword("FOLD_UNFOLD_CALENDAR");
+			label.innerHTML = getKeyword("TOGGLE_CALENDAR");
 
 			shortcut = document.createElement("div");
 			shortcut.classList.add("dropdown-shortcut");
@@ -258,7 +258,7 @@ function toggleMoreDropdown() {
 			anchor = document.createElement("a");
 			anchor.setAttribute("id", "more-dropdown-expandall");
 			anchor.setAttribute("href", "#");
-			anchor.setAttribute("onclick", "expandAll()");
+			anchor.setAttribute("onclick", "expandAll(); closeMoreDropdown();");
 
 			label = document.createElement("div");
 			label.classList.add("dropdown-label");
@@ -279,7 +279,7 @@ function toggleMoreDropdown() {
 			anchor = document.createElement("a");
 			anchor.setAttribute("id", "more-dropdown-collapseall");
 			anchor.setAttribute("href", "#");
-			anchor.setAttribute("onclick", "collapseAll()");
+			anchor.setAttribute("onclick", "collapseAll(); closeMoreDropdown();");
 
 			label = document.createElement("div");
 			label.classList.add("dropdown-label");

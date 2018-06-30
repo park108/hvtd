@@ -233,23 +233,44 @@ function loadPreviousTodo() {
 			}
 			
 			let isNone = false;
+			let blockLevel = 9999;
+			let blocked = false;
 
 			// Copy only incomplete node(Level 1 node has status none)
 			todoList.forEach(function(node) {
 
 				if(1 == node.level) {
 
-					if("N" == node.status) {
+					blockLevel = 9999;
+					blocked = false;
 
+					if("N" == node.status) {
 						isNone = true;
 					}
 					else {
-
 						isNone = false;
 					}
 				}
+				else if(!SETTINGS.copy_complete_child) {
 
-				if(isNone) {
+					if("N" == node.status) {
+
+						if(node.level <= blockLevel) {
+							blocked = false;
+							blockLevel = 9999;
+						}
+					}
+					else {
+
+						blocked = true;
+
+						if(node.level < blockLevel) {
+							blockLevel = node.level;
+						}
+					}
+				}
+
+				if(isNone && !blocked) {
 
 					// If has no data, remove space node for input
 					if(undefined == previousNode) {
@@ -265,8 +286,6 @@ function loadPreviousTodo() {
 			});		
 		}
 
-		setSaveIconVisibillity();
-
 	}).catch(function(error) {
 
 		log(error);
@@ -276,6 +295,8 @@ function loadPreviousTodo() {
 		// Release semaphore
 		GLOBAL_VARIABLE.now_loading = false;
 		setChanged(true);
+
+		setSaveIconVisibillity();
 	});
 }
 
