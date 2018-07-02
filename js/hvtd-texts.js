@@ -43,16 +43,16 @@ let TEXTS = {
 			"EN": "It has children. Do you delete it?",
 		},
 		"002": {
-			"KO": "이전 일자를 복사하시겠습니까?",
-			"EN": "Do you copy last todo?",
+			"KO": "",
+			"EN": "",
 		},
 		"003": {
 			"KO": "",
 			"EN": "",
 		},
 		"004": {
-			"KO": "데이터를 지우시겠습니까?",
-			"EN": "Do you clear data?",
+			"KO": "Todo를 지우시겠습니까?",
+			"EN": "Do you clear todo?",
 		},
 		"005": {
 			"KO": "변경된 내용이 있습니다. 정말 나가시겠습니까?",
@@ -76,7 +76,15 @@ let TEXTS = {
 		},
 		"010": {
 			"KO": "복사할 미완료 건이 없습니다.",
-			"EN": "There's no incomplete node",
+			"EN": "There's no incomplete to copy.",
+		},
+		"011": {
+			"KO": "Todo가 없는 날입니다.",
+			"EN": "There's no todo.",
+		},
+		"012": {
+			"KO": "Todo를 삭제했습니다.",
+			"EN": "Todo deleted.",
 		}
 	},
 	"WEEK_TEXT": {
@@ -174,7 +182,7 @@ let TEXTS = {
 			"EN": "Go Today",
 		},
 	},
-}
+};
 
 // Get tooltip
 function getTooltip(code) {

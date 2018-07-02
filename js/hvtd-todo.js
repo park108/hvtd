@@ -80,6 +80,7 @@ function saveTodo() {
 }
 
 // Save todo(asynchronous)
+// If has no follow up task, call this function.
 function saveTodoAsyc() {
 	saveTodo().then(function() {}, function() {});
 }
@@ -125,6 +126,8 @@ function loadTodo() {
 			clearTodo();
 			createNode();
 			closeModal();
+
+			setBottomMessage("warning", getMessage("011"));
 		}
 
 		// If has data, set data into page
@@ -138,7 +141,7 @@ function loadTodo() {
 					, node.status
 					, node.collapse
 					, node.contents);
-			});			
+			});
 		}
 
 		setChanged(false);
@@ -197,6 +200,7 @@ function deleteTodo() {
 
 				// Release semaphore
 				setSemaphore(false);
+				setBottomMessage("success", getMessage("012"));
 			});
 		}
 		, 
