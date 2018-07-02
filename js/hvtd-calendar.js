@@ -121,20 +121,26 @@ function setSelectedDateText() {
 
 function setDate(year, month, date) {
 
+	log(year + "-" + month + "-" + date);
+
 	// Check semaphore
 	if(!GLOBAL_VARIABLE.now_loading) {
 
-		saveTodo();
+		saveTodo().then(function(result) {
+		}, function(error) {
+			log(error);
+		}).finally(function() {
+				
+			GLOBAL_VARIABLE.selected_date = new Date(year, month, date);
+			createCalendar(GLOBAL_VARIABLE.selected_date);
 
-		GLOBAL_VARIABLE.selected_date = new Date(year, month, date);
-		createCalendar(GLOBAL_VARIABLE.selected_date);
+			setChanged(false);
+			setSaveIconVisibillity();
 
-		setChanged(false);
-		setSaveIconVisibillity();
-
-		clearTodo();
-		setSelectedDateText();
-		loadTodo();
+			clearTodo();
+			setSelectedDateText();
+			loadTodo();
+		});
 	}
 	else {
 		log("Now loading... Can't move another todo");
@@ -146,12 +152,14 @@ function setYesterday() {
 	// Check semaphore
 	if(!GLOBAL_VARIABLE.now_loading) {
 
-		saveTodo();
-
-		let yesterday = GLOBAL_VARIABLE.selected_date;
-		yesterday.setDate(yesterday.getDate() - 1);
-
-		setDate(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate());
+		saveTodo().then(function(result) {
+		}, function(error) {
+			log(error);
+		}).finally(function() {
+			let yesterday = GLOBAL_VARIABLE.selected_date;
+			yesterday.setDate(yesterday.getDate() - 1);
+			setDate(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate());
+		});
 	}
 	else {
 		log("Now loading... Can't move yesterday");
@@ -163,12 +171,14 @@ function setTomorrow() {
 	// Check semaphore
 	if(!GLOBAL_VARIABLE.now_loading) {
 
-		saveTodo();
-
-		let tomorrow = GLOBAL_VARIABLE.selected_date;
-		tomorrow.setDate(tomorrow.getDate() + 1);
-
-		setDate(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
+		saveTodo().then(function(result) {
+		}, function(error) {
+			log(error);
+		}).finally(function() {
+			let tomorrow = GLOBAL_VARIABLE.selected_date;
+			tomorrow.setDate(tomorrow.getDate() + 1);
+			setDate(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
+		});
 	}
 	else {
 		log("Now loading... Can't move tomorrow");
@@ -190,8 +200,12 @@ function setToday() {
 		}
 		else {
 
-			saveTodo();
-			setDate(today.getFullYear(), today.getMonth(), today.getDate());
+			saveTodo().then(function(result) {
+			}, function(error) {
+				log(error);
+			}).finally(function() {
+				setDate(today.getFullYear(), today.getMonth(), today.getDate());
+			});
 		}
 	}
 	else {

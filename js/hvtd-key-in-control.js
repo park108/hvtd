@@ -14,8 +14,9 @@ function keyInCommon(e) {
 
 	// Alt + S: Save
 	else if(e.altKey && 83 == e.which) {
-		saveTodo();
-		return false;
+		saveTodo().then(function() {}, function() {}).finally(function() {
+			return false;	
+		});
 	}
 
 	// Alt + 1: Expand all

@@ -1,77 +1,86 @@
 // Save todo
 function saveTodo() {
 
-	// No change do nothing
-	if(!isChanged()) {
-		log("No changes");
-		return false;
-	}
-	else if(GLOBAL_VARIABLE.now_loading) {
-		log("Now loading... Can't save");
-		return false;
-	}
+	return new Promise(function(resolve, reject) {
 
-	setChanged(false);
+		// No change do nothing
+		if(!isChanged()) {
+			reject(Error("No changes"));
+		}
+		else if(GLOBAL_VARIABLE.now_loading) {
+			reject(Error("Now processing... Can't save"));
+		}
 
-	log("Call...");
+		else {
 
-	// Get selected date
-	let yyyymmdd = getYYYYMMDD(GLOBAL_VARIABLE.selected_date);
+			setChanged(false);
 
-	let yearString = yyyymmdd.substring(0, 4);
-	let monthString = yyyymmdd.substring(4, 6);
-	let dateString = yyyymmdd.substring(6, 8);
+			// Set semaphore
+			setSemaphore(true, getMessage("008"));
 
-	// Set date for todo
-	let todo = {
-		"year": yearString,
-		"month": monthString,
-		"date": dateString,
-		"list": null
-	};
+			log("Call...");
 
-	// Set node list
-	let nodeList = getNodeList();
-	let todoList = [];
-	let nodeObject;
+			// Get selected date
+			let yyyymmdd = getYYYYMMDD(GLOBAL_VARIABLE.selected_date);
 
-	nodeList.forEach(function(node) {
+			let yearString = yyyymmdd.substring(0, 4);
+			let monthString = yyyymmdd.substring(4, 6);
+			let dateString = yyyymmdd.substring(6, 8);
 
-		nodeObject = new Object();
-		nodeObject.id = node.id;
-		nodeObject.level = node.getAttribute("level");
-		nodeObject.status = node.getAttribute("status");
-		nodeObject.collapse = E("collapse" + node.id).checked;
-		nodeObject.contents = E("contents" + node.id).innerHTML;
-		
-		todoList.push(nodeObject);
+			// Set date for todo
+			let todo = {
+				"year": yearString,
+				"month": monthString,
+				"date": dateString,
+				"list": null
+			};
+
+			// Set node list
+			let nodeList = getNodeList();
+			let todoList = [];
+			let nodeObject;
+
+			nodeList.forEach(function(node) {
+
+				nodeObject = new Object();
+				nodeObject.id = node.id;
+				nodeObject.level = node.getAttribute("level");
+				nodeObject.status = node.getAttribute("status");
+				nodeObject.collapse = E("collapse" + node.id).checked;
+				nodeObject.contents = E("contents" + node.id).innerHTML;
+				
+				todoList.push(nodeObject);
+			});
+
+			todo.list = todoList;
+
+			// Convert data to JSON string
+			let dataString = JSON.stringify(todo);
+
+			// Call API
+			let apiUrl = getApiUrl(API.TODO, USER.id + "/" + yyyymmdd);
+
+
+			callAPI(apiUrl, "POST", dataString).then(function(response) {
+
+				resolve(response);
+				setSaveIconVisibillity();
+
+			}, function(error) {
+
+				reject(Error("DB error!"));
+
+			}).finally(function() {
+
+				// Release semaphore
+				setSemaphore(false);
+			});
+		}
 	});
+}
 
-	todo.list = todoList;
-
-	// Convert data to JSON string
-	let dataString = JSON.stringify(todo);
-
-	// Call API
-	let apiUrl = getApiUrl(API.TODO, USER.id + "/" + yyyymmdd);
-
-	// Set semaphore
-	setSemaphore(true, getMessage("008"));
-
-	callAPI(apiUrl, "POST", dataString).then(function(response) {
-
-		log(response);
-		setSaveIconVisibillity();
-
-	}, function(error) {
-
-		log(error);
-
-	}).finally(function() {
-
-		// Release semaphore
-		setSemaphore(false);
-	});
+function saveTodoAsyc() {
+	saveTodo().then(function() {}, function() {});
 }
 
 // Load todo

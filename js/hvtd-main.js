@@ -10,7 +10,7 @@ window.onload = function() {
 	E("navigation-toolbar-copy").addEventListener("click", loadPreviousTodo, false);
 	E("navigation-toolbar-calendar").addEventListener("click", setCalendarVisibility, false);
 	E("navigation-toolbar-clear").addEventListener("click", deleteTodo, false);
-	E("navigation-toolbar-save").addEventListener("click", saveTodo, false);
+	E("navigation-toolbar-save").addEventListener("click", saveTodoAsyc, false);
 	E("navigation-toolbar-expandall").addEventListener("click", expandAll, false);
 	E("navigation-toolbar-collapseall").addEventListener("click", collapseAll, false);
 	E("modal-close").addEventListener("click", closeModal, false);

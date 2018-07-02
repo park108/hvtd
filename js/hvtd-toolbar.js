@@ -195,7 +195,7 @@ function toggleMoreDropdown() {
 			anchor = document.createElement("a");
 			anchor.setAttribute("id", "more-dropdown-save");
 			anchor.setAttribute("href", "#");
-			anchor.setAttribute("onclick", "saveTodo(); closeMoreDropdown();");
+			anchor.setAttribute("onclick", "saveTodo().then(function(result) {}, function(error) {}).finally(function() {closeMoreDropdown();});");
 
 			label = document.createElement("div");
 			label.classList.add("dropdown-label");

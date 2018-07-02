@@ -343,7 +343,7 @@ function setAutoSaveInterval(minutes) {
 
 		// Set timer if set auto save interval
 		if(0 < milliSecond) {
-			GLOBAL_VARIABLE.auto_save_timer = setInterval(saveTodo, milliSecond);
+			GLOBAL_VARIABLE.auto_save_timer = setInterval(saveTodoAsyc, milliSecond);
 			log("SET INTERVAL for AUTO SAVE by = " + minNumber + " / ID = " + GLOBAL_VARIABLE.auto_save_timer);
 		}
 	}
