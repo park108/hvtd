@@ -27,3 +27,17 @@ function setNodeFrameMargin(node) {
 	let space = marginLeft + (sideMargin * 2);
 	node.style.width = "calc(100% - " + space + "px)";
 }
+
+function setSemaphore(set, message) {
+
+	GLOBAL_VARIABLE.now_loading = set;
+	E("screen-message").innerHTML = "";
+
+	if(GLOBAL_VARIABLE.now_loading) {
+		E("screen-message").innerHTML = message;
+		E("screen").style.display = "block";
+	}
+	else {
+		E("screen").style.display = "none";	
+	}
+}

@@ -432,7 +432,7 @@ button {
 
 .settings-item-title {
 	float: left;
-	min-width: 150px;
+	min-width: 180px;
 	width: 30%;
 	max-width: 300px;
 }
@@ -512,4 +512,36 @@ select {
 	background-color: #ccc;
 	color: #666;
 	border-color: rgba(0,0,0,0);
+}
+
+#screen {
+	display: none;
+	position: absolute;
+	z-index: 500;
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full Height */
+	background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+	overflow: auto; /* Enable scroll if needed */
+}
+
+#screen-message {
+	max-width: 600px;
+	width: 60%;
+	min-width: 300px;
+
+	background-color: #fefefe;
+	margin-top: 100px;
+	margin-left: 20%;
+	margin-right: 20%;
+	padding-top: 20px;
+	padding-bottom: 20px;
+
+	border: 1px solid #888;
+	border-radius: 5px;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+
+	text-align: center;
+	font-size: 1em;
 }

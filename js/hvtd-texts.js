@@ -58,6 +58,22 @@ let TEXTS = {
 			"KO": "변경된 내용이 있습니다. 정말 나가시겠습니까?",
 			"EN": "Changes exist. Are you sure?",
 		},
+		"006": {
+			"KO": "처리중...",
+			"EN": "Processing...",
+		},
+		"007": {
+			"KO": "조회중...",
+			"EN": "Loading...",
+		},
+		"008": {
+			"KO": "저장중...",
+			"EN": "Saving...",
+		},
+		"008": {
+			"KO": "삭제중...",
+			"EN": "Clearing...",
+		}
 	},
 	"WEEK_TEXT": {
 		0: {"KO": "일", "EN": "SUN"},

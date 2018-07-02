@@ -55,6 +55,9 @@ function saveTodo() {
 	// Call API
 	let apiUrl = getApiUrl(API.TODO, USER.id + "/" + yyyymmdd);
 
+	// Set semaphore
+	setSemaphore(true, getMessage("008"));
+
 	callAPI(apiUrl, "POST", dataString).then(function(response) {
 
 		log(response);
@@ -64,6 +67,10 @@ function saveTodo() {
 
 		log(error);
 
+	}).finally(function() {
+
+		// Release semaphore
+		setSemaphore(false);
 	});
 }
 
@@ -85,7 +92,7 @@ function loadTodo() {
 	}
 
 	// Set semaphore
-	GLOBAL_VARIABLE.now_loading = true;
+	setSemaphore(true, getMessage("007"));
 
 	callAPI(apiUrl, "GET").then(function(response) {
 
@@ -134,7 +141,7 @@ function loadTodo() {
 	}).finally(function() {
 
 		// Release semaphore
-		GLOBAL_VARIABLE.now_loading = false;
+		setSemaphore(false);
 	});
 }
 
@@ -152,6 +159,9 @@ function deleteTodo() {
 
 			// Call API
 			let apiUrl = getApiUrl(API.TODO, USER.id + "/" + yyyymmdd);
+
+			// Set semaphore
+			setSemaphore(true, getMessage("009"));
 
 			callAPI(apiUrl, "DELETE").then(function(response) {
 
@@ -173,6 +183,10 @@ function deleteTodo() {
 
 				log(error);
 
+			}).finally(function() {
+
+				// Release semaphore
+				setSemaphore(false);
 			});
 		}
 		, 
@@ -199,7 +213,7 @@ function loadPreviousTodo() {
 	}
 
 	// Set semaphore
-	GLOBAL_VARIABLE.now_loading = true;
+	setSemaphore(true, getMessage("007"));
 
 	callAPI(apiUrl, "GET").then(function(response) {
 
@@ -293,7 +307,7 @@ function loadPreviousTodo() {
 	}).finally(function() {
 
 		// Release semaphore
-		GLOBAL_VARIABLE.now_loading = false;
+		setSemaphore(false);
 		setChanged(true);
 
 		setSaveIconVisibillity();
