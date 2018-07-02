@@ -73,6 +73,10 @@ let TEXTS = {
 		"009": {
 			"KO": "삭제중...",
 			"EN": "Clearing...",
+		},
+		"010": {
+			"KO": "복사할 미완료 건이 없습니다.",
+			"EN": "There's no incomplete node",
 		}
 	},
 	"WEEK_TEXT": {

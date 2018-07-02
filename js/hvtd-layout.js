@@ -31,13 +31,28 @@ function setNodeFrameMargin(node) {
 function setSemaphore(set, message) {
 
 	GLOBAL_VARIABLE.now_loading = set;
-	E("screen-message").innerHTML = "";
+	E("processing-message").innerHTML = "";
 
 	if(GLOBAL_VARIABLE.now_loading) {
-		E("screen-message").innerHTML = message;
-		E("screen").style.display = "block";
+		E("processing-message").innerHTML = message;
+		E("processing").style.display = "block";
 	}
 	else {
-		E("screen").style.display = "none";	
+		E("processing").style.display = "none";	
 	}
+}
+
+function setBottomMessage(type, message) {
+
+	// Show bottom message bar
+	let bottomMessage = E("bottom-message");
+	bottomMessage.innerHTML = "‣ " + message;
+	bottomMessage.classList.add(type);
+	bottomMessage.classList.add("show");
+
+	// Hide 2 seconds after
+	setTimeout(function() {
+		bottomMessage.classList.remove("show");
+		bottomMessage.classList.remove(type);
+	}, 2000);
 }

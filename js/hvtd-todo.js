@@ -79,6 +79,7 @@ function saveTodo() {
 	});
 }
 
+// Save todo(asynchronous)
 function saveTodoAsyc() {
 	saveTodo().then(function() {}, function() {});
 }
@@ -224,6 +225,8 @@ function loadPreviousTodo() {
 	// Set semaphore
 	setSemaphore(true, getMessage("007"));
 
+	let copiedCount = 0;
+
 	callAPI(apiUrl, "GET").then(function(response) {
 
 		log(response);
@@ -305,8 +308,14 @@ function loadPreviousTodo() {
 						, node.status
 						, node.collapse
 						, node.contents);
+
+					++copiedCount;
 				}
-			});		
+			});
+
+			if(0 == copiedCount) {
+				setBottomMessage("warning", getMessage("010"));
+			}
 		}
 
 	}).catch(function(error) {
@@ -317,7 +326,14 @@ function loadPreviousTodo() {
 
 		// Release semaphore
 		setSemaphore(false);
-		setChanged(true);
+
+		// If has change, set changed
+		if(0 == copiedCount) {
+			setChanged(false);
+		}
+		else {
+			setChanged(true);
+		}
 
 		setSaveIconVisibillity();
 	});

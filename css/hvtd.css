@@ -514,7 +514,7 @@ select {
 	border-color: rgba(0,0,0,0);
 }
 
-#screen {
+#processing {
 	display: none;
 	position: absolute;
 	z-index: 500;
@@ -526,7 +526,7 @@ select {
 	overflow: auto; /* Enable scroll if needed */
 }
 
-#screen-message {
+#processing-message {
 	max-width: 600px;
 	width: 80%;
 
@@ -542,4 +542,40 @@ select {
 
 	text-align: center;
 	font-size: 1em;
+}
+
+#bottom-message {
+	position: absolute;
+	z-index: 200;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+
+	border: 1px solid #888;
+	box-shadow: 8px 8px 16px 8px rgba(0,0,0,0.5);
+
+	visibility: hidden;
+	opacity: 0;
+	padding: 10px 20px;
+	transition: visibility 0.2s linear, opacity 0.2s linear;
+}
+
+#bottom-message.show {
+	visibility: visible;
+	opacity: 1;
+}
+
+#bottom-message.success {
+	color: seagreen;
+	background-color: #eeffee;
+}
+
+#bottom-message.warning {
+	color: peru;
+	background-color: #ffffee;
+}
+
+#bottom-message.error {
+	color: firebrick;
+	background-color: #ffeeee;
 }
