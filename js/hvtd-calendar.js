@@ -75,6 +75,8 @@ function createCalendar(d) {
 
 function setCalendarVisibility(show) {
 
+	closeMoreDropdown();
+
 	let header = E("header");
 	let calendar = E("calendar");
 
@@ -186,6 +188,8 @@ function setTomorrow() {
 }
 
 function setToday() {
+
+	closeMoreDropdown();
 
 	// Check semaphore
 	if(!GLOBAL_VARIABLE.now_loading) {

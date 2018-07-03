@@ -553,7 +553,6 @@ select {
 	bottom: 0;
 	width: 100%;
 
-	border: 1px solid #888;
 	box-shadow: 8px 8px 16px 8px rgba(0,0,0,0.5);
 
 	visibility: hidden;

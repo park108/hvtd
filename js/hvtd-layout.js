@@ -74,10 +74,21 @@ function setBottomMessage(type, message) {
 	bottomMessage.setAttribute("id", "bottom-message");
 	document.body.appendChild(bottomMessage);
 
+	let icon = "";
+	if("success" == type) {
+		icon = "😎";
+	}
+	else if("warning" == type) {
+		icon = "🤔";
+	}
+	else if("error" == type) {
+		icon = "😵";
+	}
+
 	setTimeout(() => {
 
 		// Show bottom message bar
-		bottomMessage.innerHTML = "‣ " + message;
+		bottomMessage.innerHTML = icon + " " + message;
 		bottomMessage.classList.add(type);
 		bottomMessage.classList.add("show");
 

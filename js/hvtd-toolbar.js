@@ -100,8 +100,6 @@ function setSaveIconVisibillity() {
 
 function createMoreButton() {
 
-	log();
-
 	let moreDiv = E("navigation-toolbar-more");
 
 	if(undefined == moreDiv) {
@@ -153,7 +151,7 @@ function toggleMoreDropdown() {
 			anchor = document.createElement("a");
 			anchor.setAttribute("id", "more-dropdown-today");
 			anchor.setAttribute("href", "#");
-			anchor.setAttribute("onclick", "setToday(); closeMoreDropdown();");
+			anchor.setAttribute("onclick", "setToday();");
 
 			label = document.createElement("div");
 			label.classList.add("dropdown-label");
@@ -174,7 +172,7 @@ function toggleMoreDropdown() {
 			anchor = document.createElement("a");
 			anchor.setAttribute("id", "more-dropdown-copy");
 			anchor.setAttribute("href", "#");
-			anchor.setAttribute("onclick", "loadPreviousTodo(); closeMoreDropdown();");
+			anchor.setAttribute("onclick", "loadPreviousTodo();");
 
 			label = document.createElement("div");
 			label.classList.add("dropdown-label");
@@ -195,7 +193,7 @@ function toggleMoreDropdown() {
 			anchor = document.createElement("a");
 			anchor.setAttribute("id", "more-dropdown-save");
 			anchor.setAttribute("href", "#");
-			anchor.setAttribute("onclick", "saveTodo().then(function(result) {}, function(error) {}).finally(function() {closeMoreDropdown();});");
+			anchor.setAttribute("onclick", "saveTodoAsync();");
 
 			label = document.createElement("div");
 			label.classList.add("dropdown-label");
@@ -216,7 +214,7 @@ function toggleMoreDropdown() {
 			anchor = document.createElement("a");
 			anchor.setAttribute("id", "more-dropdown-clear");
 			anchor.setAttribute("href", "#");
-			anchor.setAttribute("onclick", "deleteTodo(); closeMoreDropdown();");
+			anchor.setAttribute("onclick", "deleteTodo();");
 
 			label = document.createElement("div");
 			label.classList.add("dropdown-label");
@@ -237,7 +235,7 @@ function toggleMoreDropdown() {
 			anchor = document.createElement("a");
 			anchor.setAttribute("id", "more-dropdown-calendar");
 			anchor.setAttribute("href", "#");
-			anchor.setAttribute("onclick", "setCalendarVisibility(); closeMoreDropdown();");
+			anchor.setAttribute("onclick", "setCalendarVisibility();");
 
 			label = document.createElement("div");
 			label.classList.add("dropdown-label");
@@ -258,7 +256,7 @@ function toggleMoreDropdown() {
 			anchor = document.createElement("a");
 			anchor.setAttribute("id", "more-dropdown-expandall");
 			anchor.setAttribute("href", "#");
-			anchor.setAttribute("onclick", "expandAll(); closeMoreDropdown();");
+			anchor.setAttribute("onclick", "expandAll();");
 
 			label = document.createElement("div");
 			label.classList.add("dropdown-label");
@@ -279,7 +277,7 @@ function toggleMoreDropdown() {
 			anchor = document.createElement("a");
 			anchor.setAttribute("id", "more-dropdown-collapseall");
 			anchor.setAttribute("href", "#");
-			anchor.setAttribute("onclick", "collapseAll(); closeMoreDropdown();");
+			anchor.setAttribute("onclick", "collapseAll();");
 
 			label = document.createElement("div");
 			label.classList.add("dropdown-label");

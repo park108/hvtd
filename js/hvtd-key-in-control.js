@@ -345,8 +345,6 @@ function handleTouchStart(e) {
 	let touches = e.changedTouches;
 	GLOBAL_VARIABLE.touch_x = touches[0].clientX;
 	GLOBAL_VARIABLE.touch_y = touches[0].clientY;
-
-	log("COORD = " + GLOBAL_VARIABLE.touch_x + ", " + GLOBAL_VARIABLE.touchY);
 }
 
 function handleTouchEnd(e) {
@@ -358,8 +356,6 @@ function handleTouchEnd(e) {
 	let touches = e.changedTouches;
 	xDiff = touches[0].clientX - GLOBAL_VARIABLE.touch_x;
 	yDiff = touches[0].clientY - GLOBAL_VARIABLE.touch_y;
-
-	log("DIFF = " + xDiff + ", " + yDiff);
 
 	let isHorizontalMove = (Math.abs(xDiff) > Math.abs(yDiff)); 
 	let isVerticalMove = !isHorizontalMove;

@@ -81,7 +81,8 @@ function saveTodo() {
 
 // Save todo(asynchronous)
 // If has no follow up task, call this function.
-function saveTodoAsyc() {
+function saveTodoAsync() {
+	closeMoreDropdown();
 	saveTodo().then(function() {}, function() {});
 }
 
@@ -162,6 +163,7 @@ function loadTodo() {
 function deleteTodo() {
 
 	log("Call...");
+	closeMoreDropdown();
 
 	// Get selected date
 	let yyyymmdd = getYYYYMMDD(GLOBAL_VARIABLE.selected_date);
@@ -213,6 +215,7 @@ function deleteTodo() {
 function loadPreviousTodo() {
 
 	log("Call...");
+	closeMoreDropdown();
 
 	// Get selected date
 	let yyyymmdd = getYYYYMMDD(GLOBAL_VARIABLE.selected_date);

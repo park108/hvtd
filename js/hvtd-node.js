@@ -1097,7 +1097,7 @@ function executeCancel(checkbox, node, byClick) {
 
 function expandAll() {
 
-	log();
+	closeMoreDropdown();
 
 	let nodeList = getNodeList();
 	let checkbox;
@@ -1122,7 +1122,7 @@ function expandAll() {
 
 function collapseAll() {
 
-	log();
+	closeMoreDropdown();
 
 	let nodeList = getNodeList();
 	let checkbox;
