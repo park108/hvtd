@@ -85,20 +85,20 @@ function setBottomMessage(type, message) {
 		icon = "😵";
 	}
 
-	setTimeout(() => {
+	setTimeout(function() {
 
 		// Show bottom message bar
 		bottomMessage.innerHTML = icon + " " + message;
 		bottomMessage.classList.add(type);
 		bottomMessage.classList.add("show");
 
-		setTimeout(() => {
+		setTimeout(function() {
 
 			bottomMessage.classList.remove("show");
 			bottomMessage.classList.remove(type);
 
 			// Remove object from body
-			setTimeout(() => {
+			setTimeout(function() {
 				document.body.removeChild(bottomMessage);
 			}, 200); // 0.2 sec for animation
 
