@@ -32,6 +32,10 @@ let TEXTS = {
 			"KO": "이전 미완료건 복사",
 			"EN": "Copy Previous",
 		},
+		"008": {
+			"KO": "단축키 보기",
+			"EN": "View Shortcuts",
+		},
 	},
 	"MESSAGE": {
 		"000": {
@@ -177,9 +181,49 @@ let TEXTS = {
 			"KO": "이전 미완료건 복사",
 			"EN": "Copy Previous",
 		},
+		"SHORTCUTS_IN_TODO": {
+			"KO": "Todo 작성중 단축키",
+			"EN": "Shortcuts in Todo",
+		},
+		"SHORTCUTS_IN_COMMON": {
+			"KO": "일반 단축키",
+			"EN": "Shortcuts in Common",
+		},
 		"GO_TODAY": {
 			"KO": "오늘로 이동",
 			"EN": "Go Today",
+		},
+		"GO_YESTERDAY": {
+			"KO": "어제로 이동",
+			"EN": "Go Yesterday",
+		},
+		"GO_TOMORROW": {
+			"KO": "내일로 이동",
+			"EN": "Go Tomorrow",
+		},
+		"ADD_LEVEL": {
+			"KO": "노드 레벨 더하기",
+			"EN": "Add Node Level",
+		},
+		"SUBTRACT_LEVEL": {
+			"KO": "노드 레벨 빼기",
+			"EN": "Subtract Node Level",
+		},
+		"GO_FIRST": {
+			"KO": "첫 노드로 이동",
+			"EN": "Go First Node",
+		},
+		"GO_LAST": {
+			"KO": "마지막 노드로 이동",
+			"EN": "Go Last Node",
+		},
+		"MOVE_UP": {
+			"KO": "노드를 위로 이동",
+			"EN": "Move Node Up",
+		},
+		"MOVE_DOWN": {
+			"KO": "노드를 아래로 이동",
+			"EN": "Move Node Down",
 		},
 	},
 };
@@ -204,6 +248,7 @@ function setTooltipText() {
 		setDomAttribute("navigation-toolbar-expandall", "data-tooltip", getTooltip("003"));
 		setDomAttribute("navigation-toolbar-collapseall", "data-tooltip", getTooltip("004"));
 		setDomAttribute("user-icon", "data-tooltip", getTooltip("005"));
+		setDomAttribute("shortcut-button", "data-tooltip", getTooltip("008"));
 	}
 	else {
 		removeDomAttribute("navigation-toolbar-today", "data-tooltip");
@@ -214,6 +259,7 @@ function setTooltipText() {
 		removeDomAttribute("navigation-toolbar-expandall", "data-tooltip");
 		removeDomAttribute("navigation-toolbar-collapseall", "data-tooltip");
 		removeDomAttribute("user-icon", "data-tooltip");
+		removeDomAttribute("shortcut-button", "data-tooltip");
 	}
 }
 

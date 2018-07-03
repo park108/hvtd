@@ -227,7 +227,7 @@ function getYYYYMMDD(inputDate) {
 // Open confirm modal
 function openConfirmModal(message, callback1, callback2) {
 
-	// Create modal display
+	// Create confirm modal
 	let confirm = document.createElement("div");
 	confirm.setAttribute("id", "confirm");
 	confirm.classList.add("modal");

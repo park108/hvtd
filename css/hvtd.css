@@ -114,7 +114,7 @@ body {
 	float: left;
 }
 
-.dropdown-shortcut {
+.shortcut {
 	float: right;
 	text-decoration: underline;
 	font-weight: 500;
@@ -421,26 +421,26 @@ button {
 	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
 }
 
-#settings-list {
+.modal-panel {
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
 	border-top: 2px black solid;
 }
 
-.settings-item {
+.modal-item {
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
 	height: 2em;
 }
 
-.settings-item-title {
+.modal-item-title {
 	float: left;
 	min-width: 180px;
 	width: 30%;
 	max-width: 300px;
 }
 
-.settings-item-value {
+.modal-item-value {
 	float: left;
 	width: 120px;
 }
@@ -519,7 +519,7 @@ select {
 
 #processing {
 	position: absolute;
-	z-index: 500;
+	z-index: 300;
 	left: 0;
 	top: 0;
 	width: 100%; /* Full width */
@@ -579,4 +579,42 @@ select {
 #bottom-message.error {
 	color: firebrick;
 	background-color: #ffeeee;
+}
+
+#shortcut-button {
+	position: fixed;
+	padding: 5px;
+	width: 26px;
+	height: 26px;
+	right: 100px;
+	bottom: 50px;
+	z-index: 100;
+	background-color: white;
+	/*border-radius: 50%;*/
+	color: #666666;
+	cursor: pointer;
+	border: 3px solid #666666;
+	border-radius: 50%;
+	opacity: 0.3;
+}
+
+#shortcut-button img {
+	width: 100%;
+	height: 100%;
+}
+
+#shortcut-button:hover {
+	opacity: 1;
+	border-radius: 50%;
+}
+
+.shortcut-item {
+	padding-top: 0.3em;
+	padding-bottom: 0.3em;
+	height: 1.6em;
+}
+
+.shorcut-item-title {
+	min-width: 180px;
+	width: 70%;
 }

@@ -15,7 +15,6 @@ function openSettings() {
 
 	// Create settings close button
 	let settingsClose = document.createElement("span");
-	settingsClose.setAttribute("id", "settings-close");
 	settingsClose.classList.add("close");
 	settingsClose.addEventListener("click", closeSettings, false);
 	settingsClose.innerHTML = "&times;";
@@ -29,6 +28,7 @@ function openSettings() {
 	// Create settings list
 	let settingsList = document.createElement("div");
 	settingsList.setAttribute("id", "settings-list");
+	settingsList.classList.add("modal-panel");
 	settingsContent.appendChild(settingsList);
 
 	// Create ok button
@@ -215,16 +215,16 @@ function getSettingsItem(id, value) {
 
 	let itemTitle = document.createElement("div");
 	itemTitle.setAttribute("id", id);
-	itemTitle.classList.add("settings-item-title");
+	itemTitle.classList.add("modal-item-title");
 
 	let itemValue = document.createElement("div");
-	itemValue.setAttribute("class", "settings-item-value");
+	itemValue.setAttribute("class", "modal-item-value");
 	if(undefined != value && null != value && "" != value) {
 		itemValue.appendChild(value);
 	}
 
 	let item = document.createElement("div");
-	item.classList.add("settings-item");
+	item.classList.add("modal-item");
 	item.appendChild(itemTitle);
 	item.appendChild(itemValue);
 
@@ -252,7 +252,10 @@ function closeSettings() {
 
 	// Remove settings window
 	let settings = E("settings");
-	document.body.removeChild(settings);
+
+	if(undefined != settings) {
+		document.body.removeChild(settings);
+	}
 }
 
 function setLanguage(selectedLanguage) {

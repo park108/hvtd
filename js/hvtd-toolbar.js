@@ -158,7 +158,7 @@ function toggleMoreDropdown() {
 			label.innerHTML = getKeyword("GO_TODAY");
 
 			shortcut = document.createElement("div");
-			shortcut.classList.add("dropdown-shortcut");
+			shortcut.classList.add("shortcut");
 			shortcut.innerHTML = "Alt T";
 
 			anchor.appendChild(label);
@@ -179,7 +179,7 @@ function toggleMoreDropdown() {
 			label.innerHTML = getKeyword("COPY_PREVIOUS");
 
 			shortcut = document.createElement("div");
-			shortcut.classList.add("dropdown-shortcut");
+			shortcut.classList.add("shortcut");
 			shortcut.innerHTML = "";
 
 			anchor.appendChild(label);
@@ -200,7 +200,7 @@ function toggleMoreDropdown() {
 			label.innerHTML = getKeyword("SAVE");
 
 			shortcut = document.createElement("div");
-			shortcut.classList.add("dropdown-shortcut");
+			shortcut.classList.add("shortcut");
 			shortcut.innerHTML = "Alt S";
 
 			anchor.appendChild(label);
@@ -221,7 +221,7 @@ function toggleMoreDropdown() {
 			label.innerHTML = getKeyword("CLEAR");
 
 			shortcut = document.createElement("div");
-			shortcut.classList.add("dropdown-shortcut");
+			shortcut.classList.add("shortcut");
 			shortcut.innerHTML = "";
 
 			anchor.appendChild(label);
@@ -242,7 +242,7 @@ function toggleMoreDropdown() {
 			label.innerHTML = getKeyword("TOGGLE_CALENDAR");
 
 			shortcut = document.createElement("div");
-			shortcut.classList.add("dropdown-shortcut");
+			shortcut.classList.add("shortcut");
 			shortcut.innerHTML = "Alt C";
 
 			anchor.appendChild(label);
@@ -263,7 +263,7 @@ function toggleMoreDropdown() {
 			label.innerHTML = getKeyword("EXPAND_ALL");
 
 			shortcut = document.createElement("div");
-			shortcut.classList.add("dropdown-shortcut");
+			shortcut.classList.add("shortcut");
 			shortcut.innerHTML = "Alt 1";
 
 			anchor.appendChild(label);
@@ -284,7 +284,7 @@ function toggleMoreDropdown() {
 			label.innerHTML = getKeyword("COLLAPSE_ALL");
 
 			shortcut = document.createElement("div");
-			shortcut.classList.add("dropdown-shortcut");
+			shortcut.classList.add("shortcut");
 			shortcut.innerHTML = "Alt 2";
 
 			anchor.appendChild(label);
@@ -315,4 +315,104 @@ function closeMoreDropdown() {
 function setTodayIconDate() {
 
 	E("toolbar-icon-today").innerHTML = new Date().getDate();
+}
+
+function openShortcuts() {
+
+	// Create confirm modal
+	let shortcuts = document.createElement("div");
+	shortcuts.setAttribute("id", "shortcuts");
+	shortcuts.classList.add("modal");
+	shortcuts.style.display = "block";
+	document.body.appendChild(shortcuts);
+
+	// Create content
+	let content = document.createElement("div");
+	content.classList.add("modal-content");
+	shortcuts.appendChild(content);
+
+	// Create settings close button
+	let close = document.createElement("span");
+	close.classList.add("close");
+	close.addEventListener("click", closeShortcuts, false);
+	close.innerHTML = "&times;";
+	content.appendChild(close);
+
+	// Create shortcuts in todo
+	let title = document.createElement("p");
+	title.innerHTML = getKeyword("SHORTCUTS_IN_TODO");
+	content.appendChild(title);
+
+	let shortcutsInTodo = document.createElement("div");
+	shortcutsInTodo.classList.add("modal-panel");
+	content.appendChild(shortcutsInTodo);
+
+	shortcutsInTodo.appendChild(createShortcutItem(getKeyword("ADD_LEVEL"), "Tab"));
+	shortcutsInTodo.appendChild(createShortcutItem(getKeyword("SUBTRACT_LEVEL"), "Shift Tab"));
+	shortcutsInTodo.appendChild(createShortcutItem(getKeyword("GO_FIRST"), "Ctrl ↑"));
+	shortcutsInTodo.appendChild(createShortcutItem(getKeyword("GO_LAST"), "Ctrl ↓"));
+	shortcutsInTodo.appendChild(createShortcutItem(getKeyword("MOVE_UP"), "Shift ↑"));
+	shortcutsInTodo.appendChild(createShortcutItem(getKeyword("MOVE_DOWN"), "Shift ↓"));
+
+	// Create shortcuts in common
+	title = document.createElement("p");
+	title.innerHTML = getKeyword("SHORTCUTS_IN_COMMON");
+	content.appendChild(title);
+
+	let shortcutssInCommon = document.createElement("div");
+	shortcutssInCommon.classList.add("modal-panel");
+	content.appendChild(shortcutssInCommon);
+
+	shortcutssInCommon.appendChild(createShortcutItem(getKeyword("GO_TODAY"), "Alt T"));
+	shortcutssInCommon.appendChild(createShortcutItem(getKeyword("GO_YESTERDAY"), "Ctrl Alt ←"));
+	shortcutssInCommon.appendChild(createShortcutItem(getKeyword("GO_TOMORROW"), "Ctrl Alt →"));
+	shortcutssInCommon.appendChild(createShortcutItem(getKeyword("TOGGLE_CALENDAR"), "Alt C"));
+	shortcutssInCommon.appendChild(createShortcutItem(getKeyword("SAVE"), "Alt S"));
+	shortcutssInCommon.appendChild(createShortcutItem(getKeyword("EXPAND_ALL"), "Alt 1"));
+	shortcutssInCommon.appendChild(createShortcutItem(getKeyword("COLLAPSE_ALL"), "Alt 2"));
+
+	// Create ok button
+	let okButton = document.createElement("button");
+	okButton.classList.add("button-ok");
+	okButton.classList.add("button-set-single");
+	okButton.addEventListener("click", closeShortcuts, false);
+	okButton.innerHTML = getKeyword("OK");
+	content.appendChild(okButton);
+}
+
+function hideShortcutButton() {
+
+	let button = E("shortcut");
+
+	if(undefined != shortcut) {
+		button.style.display = "none";
+	}
+}
+
+function createShortcutItem(desc, key) {
+
+	let item = document.createElement("div");
+	item.classList.add("shortcut-item");
+
+	let description = document.createElement("span");
+	description.classList.add("shortcut-item-title");
+	description.innerHTML = desc;
+
+	let shortcut = document.createElement("span");
+	shortcut.classList.add("shortcut");
+	shortcut.innerHTML = key;
+
+	item.appendChild(description);
+	item.appendChild(shortcut);
+
+	return item;
+}
+
+function closeShortcuts() {
+
+	let shorcuts = E("shortcuts");
+
+	if(undefined != shortcuts) {
+		document.body.removeChild(shortcuts);
+	}
 }
