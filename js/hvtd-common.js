@@ -87,6 +87,13 @@ function getXMLHttpRequestObject() {
 	return req;
 }
 
+function setForEachFunction() {
+	
+	if(window.XMLHttpRequest) {
+		NodeList.prototype.forEach = Array.prototype.forEach;
+	}
+}
+
 // Get API URL
 function getApiUrl(api, additionalInfo) {
 
@@ -135,7 +142,7 @@ function callAPI(apiUrl, method, data) {
 }
 
 function isInt(data) {
-	
+
 	if (data === parseInt(data, 10)) {
 		return true;
 	}

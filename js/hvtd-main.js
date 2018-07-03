@@ -2,6 +2,9 @@ window.onload = function() {
 
 	log();
 
+	// Set convert function for IE
+	setForEachFunction();
+
 	// Set event listners
 	document.body.addEventListener("keydown", keyInCommon, false);
 	document.addEventListener("touchstart", handleTouchStart, false);
