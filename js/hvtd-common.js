@@ -224,19 +224,40 @@ function getYYYYMMDD(inputDate) {
 	return year + month + date;
 }
 
-// Open modal popup
-function openModal(message, callback1, callback2) {
+// Open confirm modal
+function openConfirmModal(message, callback1, callback2) {
 
-	// Set modal display
-	let modal = E("modal");
-	modal.style.display = "block";
+	// Create modal display
+	let confirm = document.createElement("div");
+	confirm.setAttribute("id", "confirm");
+	confirm.classList.add("modal");
+	confirm.style.display = "block";
+	document.body.appendChild(confirm);
 
-	// Set message
-	let messageDom = E("modal-message");
-	messageDom.innerHTML = message;
+	// Create content
+	let content = document.createElement("div");
+	content.classList.add("modal-content");
+	confirm.appendChild(content);
 
-	// Get modal-button-set
-	let buttonSet = E("modal-button-set");
+	// Create close button
+	let closeButton = document.createElement("span");
+	closeButton.setAttribute("id", "confirm-close");
+	closeButton.classList.add("close");
+	closeButton.addEventListener("click", closeConfirmModal, false);
+	closeButton.innerHTML = "&times;";
+	content.appendChild(closeButton);
+
+	// Create message paragraph
+	let messageParagraph = document.createElement("p");
+	messageParagraph.innerHTML = message;
+	content.appendChild(messageParagraph);
+
+	// Create button set
+	let buttonSet = document.createElement("div");
+	buttonSet.classList.add("button-set");
+	content.appendChild(buttonSet);
+
+	// Create buttons
 	let hasButtonOk = false;
 	let hasButtonCancel = false;
 
@@ -275,35 +296,14 @@ function openModal(message, callback1, callback2) {
 	else if(!hasButtonOk && hasButtonCancel) {
 		E("modal-button-cancel").classList.add("button-set-single");
 	}
-
-	// Set button Signin
-	let buttonSignin = E("modal-button-signin");
-	let buttonClose = E("modal-close");
-
-	if("" == USER.token || null == USER.token) {
-		buttonSignin.style.display = "";
-		buttonClose.style.display = "none";
-	}
-	else {
-		buttonSignin.style.display = "none";
-		buttonClose.style.display = "";
-	}
 }
 
-// Close modal popup
-function closeModal() {
+// Close confirm modal
+function closeConfirmModal() {
 
-	let modal = E("modal");
-	modal.style.display = "none";
+	let confirm = E("confirm");
 
-	let buttonSet = E("modal-button-set");
-	let buttonOk = E("modal-button-ok");
-	let buttonCancel = E("modal-button-cancel");
-
-	if(undefined != buttonOk) {
-		buttonSet.removeChild(buttonOk);
-	}
-	if(undefined != buttonCancel) {
-		buttonSet.removeChild(buttonCancel);	
+	if(undefined != confirm) {
+		document.body.removeChild(confirm);
 	}
 }

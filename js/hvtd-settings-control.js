@@ -3,12 +3,41 @@ function openSettings() {
 	// Close user dropdown menu
 	toggleUserDropdown();
 
-	// Open settings
-	let settings = E("settings");
-	settings.style.display = "block";
+	// Create settings
+	let settings = document.createElement("div");
+	settings.setAttribute("id", "settings");
+	document.body.appendChild(settings);
 
-	// Get settings list
-	let settingsList = E("settings-list");
+	// Create settings content
+	let settingsContent = document.createElement("div");
+	settingsContent.setAttribute("id", "settings-content");
+	settings.appendChild(settingsContent);
+
+	// Create settings close button
+	let settingsClose = document.createElement("span");
+	settingsClose.setAttribute("id", "settings-close");
+	settingsClose.classList.add("close");
+	settingsClose.addEventListener("click", closeSettings, false);
+	settingsClose.innerHTML = "&times;";
+	settingsContent.appendChild(settingsClose);
+
+	// Create settings title
+	let settingsTitle = document.createElement("p");
+	settingsTitle.setAttribute("id", "settings-title");
+	settingsContent.appendChild(settingsTitle);
+
+	// Create settings list
+	let settingsList = document.createElement("div");
+	settingsList.setAttribute("id", "settings-list");
+	settingsContent.appendChild(settingsList);
+
+	// Create ok button
+	let settingsOkButton = document.createElement("button");
+	settingsOkButton.setAttribute("id", "settings-close-button");
+	settingsOkButton.classList.add("button-ok");
+	settingsOkButton.classList.add("button-set-single");
+	settingsOkButton.addEventListener("click", closeSettings, false);
+	settingsContent.appendChild(settingsOkButton);
 
 	// Create settings item
 	let select, option, checkbox, span, label, item, div;
@@ -221,12 +250,9 @@ function setText() {
 
 function closeSettings() {
 
-	// Remove settings items
-	let settingsList = E("settings-list");
-	settingsList.innerHTML = "";
-
+	// Remove settings window
 	let settings = E("settings");
-	settings.style.display = "none";
+	document.body.removeChild(settings);
 }
 
 function setLanguage(selectedLanguage) {

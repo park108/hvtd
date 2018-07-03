@@ -149,12 +149,12 @@ function keyInContents(e) {
 
 				if(hasChildNode(currentNode)) {
 
-					openModal(getMessage("001")
+					openConfirmModal(getMessage("001")
 						, function() {
 							deleteNode(currentNode, e.which);
-							closeModal();
+							closeConfirmModal();
 							setSaveIconVisibillity();
-						}, closeModal);
+						}, closeConfirmModal);
 
 				}
 				else {
@@ -187,12 +187,12 @@ function keyInContents(e) {
 			
 				if(hasChildNode(currentNode)) {
 
-					openModal(getMessage("001")
+					openConfirmModal(getMessage("001")
 						, function() {
 							deleteNode(currentNode, e.which);
-							closeModal();
+							closeConfirmModal();
 							setSaveIconVisibillity();
-						}, closeModal);
+						}, closeConfirmModal);
 
 				}
 				else {

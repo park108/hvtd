@@ -33,7 +33,7 @@ function onSignIn(googleUser) {
     let sessionToken = AWS.config.credentials.sessionToken;
 
     setUserInfo();
-    closeModal();
+    closeLogin();
 
     log("User signed in: " + USER.token);
   });

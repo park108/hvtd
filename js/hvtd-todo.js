@@ -125,7 +125,7 @@ function loadTodo() {
 
 			clearTodo();
 			createNode();
-			closeModal();
+			closeConfirmModal();
 
 			setBottomMessage("warning", getMessage("011"));
 		}
@@ -167,7 +167,7 @@ function deleteTodo() {
 	let yyyymmdd = getYYYYMMDD(GLOBAL_VARIABLE.selected_date);
 
 	// Delete todo after get user confirm
-	openModal(getMessage("004")
+	openConfirmModal(getMessage("004")
 		, function() {
 
 			// Call API
@@ -190,7 +190,7 @@ function deleteTodo() {
 				createNode();
 				setChanged(false);
 				setSaveIconVisibillity();
-				closeModal();
+				closeConfirmModal();
 				
 			}).catch(function(error) {
 
@@ -205,7 +205,7 @@ function deleteTodo() {
 		}
 		, 
 			// Cancel: close modal window
-			closeModal
+			closeConfirmModal
 		);
 }
 

@@ -1,3 +1,20 @@
+function openLogin(messageString) {
+
+	// Set login display
+	let login = E("login");
+	login.style.display = "block";
+
+	// Set message
+	let message = E("login-message");
+	message.innerHTML = messageString;
+}
+
+function closeLogin() {
+
+	let login = E("login");
+	login.style.display = "none";
+}
+
 function setUserInfo() {
 
 	// Initialize user-info
@@ -6,7 +23,7 @@ function setUserInfo() {
 	// If has no token, pop signin up
 	if(null == USER.token || "" == USER.token) {
 
-		openModal(getMessage("000"));
+		openLogin(getMessage("000"));
 	}
 
 	// If has token, create user-icon image and sign-out button in user-info element

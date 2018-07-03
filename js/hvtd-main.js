@@ -13,9 +13,6 @@ window.onload = function() {
 	E("navigation-toolbar-save").addEventListener("click", saveTodoAsyc, false);
 	E("navigation-toolbar-expandall").addEventListener("click", expandAll, false);
 	E("navigation-toolbar-collapseall").addEventListener("click", collapseAll, false);
-	E("modal-close").addEventListener("click", closeModal, false);
-	E("settings-close").addEventListener("click", closeSettings, false);
-	E("settings-close-button").addEventListener("click", closeSettings, false);
 
 	// Set test data
 	if(undefined != window.setTestData) {
@@ -48,7 +45,7 @@ window.onclick = function(e) {
 	let modal = E("modal");
 
 	if(e.target == modal && "" != USER.token && null != USER.token) {
-		closeModal();
+		closeConfirmModal();
 	}
 
 	// Close user dropdown menu

@@ -76,7 +76,7 @@ let TEXTS = {
 		},
 		"010": {
 			"KO": "복사할 미완료 건이 없습니다.",
-			"EN": "There's no incomplete to copy.",
+			"EN": "There's no incompletes to copy.",
 		},
 		"011": {
 			"KO": "Todo가 없는 날입니다.",

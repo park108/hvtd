@@ -319,7 +319,7 @@ body {
 
 /* The Modal (background) */
 .modal {
-	display: none; /* Hidden by default */
+	display: none;
 	position: fixed; /* Stay in place */
 	z-index: 100; /* Sit on top */
 	padding-top: 50px; /* Location of the box */
@@ -340,6 +340,8 @@ body {
 	max-width: 600px;
 	width: 80%;
 	min-width: 300px;
+
+	border-radius: 5px;
 	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
 }
 
@@ -366,7 +368,7 @@ button {
 	cursor: pointer;
 }
 
-#modal-button-set {
+.button-set {
 	width: 100%;
 }
 
@@ -389,12 +391,11 @@ button {
 }
 
 .button-set-triple {
-	width: 33.33%;
+	width: 33.3%;
 }
 
 /* Settings */
 #settings {
-	display: none; /* Hidden by default */
 	position: fixed; /* Stay in place */
 	z-index: 200; /* Sit on top */
 	padding-top: 50px;
@@ -415,6 +416,8 @@ button {
 	max-width: 600px;
 	width: 80%;
 	min-width: 300px;
+
+	border-radius: 5px;
 	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
 }
 
@@ -515,7 +518,6 @@ select {
 }
 
 #processing {
-	display: none;
 	position: absolute;
 	z-index: 500;
 	left: 0;

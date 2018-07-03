@@ -31,28 +31,67 @@ function setNodeFrameMargin(node) {
 function setSemaphore(set, message) {
 
 	GLOBAL_VARIABLE.now_loading = set;
-	E("processing-message").innerHTML = "";
 
 	if(GLOBAL_VARIABLE.now_loading) {
-		E("processing-message").innerHTML = message;
-		E("processing").style.display = "block";
+		createProcessingMessage(message);
 	}
 	else {
-		E("processing").style.display = "none";	
+		removeProcessingMessage(message);
+	}
+}
+
+function createProcessingMessage(messageString) {
+
+	// Remove object first
+	removeProcessingMessage();
+
+	// Create object
+	message = document.createElement("div");
+	message.setAttribute("id", "processing-message");
+	message.innerHTML = messageString;
+
+	processing = document.createElement("div");
+	processing.setAttribute("id", "processing");
+	processing.appendChild(message);
+
+	// Append object to body
+	document.body.appendChild(processing);
+}
+
+function removeProcessingMessage() {
+
+	let processing = E("processing");
+
+	if(undefined != processing) {
+		document.body.removeChild(processing);
 	}
 }
 
 function setBottomMessage(type, message) {
 
-	// Show bottom message bar
-	let bottomMessage = E("bottom-message");
-	bottomMessage.innerHTML = "‣ " + message;
-	bottomMessage.classList.add(type);
-	bottomMessage.classList.add("show");
+	// Create object and append to body
+	let bottomMessage = document.createElement("div");
+	bottomMessage.setAttribute("id", "bottom-message");
+	document.body.appendChild(bottomMessage);
 
-	// Hide 2 seconds after
-	setTimeout(function() {
-		bottomMessage.classList.remove("show");
-		bottomMessage.classList.remove(type);
-	}, 2000);
+	setTimeout(() => {
+
+		// Show bottom message bar
+		bottomMessage.innerHTML = "‣ " + message;
+		bottomMessage.classList.add(type);
+		bottomMessage.classList.add("show");
+
+		setTimeout(() => {
+
+			bottomMessage.classList.remove("show");
+			bottomMessage.classList.remove(type);
+
+			// Remove object from body
+			setTimeout(() => {
+				document.body.removeChild(bottomMessage);
+			}, 200); // 0.2 sec for animation
+
+		}, 2000); // Show during 2 sec
+
+	}, 200); // 0.2 sec for animation
 }
