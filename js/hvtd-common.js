@@ -134,6 +134,16 @@ function callAPI(apiUrl, method, data) {
 	});
 }
 
+function isInt(data) {
+	
+	if (data === parseInt(data, 10)) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 function setInnerHtml(id, text) {
 
 	let item = E(id);

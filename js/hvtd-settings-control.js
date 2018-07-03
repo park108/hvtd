@@ -325,7 +325,7 @@ function setAutoSave(interval) {
 		let minutes = 0;
 		minutes = interval.value * 1;
 
-		if(!Number.isInteger(minutes)) {
+		if(!isInt(minutes)) {
 			interval.value = "0";
 		}
 		else {
@@ -361,7 +361,7 @@ function setAutoSaveInterval(minutes) {
 
 	let minNumber = minutes * 1;
 
-	if(Number.isInteger(minNumber)) {
+	if(isInt(minNumber)) {
 
 		// Clear current timer
 		if(null != GLOBAL_VARIABLE.auto_save_timer) {
