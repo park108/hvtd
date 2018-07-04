@@ -3,6 +3,8 @@ function keyInCommon(e) {
 	// Alt + T: Go today
 	if(e.altKey && 84 == e.which) {
 
+		e.preventDefault();
+
 		// Check semaphore
 		if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
 			setToday();
@@ -12,6 +14,8 @@ function keyInCommon(e) {
 
 	// Alt + C: Calendar expand/collapse
 	else if(e.altKey && 67 == e.which) {
+
+		e.preventDefault();
 
 		// Check semaphore
 		if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
@@ -23,6 +27,8 @@ function keyInCommon(e) {
 
 	// Alt + S: Save
 	else if(e.altKey && 83 == e.which) {
+
+		e.preventDefault();
 
 		// Check semaphore
 		if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
@@ -38,6 +44,8 @@ function keyInCommon(e) {
 	// Alt + 1: Expand all
 	else if(e.altKey && 49 == e.which) {
 
+		e.preventDefault();
+
 		// Check semaphore
 		if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
 			expandAll();
@@ -48,6 +56,8 @@ function keyInCommon(e) {
 
 	// Alt + 2: Collapse all
 	else if(e.altKey && 50 == e.which) {
+
+		e.preventDefault();
 
 		// Check semaphore
 		if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
@@ -60,6 +70,8 @@ function keyInCommon(e) {
 	// Ctrl + Alt + Left arrow: go to yesterday
 	else if(e.ctrlKey && e.altKey && 37 == e.which) {
 
+		e.preventDefault();
+
 		// Check semaphore
 		if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
 			setYesterday();
@@ -71,6 +83,8 @@ function keyInCommon(e) {
 	// Ctrl + Alt + Right arrow: go to tomorrow
 	else if(e.ctrlKey && e.altKey && 39 == e.which) {
 
+		e.preventDefault();
+
 		// Check semaphore
 		if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
 			setTomorrow();
@@ -81,12 +95,18 @@ function keyInCommon(e) {
 
 	// Ctrl + Up arrow: go to first node
 	else if(e.ctrlKey && 38 == e.which) {
+
+		e.preventDefault();
+
 		moveFirstNode();
 		return false;
 	}
 
 	// Ctrl + Down arrow: go to last node
 	else if(e.ctrlKey && 40 == e.which) {
+
+		e.preventDefault();
+		
 		moveLastNode();
 		return false;
 	}

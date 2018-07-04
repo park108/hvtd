@@ -278,7 +278,9 @@ body {
 .node-status-done {
 	background-color: #fcfffc;
 	color: seagreen;
-	text-decoration: darkgrey solid line-through;
+	text-decoration: line-through;
+	text-decoration-color: darkgrey;
+	text-decoration-style: solid;
 	border-bottom-color: #dddddd;
 	border-right-color: #dddddd;
 }
@@ -286,7 +288,9 @@ body {
 .node-status-cancel {
 	background-color: #fffcfc;
 	color: firebrick;
-	text-decoration: darkgrey solid line-through;
+	text-decoration: line-through;
+	text-decoration-color: darkgrey;
+	text-decoration-style: solid;
 	border-bottom-color: #dddddd;
 	border-right-color: #dddddd;
 }
@@ -591,22 +595,23 @@ select {
 	bottom: 50px;
 	z-index: 100;
 	background-color: white;
-	/*border-radius: 50%;*/
 	color: #666666;
 	cursor: pointer;
+
 	border: 3px solid #666666;
 	border-radius: 50%;
+	box-shadow: 3px 3px 6px 0px rgba(0,0,0,0.2);
+
 	opacity: 0.3;
+}
+
+#shortcut-button:hover {
+	opacity: 1;
 }
 
 #shortcut-button img {
 	width: 100%;
 	height: 100%;
-}
-
-#shortcut-button:hover {
-	opacity: 1;
-	border-radius: 50%;
 }
 
 .shortcut-item {
