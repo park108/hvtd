@@ -146,152 +146,17 @@ function toggleMoreDropdown() {
 		let label;
 		let shortcut;
 
-		if("none" == E("navigation-toolbar-today").style.display) {
+		moreDropdown.appendChild(getMoreDropdownItem("navigation-toolbar-today", "more-dropdown-today", setToday, "GO_TODAY", "Alt T"));
+		moreDropdown.appendChild(getMoreDropdownItem("navigation-toolbar-copy", "more-dropdown-copy", loadPreviousTodo, "COPY_PREVIOUS", ""));
 
-			anchor = document.createElement("a");
-			anchor.setAttribute("id", "more-dropdown-today");
-			anchor.setAttribute("href", "#");
-			anchor.setAttribute("onclick", "setToday();");
-
-			label = document.createElement("div");
-			label.classList.add("dropdown-label");
-			label.innerHTML = getKeyword("GO_TODAY");
-
-			shortcut = document.createElement("div");
-			shortcut.classList.add("shortcut");
-			shortcut.innerHTML = "Alt T";
-
-			anchor.appendChild(label);
-			anchor.appendChild(shortcut);
-
-			moreDropdown.appendChild(anchor);
+		if(isChanged()) {
+			moreDropdown.appendChild(getMoreDropdownItem("navigation-toolbar-save", "more-dropdown-save", saveTodoAsync, "SAVE", "Alt S"));
 		}
 
-		if("none" == E("navigation-toolbar-copy").style.display) {
-
-			anchor = document.createElement("a");
-			anchor.setAttribute("id", "more-dropdown-copy");
-			anchor.setAttribute("href", "#");
-			anchor.setAttribute("onclick", "loadPreviousTodo();");
-
-			label = document.createElement("div");
-			label.classList.add("dropdown-label");
-			label.innerHTML = getKeyword("COPY_PREVIOUS");
-
-			shortcut = document.createElement("div");
-			shortcut.classList.add("shortcut");
-			shortcut.innerHTML = "";
-
-			anchor.appendChild(label);
-			anchor.appendChild(shortcut);
-
-			moreDropdown.appendChild(anchor);
-		}
-
-		if("none" == E("navigation-toolbar-save").style.display && isChanged()) {
-
-			anchor = document.createElement("a");
-			anchor.setAttribute("id", "more-dropdown-save");
-			anchor.setAttribute("href", "#");
-			anchor.setAttribute("onclick", "saveTodoAsync();");
-
-			label = document.createElement("div");
-			label.classList.add("dropdown-label");
-			label.innerHTML = getKeyword("SAVE");
-
-			shortcut = document.createElement("div");
-			shortcut.classList.add("shortcut");
-			shortcut.innerHTML = "Alt S";
-
-			anchor.appendChild(label);
-			anchor.appendChild(shortcut);
-
-			moreDropdown.appendChild(anchor);
-		}
-
-		if("none" == E("navigation-toolbar-clear").style.display) {
-
-			anchor = document.createElement("a");
-			anchor.setAttribute("id", "more-dropdown-clear");
-			anchor.setAttribute("href", "#");
-			anchor.setAttribute("onclick", "deleteTodo();");
-
-			label = document.createElement("div");
-			label.classList.add("dropdown-label");
-			label.innerHTML = getKeyword("CLEAR");
-
-			shortcut = document.createElement("div");
-			shortcut.classList.add("shortcut");
-			shortcut.innerHTML = "";
-
-			anchor.appendChild(label);
-			anchor.appendChild(shortcut);
-
-			moreDropdown.appendChild(anchor);
-		}
-
-		if("none" == E("navigation-toolbar-calendar").style.display) {
-
-			anchor = document.createElement("a");
-			anchor.setAttribute("id", "more-dropdown-calendar");
-			anchor.setAttribute("href", "#");
-			anchor.setAttribute("onclick", "setCalendarVisibility();");
-
-			label = document.createElement("div");
-			label.classList.add("dropdown-label");
-			label.innerHTML = getKeyword("TOGGLE_CALENDAR");
-
-			shortcut = document.createElement("div");
-			shortcut.classList.add("shortcut");
-			shortcut.innerHTML = "Alt C";
-
-			anchor.appendChild(label);
-			anchor.appendChild(shortcut);
-
-			moreDropdown.appendChild(anchor);
-		}
-
-		if("none" == E("navigation-toolbar-expandall").style.display) {
-
-			anchor = document.createElement("a");
-			anchor.setAttribute("id", "more-dropdown-expandall");
-			anchor.setAttribute("href", "#");
-			anchor.setAttribute("onclick", "expandAll();");
-
-			label = document.createElement("div");
-			label.classList.add("dropdown-label");
-			label.innerHTML = getKeyword("EXPAND_ALL");
-
-			shortcut = document.createElement("div");
-			shortcut.classList.add("shortcut");
-			shortcut.innerHTML = "Alt 1";
-
-			anchor.appendChild(label);
-			anchor.appendChild(shortcut);
-
-			moreDropdown.appendChild(anchor);
-		}
-
-		if("none" == E("navigation-toolbar-collapseall").style.display) {
-
-			anchor = document.createElement("a");
-			anchor.setAttribute("id", "more-dropdown-collapseall");
-			anchor.setAttribute("href", "#");
-			anchor.setAttribute("onclick", "collapseAll();");
-
-			label = document.createElement("div");
-			label.classList.add("dropdown-label");
-			label.innerHTML = getKeyword("COLLAPSE_ALL");
-
-			shortcut = document.createElement("div");
-			shortcut.classList.add("shortcut");
-			shortcut.innerHTML = "Alt 2";
-
-			anchor.appendChild(label);
-			anchor.appendChild(shortcut);
-
-			moreDropdown.appendChild(anchor);
-		}
+		moreDropdown.appendChild(getMoreDropdownItem("navigation-toolbar-clear", "more-dropdown-clear", deleteTodo, "CLEAR", ""));
+		moreDropdown.appendChild(getMoreDropdownItem("navigation-toolbar-calendar", "more-dropdown-calendar", setCalendarVisibility, "TOGGLE_CALENDAR", "Alt C"));
+		moreDropdown.appendChild(getMoreDropdownItem("navigation-toolbar-expandall", "more-dropdown-expandall", expandAll, "EXPAND_ALL", "Alt 1"));
+		moreDropdown.appendChild(getMoreDropdownItem("navigation-toolbar-collapseall", "more-dropdown-collapseall", collapseAll, "COLLAPSE_ALL", "Alt 2"));
 
 		moreButton.appendChild(moreDropdown);
 
@@ -302,12 +167,41 @@ function toggleMoreDropdown() {
 	}
 }
 
+function getMoreDropdownItem(toolbarButtonId, dropdownMenuId, clickEventHandler, keyword, shortcutKey) {
+	
+	if("none" == E(toolbarButtonId).style.display) {
+
+		// Create anchor tag for menu box
+		let anchor = document.createElement("a");
+		anchor.setAttribute("id", dropdownMenuId);
+		anchor.addEventListener("click", clickEventHandler, false);
+
+		// Create label
+		let label = document.createElement("div");
+		label.classList.add("dropdown-label");
+		label.innerHTML = getKeyword(keyword);
+		anchor.appendChild(label);
+
+		// Create shortcut if is not Mobile
+		if(!isMobile() && undefined != shortcutKey && null != shortcutKey && "" != shortcutKey) {
+
+			let shortcut = document.createElement("div");
+			shortcut.classList.add("shortcut");
+			shortcut.innerHTML = shortcutKey;
+			anchor.appendChild(shortcut);
+		}
+
+		return anchor;
+	}
+}
+
 function closeMoreDropdown() {
 
 	let moreButton = E("navigation-toolbar-more");
 	let moreDropdown = E("more-dropdown");
 
 	if(undefined != moreButton && undefined != moreDropdown) {
+
 		moreButton.removeChild(moreDropdown);
 	}
 }
@@ -318,6 +212,9 @@ function setTodayIconDate() {
 }
 
 function openShortcuts() {
+
+	// Set modal open flag
+	setModalOpen(true);
 
 	// Create confirm modal
 	let shortcuts = document.createElement("div");
@@ -380,12 +277,12 @@ function openShortcuts() {
 	content.appendChild(okButton);
 }
 
-function hideShortcutButton() {
+function showShortcutButton() {
 
-	let button = E("shortcut");
+	let button = E("shortcut-button");
 
-	if(undefined != shortcut) {
-		button.style.display = "none";
+	if(undefined != button) {
+		button.style.display = "block";
 	}
 }
 
@@ -414,5 +311,8 @@ function closeShortcuts() {
 
 	if(undefined != shortcuts) {
 		document.body.removeChild(shortcuts);
+
+		// Remove modal open flag
+		setModalOpen(false);
 	}
 }

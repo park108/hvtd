@@ -71,6 +71,11 @@ function loadSettings() {
 		setTooltipText();
 		setAutoSaveInterval(SETTINGS.auto_save_interval);
 		setToolbarButtonLayout();
+
+		// In mobile, show shortcuts button
+		if(!isMobile()) {
+			showShortcutButton();
+		}
 		
 		loadTodo();
 

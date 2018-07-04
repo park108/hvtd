@@ -10,6 +10,9 @@ function saveTodo() {
 		else if(GLOBAL_VARIABLE.now_loading) {
 			reject(Error("Now processing... Can't save"));
 		}
+		else if(GLOBAL_VARIABLE.open_modal) {
+			reject(ERROR("Now modal opened."));
+		}
 
 		else {
 
@@ -82,7 +85,6 @@ function saveTodo() {
 // Save todo(asynchronous)
 // If has no follow up task, call this function.
 function saveTodoAsync() {
-	closeMoreDropdown();
 	saveTodo().then(function() {}, function() {});
 }
 
@@ -100,6 +102,10 @@ function loadTodo() {
 	// Check semaphore to prevent duplicate loading
 	if(GLOBAL_VARIABLE.now_loading) {
 		log("Now loading... Can't load another todo");
+		return false;
+	}
+	else if(GLOBAL_VARIABLE.open_modal) {
+		log("Now modal opened.");
 		return false;
 	}
 
@@ -163,7 +169,6 @@ function loadTodo() {
 function deleteTodo() {
 
 	log("Call...");
-	closeMoreDropdown();
 
 	// Get selected date
 	let yyyymmdd = getYYYYMMDD(GLOBAL_VARIABLE.selected_date);
@@ -215,7 +220,6 @@ function deleteTodo() {
 function loadPreviousTodo() {
 
 	log("Call...");
-	closeMoreDropdown();
 
 	// Get selected date
 	let yyyymmdd = getYYYYMMDD(GLOBAL_VARIABLE.selected_date);
@@ -226,6 +230,10 @@ function loadPreviousTodo() {
 	// Check semaphore to prevent duplicate loading
 	if(GLOBAL_VARIABLE.now_loading) {
 		log("Now loading... Can't load previous todo");
+		return false;
+	}
+	else if(GLOBAL_VARIABLE.open_modal) {
+		log("Now modal opened.");
 		return false;
 	}
 

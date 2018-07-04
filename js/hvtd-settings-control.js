@@ -1,5 +1,8 @@
 function openSettings() {
 
+	// Set modal open flag
+	setModalOpen(true);
+
 	// Close user dropdown menu
 	toggleUserDropdown();
 
@@ -255,6 +258,9 @@ function closeSettings() {
 
 	if(undefined != settings) {
 		document.body.removeChild(settings);
+
+		// Remove modal open flag
+		setModalOpen(false);
 	}
 }
 

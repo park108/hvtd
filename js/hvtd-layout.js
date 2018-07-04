@@ -42,6 +42,9 @@ function setSemaphore(set, message) {
 
 function createProcessingMessage(messageString) {
 
+	// Set modal open flag
+	setModalOpen(true);
+
 	// Remove object first
 	removeProcessingMessage();
 
@@ -64,6 +67,9 @@ function removeProcessingMessage() {
 
 	if(undefined != processing) {
 		document.body.removeChild(processing);
+
+		// Remove modal open flag
+		setModalOpen(false);
 	}
 }
 

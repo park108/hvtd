@@ -582,11 +582,12 @@ select {
 }
 
 #shortcut-button {
+	display: none;
 	position: fixed;
 	padding: 5px;
 	width: 26px;
 	height: 26px;
-	right: 100px;
+	left: 100px;
 	bottom: 50px;
 	z-index: 100;
 	background-color: white;

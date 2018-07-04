@@ -2,44 +2,80 @@ function keyInCommon(e) {
 
 	// Alt + T: Go today
 	if(e.altKey && 84 == e.which) {
-		setToday();
+
+		// Check semaphore
+		if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
+			setToday();
+		}
 		return false;
 	}
 
 	// Alt + C: Calendar expand/collapse
 	else if(e.altKey && 67 == e.which) {
-		setCalendarVisibility();
+
+		// Check semaphore
+		if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
+			setCalendarVisibility();
+		}
+
 		return false;
 	}
 
 	// Alt + S: Save
 	else if(e.altKey && 83 == e.which) {
-		saveTodo().then(function() {}, function() {}).finally(function() {
-			return false;	
-		});
+
+		// Check semaphore
+		if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
+			saveTodo().then(function() {}, function() {}).finally(function() {
+				return false;
+			});
+		}
+		else {
+			return false;
+		}
 	}
 
 	// Alt + 1: Expand all
 	else if(e.altKey && 49 == e.which) {
-		expandAll();
+
+		// Check semaphore
+		if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
+			expandAll();
+		}
+
 		return false;
 	}
 
 	// Alt + 2: Collapse all
 	else if(e.altKey && 50 == e.which) {
-		collapseAll();
+
+		// Check semaphore
+		if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
+			collapseAll();
+		}
+
 		return false;
 	}
 
 	// Ctrl + Alt + Left arrow: go to yesterday
 	else if(e.ctrlKey && e.altKey && 37 == e.which) {
-		setYesterday();
+
+		// Check semaphore
+		if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
+			setYesterday();
+		}
+
 		return false;
 	}
 
 	// Ctrl + Alt + Right arrow: go to tomorrow
 	else if(e.ctrlKey && e.altKey && 39 == e.which) {
-		setTomorrow();
+
+		// Check semaphore
+		if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
+			setTomorrow();
+		}
+
 		return false;
 	}
 
@@ -348,6 +384,14 @@ function handleTouchStart(e) {
 }
 
 function handleTouchEnd(e) {
+
+	// Check semaphore
+	if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
+
+		log("Swipe event blocked now");
+		
+		return false;
+	}
 
 	if(null == GLOBAL_VARIABLE.touch_x || null == GLOBAL_VARIABLE.touch_y) {
 		return false;

@@ -75,8 +75,6 @@ function createCalendar(d) {
 
 function setCalendarVisibility(show) {
 
-	closeMoreDropdown();
-
 	let header = E("header");
 	let calendar = E("calendar");
 
@@ -126,7 +124,7 @@ function setDate(year, month, date) {
 	log(year + "-" + month + "-" + date);
 
 	// Check semaphore
-	if(!GLOBAL_VARIABLE.now_loading) {
+	if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
 
 		saveTodo().then(function(result) {
 		}, function(error) {
@@ -152,7 +150,7 @@ function setDate(year, month, date) {
 function setYesterday() {
 
 	// Check semaphore
-	if(!GLOBAL_VARIABLE.now_loading) {
+	if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
 
 		saveTodo().then(function(result) {
 		}, function(error) {
@@ -171,7 +169,7 @@ function setYesterday() {
 function setTomorrow() {
 
 	// Check semaphore
-	if(!GLOBAL_VARIABLE.now_loading) {
+	if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
 
 		saveTodo().then(function(result) {
 		}, function(error) {
@@ -189,10 +187,8 @@ function setTomorrow() {
 
 function setToday() {
 
-	closeMoreDropdown();
-
 	// Check semaphore
-	if(!GLOBAL_VARIABLE.now_loading) {
+	if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
 
 		let today = new Date();
 
