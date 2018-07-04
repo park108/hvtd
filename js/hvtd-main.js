@@ -7,6 +7,7 @@ window.onload = function() {
 	document.body.addEventListener("keydown", keyInCommon, false);
 	document.addEventListener("touchstart", handleTouchStart, false);
 	document.addEventListener("touchend", handleTouchEnd, false);
+	E("navigation-toolbar-search").addEventListener("click", toggleSearch, false);
 	E("navigation-toolbar-today").addEventListener("click", setToday, false);
 	E("navigation-toolbar-copy").addEventListener("click", loadPreviousTodo, false);
 	E("navigation-toolbar-calendar").addEventListener("click", setCalendarVisibility, false);
@@ -14,6 +15,8 @@ window.onload = function() {
 	E("navigation-toolbar-save").addEventListener("click", saveTodoAsync, false);
 	E("navigation-toolbar-expandall").addEventListener("click", expandAll, false);
 	E("navigation-toolbar-collapseall").addEventListener("click", collapseAll, false);
+	E("search-execute").addEventListener("click", getSearchResult, false);
+	E("search-close").addEventListener("click", closeSearch, false);
 	E("shortcut-button").addEventListener("click", openShortcuts, false);
 
 	// Set test data

@@ -1,21 +1,35 @@
 function keyInCommon(e) {
 
-	// Alt + T: Go today
-	if(e.altKey && 84 == e.which) {
+	// Alt + F: Search
+	if(e.altKey && 70 == e.which) {
 
-		e.preventDefault();
+		e.stopImmediatePropagation();
+
+		// Check semaphore
+		if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
+			toggleSearch();
+		}
+
+		return false;
+	}
+
+	// Alt + T: Go today
+	else if(e.altKey && 84 == e.which) {
+
+		e.stopImmediatePropagation();
 
 		// Check semaphore
 		if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
 			setToday();
 		}
+
 		return false;
 	}
 
 	// Alt + C: Calendar expand/collapse
 	else if(e.altKey && 67 == e.which) {
 
-		e.preventDefault();
+		e.stopImmediatePropagation();
 
 		// Check semaphore
 		if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
@@ -28,23 +42,21 @@ function keyInCommon(e) {
 	// Alt + S: Save
 	else if(e.altKey && 83 == e.which) {
 
-		e.preventDefault();
+		e.stopImmediatePropagation();
 
 		// Check semaphore
 		if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
 			saveTodo().then(function() {}, function() {}).finally(function() {
-				return false;
 			});
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	// Alt + 1: Expand all
 	else if(e.altKey && 49 == e.which) {
 
-		e.preventDefault();
+		e.stopImmediatePropagation();
 
 		// Check semaphore
 		if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
@@ -57,7 +69,7 @@ function keyInCommon(e) {
 	// Alt + 2: Collapse all
 	else if(e.altKey && 50 == e.which) {
 
-		e.preventDefault();
+		e.stopImmediatePropagation();
 
 		// Check semaphore
 		if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
@@ -70,7 +82,7 @@ function keyInCommon(e) {
 	// Ctrl + Alt + Left arrow: go to yesterday
 	else if(e.ctrlKey && e.altKey && 37 == e.which) {
 
-		e.preventDefault();
+		e.stopImmediatePropagation();
 
 		// Check semaphore
 		if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
@@ -83,7 +95,7 @@ function keyInCommon(e) {
 	// Ctrl + Alt + Right arrow: go to tomorrow
 	else if(e.ctrlKey && e.altKey && 39 == e.which) {
 
-		e.preventDefault();
+		e.stopImmediatePropagation();
 
 		// Check semaphore
 		if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
@@ -96,28 +108,29 @@ function keyInCommon(e) {
 	// Ctrl + Up arrow: go to first node
 	else if(e.ctrlKey && 38 == e.which) {
 
-		e.preventDefault();
+		e.stopImmediatePropagation();
 
 		moveFirstNode();
+
 		return false;
 	}
 
 	// Ctrl + Down arrow: go to last node
 	else if(e.ctrlKey && 40 == e.which) {
 
-		e.preventDefault();
-		
+		e.stopImmediatePropagation();
+
 		moveLastNode();
+
 		return false;
 	}
 }
 
 function keyInContents(e) {
 
-	log(e.which);
-
 	// Return false in key combination in keyInCommon()
-	if(e.altKey && 84 == e.which) return false;
+	if(e.altKey && 70 == e.which) return false;
+	else if(e.altKey && 84 == e.which) return false;
 	else if(e.altKey && 67 == e.which) return false;
 	else if(e.altKey && 83 == e.which) return false;
 	else if(e.altKey && 49 == e.which) return false;

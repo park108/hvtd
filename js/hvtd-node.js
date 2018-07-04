@@ -75,52 +75,57 @@ function createNode(currentNode, inputLevel, inputStatus, inputCollapse, inputCo
 	newNode.setAttribute("id", GLOBAL_VARIABLE.node_id);
 	newNode.setAttribute("level", level);
 	newNode.setAttribute("status", status);
-	newNode.setAttribute("class", "node-frame");
 	newNode.setAttribute("onkeydown", "return keyInContents(event)");
+	newNode.classList.add("node-frame");
 
 	// Node Contents
 	let newNodeContents = document.createElement("div");
 	newNodeContents.setAttribute("id", "contents" + GLOBAL_VARIABLE.node_id);
-	newNodeContents.setAttribute("class", "node-contents");
 	newNodeContents.setAttribute("contenteditable", "true");
 	newNodeContents.setAttribute("onpaste", "return removeTags(this)");
 	newNodeContents.setAttribute("ondrop", "return false");
+	newNodeContents.classList.add("node-contents");
 	newNodeContents.innerHTML = contents;
 
 	// Node Toolbar
 	let newNodeToolbar = document.createElement("div");
-	newNodeToolbar.setAttribute("class", "node-toolbar");
+	newNodeToolbar.classList.add("node-toolbar");
 
 	// Node Toolbar Elements
 	let newLabelCollapse = document.createElement("label");
 	newLabelCollapse.setAttribute("for", "collapse" + GLOBAL_VARIABLE.node_id);
-	newLabelCollapse.setAttribute("class", "node-toolbar-label");
+	newLabelCollapse.classList.add("node-toolbar-label");
 	newLabelCollapse.innerHTML = collapse ? IMG.icon_expand : IMG.icon_collapse;
+
 	let newCheckboxCollpase = document.createElement("input");
 	newCheckboxCollpase.setAttribute("id", "collapse" + GLOBAL_VARIABLE.node_id);
 	newCheckboxCollpase.setAttribute("type", "checkbox");
-	newCheckboxCollpase.setAttribute("class", "node-toolbar-checkbox");
+	newCheckboxCollpase.classList.add("node-toolbar-checkbox");
 	newCheckboxCollpase.setAttribute("onclick", "return executeToolbarCommand(this)");
 	newCheckboxCollpase.checked = collapse;
+
 	let newLabelDone = document.createElement("label");
 	newLabelDone.setAttribute("for", "done" + GLOBAL_VARIABLE.node_id);
-	newLabelDone.setAttribute("class", "node-toolbar-label");
+	newLabelDone.classList.add("node-toolbar-label");
 	newLabelDone.innerHTML = ("D" == status) ? IMG.icon_done : IMG.icon_done_no;
+
 	let newCheckboxDone = document.createElement("input");
 	newCheckboxDone.setAttribute("id", "done" + GLOBAL_VARIABLE.node_id);
 	newCheckboxDone.setAttribute("type", "checkbox");
-	newCheckboxDone.setAttribute("class", "node-toolbar-checkbox");
+	newCheckboxDone.classList.add("node-toolbar-checkbox");
 	newCheckboxDone.setAttribute("onclick", "return executeToolbarCommand(this)");
 	newCheckboxDone.checked = ("D" == status);
+
 	let newLabelCancel = document.createElement("label");
 	newLabelCancel.setAttribute("for", "cancel" + GLOBAL_VARIABLE.node_id);
-	newLabelCancel.setAttribute("class", "node-toolbar-label");
+	newLabelCancel.classList.add("node-toolbar-label");
 	newLabelCancel.innerHTML = ("C" == status) ? IMG.icon_cancel : IMG.icon_cancel_no;
+
 	let newCheckboxCancel = document.createElement("input");
 	newCheckboxCancel.setAttribute("id", "cancel" + GLOBAL_VARIABLE.node_id);
 	newCheckboxCancel.setAttribute("type", "checkbox");
-	newCheckboxCancel.setAttribute("class", "node-toolbar-checkbox");
 	newCheckboxCancel.setAttribute("onclick", "return executeToolbarCommand(this)");
+	newCheckboxCancel.classList.add("node-toolbar-checkbox");
 	newCheckboxCancel.checked = ("C" == status);
 
 	// Combine into newNode

@@ -36,6 +36,10 @@ let TEXTS = {
 			"KO": "단축키 보기",
 			"EN": "View Shortcuts",
 		},
+		"009": {
+			"KO": "Alt F : 검색",
+			"EN": "Alt F : Search",
+		},
 	},
 	"MESSAGE": {
 		"000": {
@@ -89,7 +93,15 @@ let TEXTS = {
 		"012": {
 			"KO": "Todo를 삭제했습니다.",
 			"EN": "Todo deleted.",
-		}
+		},
+		"013": {
+			"KO": "검색중...",
+			"EN": "Searching...",
+		},
+		"014": {
+			"KO": "검색 결과가 없습니다.",
+			"EN": "No matches.",
+		},
 	},
 	"WEEK_TEXT": {
 		0: {"KO": "일", "EN": "SUN"},
@@ -225,6 +237,10 @@ let TEXTS = {
 			"KO": "노드를 아래로 이동",
 			"EN": "Move Node Down",
 		},
+		"SEARCH": {
+			"KO": "검색",
+			"EN": "Search",
+		},
 	},
 };
 
@@ -241,6 +257,7 @@ function setTooltipText() {
 
 	if(SETTINGS.tooltip) {
 		setDomAttribute("navigation-toolbar-today", "data-tooltip", getTooltip("006"));
+		setDomAttribute("navigation-toolbar-search", "data-tooltip", getTooltip("009"));
 		setDomAttribute("navigation-toolbar-copy", "data-tooltip", getTooltip("007"));
 		setDomAttribute("navigation-toolbar-calendar", "data-tooltip", getTooltip("000"));
 		setDomAttribute("navigation-toolbar-clear", "data-tooltip", getTooltip("001"));
@@ -252,6 +269,7 @@ function setTooltipText() {
 	}
 	else {
 		removeDomAttribute("navigation-toolbar-today", "data-tooltip");
+		removeDomAttribute("navigation-toolbar-search", "data-tooltip");
 		removeDomAttribute("navigation-toolbar-copy", "data-tooltip");
 		removeDomAttribute("navigation-toolbar-calendar", "data-tooltip");
 		removeDomAttribute("navigation-toolbar-clear", "data-tooltip");

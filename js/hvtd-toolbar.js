@@ -141,24 +141,20 @@ function toggleMoreDropdown() {
 		moreDropdown = document.createElement("div");
 		moreDropdown.setAttribute("id", "more-dropdown");
 		moreDropdown.classList.add("dropdown");
+		moreButton.appendChild(moreDropdown);
 
-		let anchor;
-		let label;
-		let shortcut;
-
-		moreDropdown.appendChild(getMoreDropdownItem("navigation-toolbar-today", "more-dropdown-today", setToday, "GO_TODAY", "Alt T"));
-		moreDropdown.appendChild(getMoreDropdownItem("navigation-toolbar-copy", "more-dropdown-copy", loadPreviousTodo, "COPY_PREVIOUS", ""));
+		createMoreDropdownItem("navigation-toolbar-search", "more-dropdown-search", openSearch, "SEARCH", "Alt F");
+		createMoreDropdownItem("navigation-toolbar-today", "more-dropdown-today", setToday, "GO_TODAY", "Alt T");
+		createMoreDropdownItem("navigation-toolbar-copy", "more-dropdown-copy", loadPreviousTodo, "COPY_PREVIOUS", "");
 
 		if(isChanged()) {
-			moreDropdown.appendChild(getMoreDropdownItem("navigation-toolbar-save", "more-dropdown-save", saveTodoAsync, "SAVE", "Alt S"));
+			createMoreDropdownItem("navigation-toolbar-save", "more-dropdown-save", saveTodoAsync, "SAVE", "Alt S");
 		}
 
-		moreDropdown.appendChild(getMoreDropdownItem("navigation-toolbar-clear", "more-dropdown-clear", deleteTodo, "CLEAR", ""));
-		moreDropdown.appendChild(getMoreDropdownItem("navigation-toolbar-calendar", "more-dropdown-calendar", setCalendarVisibility, "TOGGLE_CALENDAR", "Alt C"));
-		moreDropdown.appendChild(getMoreDropdownItem("navigation-toolbar-expandall", "more-dropdown-expandall", expandAll, "EXPAND_ALL", "Alt 1"));
-		moreDropdown.appendChild(getMoreDropdownItem("navigation-toolbar-collapseall", "more-dropdown-collapseall", collapseAll, "COLLAPSE_ALL", "Alt 2"));
-
-		moreButton.appendChild(moreDropdown);
+		createMoreDropdownItem("navigation-toolbar-clear", "more-dropdown-clear", deleteTodo, "CLEAR", "");
+		createMoreDropdownItem("navigation-toolbar-calendar", "more-dropdown-calendar", setCalendarVisibility, "TOGGLE_CALENDAR", "Alt C");
+		createMoreDropdownItem("navigation-toolbar-expandall", "more-dropdown-expandall", expandAll, "EXPAND_ALL", "Alt 1");
+		createMoreDropdownItem("navigation-toolbar-collapseall", "more-dropdown-collapseall", collapseAll, "COLLAPSE_ALL", "Alt 2");		
 
 		moreDropdown.style.display = "block";
 	}
@@ -167,7 +163,7 @@ function toggleMoreDropdown() {
 	}
 }
 
-function getMoreDropdownItem(toolbarButtonId, dropdownMenuId, clickEventHandler, keyword, shortcutKey) {
+function createMoreDropdownItem(toolbarButtonId, dropdownMenuId, clickEventHandler, keyword, shortcutKey) {
 	
 	if("none" == E(toolbarButtonId).style.display) {
 
@@ -191,7 +187,9 @@ function getMoreDropdownItem(toolbarButtonId, dropdownMenuId, clickEventHandler,
 			anchor.appendChild(shortcut);
 		}
 
-		return anchor;
+		// Append more dropdown menu
+		let moreDropdown = E("more-dropdown");
+		moreDropdown.appendChild(anchor);
 	}
 }
 
@@ -260,6 +258,7 @@ function openShortcuts() {
 	shortcutssInCommon.classList.add("modal-panel");
 	content.appendChild(shortcutssInCommon);
 
+	shortcutssInCommon.appendChild(createShortcutItem(getKeyword("SEARCH"), "Alt F"));
 	shortcutssInCommon.appendChild(createShortcutItem(getKeyword("GO_TODAY"), "Alt T"));
 	shortcutssInCommon.appendChild(createShortcutItem(getKeyword("GO_YESTERDAY"), "Ctrl Alt ←"));
 	shortcutssInCommon.appendChild(createShortcutItem(getKeyword("GO_TOMORROW"), "Ctrl Alt →"));
