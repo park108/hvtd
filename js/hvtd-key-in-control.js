@@ -386,7 +386,7 @@ function handleTouchStart(e) {
 function handleTouchEnd(e) {
 
 	// Check semaphore
-	if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
+	if(GLOBAL_VARIABLE.now_loading || GLOBAL_VARIABLE.open_modal) {
 
 		log("Swipe event blocked now");
 		
