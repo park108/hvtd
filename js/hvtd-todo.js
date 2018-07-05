@@ -406,7 +406,6 @@ function searchTodo(searchString) {
 		// Release semaphore
 		setSemaphore(false);
 	});
-
 }
 
 // Clear todo on page
