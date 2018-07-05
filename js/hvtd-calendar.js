@@ -119,7 +119,7 @@ function setSelectedDateText() {
 	log(selectedDateString + " " + weekString);
 }
 
-function setDate(year, month, date) {
+function setDate(year, month, date, focusNodeId) {
 
 	log(year + "-" + month + "-" + date);
 
@@ -139,7 +139,7 @@ function setDate(year, month, date) {
 
 			clearTodo();
 			setSelectedDateText();
-			loadTodo();
+			loadTodo(focusNodeId);
 		});
 	}
 	else {

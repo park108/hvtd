@@ -241,6 +241,10 @@ let TEXTS = {
 			"KO": "검색",
 			"EN": "Search",
 		},
+		"SEARCH_RESULT": {
+			"KO": "검색 결과",
+			"EN": "Search Result",
+		},
 	},
 };
 

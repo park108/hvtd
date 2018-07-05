@@ -89,7 +89,7 @@ function saveTodoAsync() {
 }
 
 // Load todo
-function loadTodo() {
+function loadTodo(focusNodeId) {
 
 	log("Call...");
 
@@ -162,6 +162,15 @@ function loadTodo() {
 
 		// Release semaphore
 		setSemaphore(false);
+
+		// If get to here from search, expand all node and focus found node.
+		if(undefined != focusNodeId) {
+			expandAll();
+			E("contents" + focusNodeId).focus();
+
+			setChanged(false); // Searching expand is not changing.
+			setSaveIconVisibillity();
+		}
 	});
 }
 
@@ -352,6 +361,52 @@ function loadPreviousTodo() {
 
 		setSaveIconVisibillity();
 	});
+}
+
+// Search todo
+function searchTodo(searchString) {
+
+	log("Call...");
+
+	// Call API
+	let apiUrl = getApiUrl(API.TODO, USER.id + "/search/" + searchString);
+
+	// Set semaphore
+	setSemaphore(true, getMessage("013"));
+
+	callAPI(apiUrl, "GET").then(function(response) {
+
+		log(response);
+
+		return response;
+
+	}, function(error) {
+
+		log(error);
+
+	}).then(function(response) {
+
+		let result = JSON.parse(response);
+
+		if(0 == result.count) {
+
+			setBottomMessage("warning", getMessage("014"));
+		}
+		else {
+
+			openSearchResult(result);
+		}
+		
+	}).catch(function(error) {
+
+		log(error);
+
+	}).finally(function() {
+
+		// Release semaphore
+		setSemaphore(false);
+	});
+
 }
 
 // Clear todo on page

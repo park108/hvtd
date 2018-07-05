@@ -214,7 +214,7 @@ function openShortcuts() {
 	// Set modal open flag
 	setModalOpen(true);
 
-	// Create confirm modal
+	// Create modal
 	let shortcuts = document.createElement("div");
 	shortcuts.setAttribute("id", "shortcuts");
 	shortcuts.classList.add("modal");
