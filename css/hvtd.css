@@ -248,6 +248,7 @@ body {
 	font-size: 1em;
 
 	border-width: 0px 0px 2px 0px;
+	border-radius: 0;
 }
 
 #search-string:focus {
@@ -452,18 +453,36 @@ button {
 	cursor: pointer;
 }
 
-.button-set {
-	width: 100%;
+.button-ok {
+	margin-left: 5px;
+	margin-right: 5px;
+	color: midnightblue;
+	background-color: white;
+	border: 2px solid midnightblue;
+	transition: color 0.2s linear, background-color 0.2s linear;
 }
 
-.button-ok {
+.button-ok:active, .button-ok:hover {
 	color: white;
 	background-color: midnightblue;
 }
 
 .button-cancel {
+	margin-left: 5px;
+	margin-right: 5px;
+	color: maroon;
+	background-color: white;
+	border: 2px solid maroon;
+	transition: color 0.2s linear, background-color 0.2s linear;
+}
+
+.button-cancel:active, .button-cancel:hover {
 	color: white;
 	background-color: maroon;
+}
+
+.button-set {
+	width: 100%;
 }
 
 .button-set-single {
@@ -471,11 +490,11 @@ button {
 }
 
 .button-set-twin {
-	width: 50%;
+	width: calc(50% - 10px);
 }
 
 .button-set-triple {
-	width: 33.3%;
+	width: calc(33.3% - 10px);
 }
 
 /* Settings */
