@@ -52,6 +52,8 @@ function signOut() {
 
   	auth2.signOut().then(function () {
 
+      setAutoSaveInterval(0);
+
       USER.id = "";
       USER.name = "";
       USER.token = "";
@@ -63,6 +65,8 @@ function signOut() {
   	});
   }
   else {
+
+      setAutoSaveInterval(0);
 
       USER.id = "";
       USER.name = "";
