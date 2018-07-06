@@ -4,7 +4,7 @@ function saveTodo() {
 	return new Promise(function(resolve, reject) {
 
 		// No change do nothing
-		if(!isChanged()) {
+		if(!GLOBAL_VARIABLE.changed) {
 			reject(Error("No changes"));
 		}
 		else if(GLOBAL_VARIABLE.now_loading) {
@@ -394,17 +394,19 @@ function searchTodo(searchString) {
 		}
 		else {
 
+			// Release semaphore
+			setSemaphore(false);
+
 			openSearchResult(result);
 		}
 		
 	}).catch(function(error) {
 
-		log(error);
-
-	}).finally(function() {
-
 		// Release semaphore
 		setSemaphore(false);
+
+		log(error);
+
 	});
 }
 

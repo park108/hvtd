@@ -188,21 +188,12 @@ function removeDomAttribute(id, attr) {
 	}
 }
 
-function isModalOpened() {
-	return GLOBAL_VARIABLE.open_modal;
-}
-
+// Set modal open flag
 function setModalOpen(isOpened) {
-
 	GLOBAL_VARIABLE.open_modal = isOpened;
 }
 
-// Data has changed
-function isChanged() {
-	return GLOBAL_VARIABLE.changed;	
-}
-
-// Set is data changed
+// Set data change flag
 function setChanged(isChanged) {
 
 	GLOBAL_VARIABLE.changed = false;

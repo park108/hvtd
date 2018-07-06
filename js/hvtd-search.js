@@ -62,7 +62,7 @@ function openSearchResult(result) {
 	// Create settings close button
 	let close = document.createElement("span");
 	close.classList.add("close");
-	close.addEventListener("click", cloesSearchResult, false);
+	close.addEventListener("click", closeSearchResult, false);
 	close.innerHTML = "&times;";
 	content.appendChild(close);
 
@@ -115,12 +115,12 @@ function openSearchResult(result) {
 	let okButton = document.createElement("button");
 	okButton.classList.add("button-ok");
 	okButton.classList.add("button-set-single");
-	okButton.addEventListener("click", cloesSearchResult, false);
+	okButton.addEventListener("click", closeSearchResult, false);
 	okButton.innerHTML = getKeyword("OK");
 	content.appendChild(okButton);
 }
 
-function cloesSearchResult() {
+function closeSearchResult() {
 
 	// Remove settings window
 	let searchResult = E("search-result");
@@ -136,7 +136,7 @@ function cloesSearchResult() {
 function goToSearchResult(yyyymmdd, nodeId) {
 
 	// Close modal
-	cloesSearchResult();
+	closeSearchResult();
 
 	log(yyyymmdd + ", " + nodeId);
 

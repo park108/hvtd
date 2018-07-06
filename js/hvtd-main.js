@@ -32,7 +32,7 @@ window.onload = function() {
 
 window.onbeforeunload = function(e) {
 
-	return isChanged() ? getMessage("005") : null;
+	return GLOBAL_VARIABLE.changed ? getMessage("005") : null;
 }
 
 window.onresize = function() {

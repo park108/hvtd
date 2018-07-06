@@ -10,8 +10,6 @@ function setToolbarButtonLayout() {
 	room -= userInfo.clientWidth;
 	room -= 10; // toolbar padding-left
 
-	log("Available room to display toolbar = " + room);
-
 	// Remove more button
 	removeMoreButton();
 
@@ -27,15 +25,13 @@ function setToolbarButtonLayout() {
 		if("DIV" == button.tagName && button.id.indexOf("navigation-toolbar-") > -1) {
 
 			// No change, no show save button
-			if("navigation-toolbar-save" == button.id && !isChanged()) {
+			if("navigation-toolbar-save" == button.id && !GLOBAL_VARIABLE.changed) {
 			}
 			else {
 				++totalButtons;	
 			}
 		}
-	});	
-
-	log("BUTTON COUNT = " + totalButtons);
+	});
 
 	// Display buttons
 	let buttonSize = 30;
@@ -65,7 +61,7 @@ function setToolbarButtonLayout() {
 				}
 
 				// No change, no show save button
-				else if("navigation-toolbar-save" == button.id && !isChanged()) {
+				else if("navigation-toolbar-save" == button.id && !GLOBAL_VARIABLE.changed) {
 				}
 
 				// Show button
@@ -88,7 +84,7 @@ function setToolbarButtonLayout() {
 
 function setSaveIconVisibillity() {
 
-	if(isChanged()) {
+	if(GLOBAL_VARIABLE.changed) {
 		E("navigation-toolbar-save").style.display = "block";
 	}
 	else {
@@ -147,7 +143,7 @@ function toggleMoreDropdown() {
 		createMoreDropdownItem("navigation-toolbar-today", "more-dropdown-today", setToday, "GO_TODAY", "Alt T");
 		createMoreDropdownItem("navigation-toolbar-copy", "more-dropdown-copy", loadPreviousTodo, "COPY_PREVIOUS", "");
 
-		if(isChanged()) {
+		if(GLOBAL_VARIABLE.changed) {
 			createMoreDropdownItem("navigation-toolbar-save", "more-dropdown-save", saveTodoAsync, "SAVE", "Alt S");
 		}
 

@@ -115,8 +115,6 @@ function setSelectedDateText() {
 	let weekString = "(" + getWeekText(day) + ")";
 
 	E("selected-date").innerHTML = selectedDateString + " " + weekString;
-
-	log(selectedDateString + " " + weekString);
 }
 
 function setDate(year, month, date, focusNodeId) {
@@ -168,8 +166,17 @@ function setYesterday() {
 
 function setTomorrow() {
 
+	log("PROCESSING = " + GLOBAL_VARIABLE.now_loading);
+	log("MODAL = " + GLOBAL_VARIABLE.open_modal);
+
 	// Check semaphore
-	if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
+	if(GLOBAL_VARIABLE.now_loading) {
+		log("Now processing... Can't move tomorrow");
+	}
+	else if(GLOBAL_VARIABLE.open_modal) {
+		log("Now modal opened.");
+	}
+	else {
 
 		saveTodo().then(function(result) {
 		}, function(error) {
@@ -179,9 +186,6 @@ function setTomorrow() {
 			tomorrow.setDate(tomorrow.getDate() + 1);
 			setDate(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
 		});
-	}
-	else {
-		log("Now loading... Can't move tomorrow");
 	}
 }
 
