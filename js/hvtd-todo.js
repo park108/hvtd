@@ -382,21 +382,22 @@ function searchTodo(searchString) {
 
 	}, function(error) {
 
+		// Release semaphore
+		setSemaphore(false);
+
 		log(error);
 
 	}).then(function(response) {
 
+		// Release semaphore
+		setSemaphore(false);
+
 		let result = JSON.parse(response);
 
 		if(0 == result.count) {
-
 			setBottomMessage("warning", getMessage("014"));
 		}
 		else {
-
-			// Release semaphore
-			setSemaphore(false);
-
 			openSearchResult(result);
 		}
 		
