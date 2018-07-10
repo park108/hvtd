@@ -17,7 +17,7 @@ function loadTexts() {
 		.then(function(response) {
 
 			if(response.data.hasData) {
-				TEXTS = response.data.value;
+				TEXTS = response.data.data;
 				resolve(response);
 			}
 			else {

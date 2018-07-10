@@ -115,13 +115,18 @@ function loadTodo(focusNodeId) {
 	API.todo.todoUserYyyymmddGet(params, body, additionalParams)
 	.then(function(response) {
 
-		log(JSON.stringify(response.data));
+		log("\n" + "COUNT = " + response.data.count
+			+ "\n" + "MESSAGE = " + response.data.successMessage
+			);
 
 		return response.data;
 
 	}, function(error) {
 
-		log(JSON.stringify(error));
+		log("\n" + "STATUS = " + error.status
+			+ "\n" + "MESSAGE = " + error.data.message
+			+ "\n" + "URL = " + error.config.url
+			);
 
 	}).then(function(data) {
 
@@ -270,13 +275,18 @@ function loadPreviousTodo() {
 	API.todo.todoUserYyyymmddPreviousGet(params, body, additionalParams)
 	.then(function(response) {
 
-		log(JSON.stringify(response));
+		log("\n" + "COUNT = " + response.data.count
+			+ "\n" + "MESSAGE = " + response.data.successMessage
+			);
 
 		return response;
 
 	}, function(error) {
 
-		log(error);
+		log("\n" + "STATUS = " + error.status
+			+ "\n" + "MESSAGE = " + error.data.message
+			+ "\n" + "URL = " + error.config.url
+			);
 
 	}).then(function(response) {
 
