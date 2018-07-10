@@ -40,16 +40,8 @@ let IMG = {
 }
 
 let API = {
-	"SETTINGS": {
-		"GATEWAY_URL": "https://g72s9v6ioa.execute-api.ap-northeast-2.amazonaws.com"
-		, "STAGE_NAME": "test"
-		, "API_NAME": "settings"
-	},
-	"TODO": {
-		"GATEWAY_URL": "https://tfsds3iaxe.execute-api.ap-northeast-2.amazonaws.com"
-		, "STAGE_NAME": "test"
-		, "API_NAME": "todo"
-	}
+	"SETTINGS": null
+	, "TODO": null
 }
 
 function log(line) {
@@ -93,53 +85,6 @@ function setForEachFunction() {
 	if(window.XMLHttpRequest) {
 		NodeList.prototype.forEach = Array.prototype.forEach;
 	}
-}
-
-// Get API URL
-function getApiUrl(api, additionalInfo) {
-
-	let gateway = api.GATEWAY_URL;
-	let stageName = api.STAGE_NAME;
-	let apiName = api.API_NAME;
-
-	return gateway + "/" + stageName + "/" + apiName + "/" + additionalInfo;
-}
-
-// Call API
-function callAPI(apiUrl, method, data) {
-
-	log(method + " -> " + apiUrl);
-
-	return new Promise(function(resolve, reject) {
-
-		// Prepare request
-		let req = getXMLHttpRequestObject();
-
-		req.open(method, apiUrl);
-		req.setRequestHeader("Content-type", "application/json");
-
-		req.onload = function() {
-
-			if(req.status == 200) {
-				resolve(req.response);
-			}
-			else {
-				reject(Error(req.statusText));
-			}
-		};
-
-		req.onerror = function() {
-			reject(Error("Network Error"));
-		}
-
-		// Send request
-		if("GET" == method) {
-			req.send();
-		}
-		else {
-			req.send(data);	
-		}
-	});
 }
 
 function isInt(data) {

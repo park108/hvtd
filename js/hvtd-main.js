@@ -19,11 +19,6 @@ window.onload = function() {
 	E("search-close").addEventListener("click", closeSearch, false);
 	E("shortcut-button").addEventListener("click", openShortcuts, false);
 
-	// Set test data
-	if(undefined != window.setTestData) {
-		window.setTestData();
-	}
-
 	// Clear todo and set user info
 	clearTodo();
 	setTodayIconDate();

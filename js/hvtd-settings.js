@@ -3,25 +3,21 @@ function saveSettings() {
 
 	log("Call...");
 
-	// Set settings data
-	let settings = {
-		"settings": SETTINGS
+	// Set send data
+	let params = {
+		user: USER.id
 	};
+	let body = {
+		settings: SETTINGS
+	};
+	let additionalParams = {};
 
-	// Convert data to JSON string
-	let dataString = JSON.stringify(settings);
-
-	// Call API
-	let apiUrl = getApiUrl(API.SETTINGS, USER.id);
-
-	callAPI(apiUrl, "POST", dataString).then(function(response) {
-
-		log(response);
-
+	// Call Generated API Gateway SDK
+	API.SETTINGS.settingsUserPost(params, body, additionalParams)
+	.then(function(response) {
+		setBottomMessage("success", getMessage("015"));
 	}, function(error) {
-
-		log(error);
-
+		setBottomMessage("error", getMessage("016"));
 	});
 }
 
@@ -30,15 +26,18 @@ function loadSettings() {
 
 	log("Call...");
 
-	// Call API
-	let apiUrl = getApiUrl(API.SETTINGS, USER.id);
+	// Set send data
+	let params = {
+		user: USER.id
+	};
+	let body = {};
+	let additionalParams = {};
 
-	callAPI(apiUrl, "GET").then(function(response) {
+	// Call Generated API Gateway SDK
+	API.SETTINGS.settingsUserGet(params, body, additionalParams)
+	.then(function(response) {
 
-		log(response);
-
-		let data = JSON.parse(response);
-		let settings = data.settings;
+		let settings = response.data.settings;
 
 		// If has no data, set default value
 		if(undefined == settings || null == settings || "" == settings) {

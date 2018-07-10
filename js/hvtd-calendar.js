@@ -126,7 +126,7 @@ function setDate(year, month, date, focusNodeId) {
 
 		saveTodo().then(function(result) {
 		}, function(error) {
-			log(error);
+			log(JSON.stringify(error));
 		}).finally(function() {
 				
 			GLOBAL_VARIABLE.selected_date = new Date(year, month, date);
@@ -152,7 +152,7 @@ function setYesterday() {
 
 		saveTodo().then(function(result) {
 		}, function(error) {
-			log(error);
+			log(JSON.stringify(error));
 		}).finally(function() {
 			let yesterday = GLOBAL_VARIABLE.selected_date;
 			yesterday.setDate(yesterday.getDate() - 1);
@@ -180,7 +180,7 @@ function setTomorrow() {
 
 		saveTodo().then(function(result) {
 		}, function(error) {
-			log(error);
+			log(JSON.stringify(error));
 		}).finally(function() {
 			let tomorrow = GLOBAL_VARIABLE.selected_date;
 			tomorrow.setDate(tomorrow.getDate() + 1);
@@ -206,7 +206,7 @@ function setToday() {
 
 			saveTodo().then(function(result) {
 			}, function(error) {
-				log(error);
+				log(JSON.stringify(error));
 			}).finally(function() {
 				setDate(today.getFullYear(), today.getMonth(), today.getDate());
 			});

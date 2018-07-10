@@ -51,8 +51,8 @@ let TEXTS = {
 			"EN": "It has children. Do you delete it?",
 		},
 		"002": {
-			"KO": "",
-			"EN": "",
+			"KO": "Todo 삭제를 실패 했습니다.",
+			"EN": "Todo delete failed.",
 		},
 		"003": {
 			"KO": "",
@@ -101,6 +101,14 @@ let TEXTS = {
 		"014": {
 			"KO": "검색 결과가 없습니다.",
 			"EN": "No matches.",
+		},
+		"015": {
+			"KO": "설정 변경사항을 저장했습니다.",
+			"EN": "Save setting changes.",
+		},
+		"016": {
+			"KO": "설정 변경사항 저장을 실패했습니다.",
+			"EN": "Save settings failed.",
 		},
 	},
 	"WEEK_TEXT": {

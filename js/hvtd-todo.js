@@ -26,15 +26,15 @@ function saveTodo() {
 			// Get selected date
 			let yyyymmdd = getYYYYMMDD(GLOBAL_VARIABLE.selected_date);
 
-			let yearString = yyyymmdd.substring(0, 4);
-			let monthString = yyyymmdd.substring(4, 6);
-			let dateString = yyyymmdd.substring(6, 8);
-
-			// Set date for todo
-			let todo = {
-				"year": yearString,
-				"month": monthString,
-				"date": dateString,
+			// Set send data
+			let params = {
+				user: USER.id,
+				yyyymmdd: yyyymmdd
+			};
+			let body = {
+				"year": yyyymmdd.substring(0, 4),
+				"month": yyyymmdd.substring(4, 6),
+				"date": yyyymmdd.substring(6, 8),
 				"list": null
 			};
 
@@ -55,16 +55,13 @@ function saveTodo() {
 				todoList.push(nodeObject);
 			});
 
-			todo.list = todoList;
+			body.list = todoList;
 
-			// Convert data to JSON string
-			let dataString = JSON.stringify(todo);
+			let additionalParams = {};
 
-			// Call API
-			let apiUrl = getApiUrl(API.TODO, USER.id + "/" + yyyymmdd);
-
-
-			callAPI(apiUrl, "POST", dataString).then(function(response) {
+			// Call Generated API Gateway SDK
+			API.TODO.todoUserYyyymmddPost(params, body, additionalParams)
+			.then(function(response) {
 
 				resolve(response);
 				setSaveIconVisibillity();
@@ -93,12 +90,6 @@ function loadTodo(focusNodeId) {
 
 	log("Call...");
 
-	// Get selected date
-	let yyyymmdd = getYYYYMMDD(GLOBAL_VARIABLE.selected_date);
-
-	// Call API
-	let apiUrl = getApiUrl(API.TODO, USER.id + "/" + yyyymmdd);
-
 	// Check semaphore to prevent duplicate loading
 	if(GLOBAL_VARIABLE.now_loading) {
 		log("Now loading... Can't load another todo");
@@ -109,26 +100,35 @@ function loadTodo(focusNodeId) {
 		return false;
 	}
 
+	// Set send data
+	let params = {
+		user: USER.id
+		, yyyymmdd: getYYYYMMDD(GLOBAL_VARIABLE.selected_date)
+	};
+	let body = {};
+	let additionalParams = {};
+
 	// Set semaphore
 	setSemaphore(true, getMessage("007"));
 
-	callAPI(apiUrl, "GET").then(function(response) {
+	// Call Generated API Gateway SDK
+	API.TODO.todoUserYyyymmddGet(params, body, additionalParams)
+	.then(function(response) {
 
-		log(response);
+		log(JSON.stringify(response.data));
 
-		return response;
+		return response.data;
 
 	}, function(error) {
 
-		log(error);
+		log(JSON.stringify(error));
 
-	}).then(function(response) {
+	}).then(function(data) {
 
-		let data = JSON.parse(response);
 		let todoList = data.list;
 
 		// If has no data, initialize
-		if(undefined == todoList || null == todoList || "" == todoList) {
+		if(undefined == data.count || 0 == data.count) {
 
 			clearTodo();
 			createNode();
@@ -156,7 +156,7 @@ function loadTodo(focusNodeId) {
 
 	}).catch(function(error) {
 
-		log(error);
+		log(JSON.stringify(error));
 
 	}).finally(function() {
 
@@ -179,26 +179,39 @@ function deleteTodo() {
 
 	log("Call...");
 
-	// Get selected date
-	let yyyymmdd = getYYYYMMDD(GLOBAL_VARIABLE.selected_date);
-
 	// Delete todo after get user confirm
 	openConfirmModal(getMessage("004")
 		, function() {
 
-			// Call API
-			let apiUrl = getApiUrl(API.TODO, USER.id + "/" + yyyymmdd);
+			// Set send data
+			let params = {
+				yyyymmdd: getYYYYMMDD(GLOBAL_VARIABLE.selected_date)
+				, user: USER.id
+			};
+			let body = {
+				"Content-Type": "application/json"
+			};
+			let additionalParams = {};
 
 			// Set semaphore
 			setSemaphore(true, getMessage("009"));
 
-			callAPI(apiUrl, "DELETE").then(function(response) {
+			// Call Generated API Gateway SDK
+			API.TODO.todoUserYyyymmddDelete(params, body, additionalParams)
+			.then(function(response) {
 
-				log(response);
+				log(JSON.stringify(response.data));
+
+				setBottomMessage("success", getMessage("012"));
 
 			}, function(error) {
 
-				log(error);
+				log("\n" + "STATUS = " + error.status
+					+ "\n" + "MESSAGE = " + error.data.message
+					+ "\n" + "URL = " + error.config.url
+					);
+
+				setBottomMessage("error", getMessage("002"));
 
 			}).then(function() {
 
@@ -210,16 +223,16 @@ function deleteTodo() {
 				
 			}).catch(function(error) {
 
-				log(error);
+				log(JSON.stringify(error));
+
+				setBottomMessage("error", getMessage("002"));
 
 			}).finally(function() {
 
 				// Release semaphore
 				setSemaphore(false);
-				setBottomMessage("success", getMessage("012"));
 			});
-		}
-		, 
+		},
 			// Cancel: close modal window
 			closeConfirmModal
 		);
@@ -229,12 +242,6 @@ function deleteTodo() {
 function loadPreviousTodo() {
 
 	log("Call...");
-
-	// Get selected date
-	let yyyymmdd = getYYYYMMDD(GLOBAL_VARIABLE.selected_date);
-
-	// Call API
-	let apiUrl = getApiUrl(API.TODO, USER.id + "/" + yyyymmdd + "/previous");
 
 	// Check semaphore to prevent duplicate loading
 	if(GLOBAL_VARIABLE.now_loading) {
@@ -246,14 +253,24 @@ function loadPreviousTodo() {
 		return false;
 	}
 
+	// Set send data
+	let params = {
+		user: USER.id
+		, yyyymmdd: getYYYYMMDD(GLOBAL_VARIABLE.selected_date)
+	};
+	let body = {};
+	let additionalParams = {};
+
 	// Set semaphore
 	setSemaphore(true, getMessage("007"));
 
 	let copiedCount = 0;
 
-	callAPI(apiUrl, "GET").then(function(response) {
+	// Call Generated API Gateway SDK
+	API.TODO.todoUserYyyymmddPreviousGet(params, body, additionalParams)
+	.then(function(response) {
 
-		log(response);
+		log(JSON.stringify(response));
 
 		return response;
 
@@ -263,20 +280,14 @@ function loadPreviousTodo() {
 
 	}).then(function(response) {
 
-		let data = JSON.parse(response);
-		let count = data.count;
-		let todoList = data.item.list;
-
-		// If has no data, nothing to do.
-		if(0 == count) {
-
-			alert("has no previous todo");
-		}
+		let data = response.data;
+		let hasPrevData = data.hasData;
 
 		// If has data, set data into page
-		else {
+		if(hasPrevData) {
 
 			let previousNode = undefined;
+			let todoList = data.item.list;
 
 			if(hasData()) {
 				previousNode = getNodeList().pop();
@@ -368,15 +379,22 @@ function searchTodo(searchString) {
 
 	log("Call...");
 
-	// Call API
-	let apiUrl = getApiUrl(API.TODO, USER.id + "/search/" + searchString);
+	// Set send data
+	let params = {
+		user: USER.id
+		, searchString: searchString
+	};
+	let body = {};
+	let additionalParams = {};
 
 	// Set semaphore
 	setSemaphore(true, getMessage("013"));
 
-	callAPI(apiUrl, "GET").then(function(response) {
+	// Call Generated API Gateway SDK
+	API.TODO.todoUserSearchSearchStringGet(params, body, additionalParams)
+	.then(function(response) {
 
-		log(response);
+		log(JSON.stringify(response));
 
 		return response;
 
@@ -385,14 +403,14 @@ function searchTodo(searchString) {
 		// Release semaphore
 		setSemaphore(false);
 
-		log(error);
+		log(JSON.stringify(error));
 
 	}).then(function(response) {
 
 		// Release semaphore
 		setSemaphore(false);
 
-		let result = JSON.parse(response);
+		let result = response.data;
 
 		if(0 == result.count) {
 			setBottomMessage("warning", getMessage("014"));
@@ -406,8 +424,7 @@ function searchTodo(searchString) {
 		// Release semaphore
 		setSemaphore(false);
 
-		log(error);
-
+		log(JSON.stringify(error));
 	});
 }
 

@@ -67,8 +67,6 @@ function setToolbarButtonLayout() {
 				// Show button
 				else {
 
-					log("SHOW(" + index + ") = " + button.id);
-
 					button.style.display = "block"; // Show
 					buttonSize = button.clientWidth;
 					room -= buttonSize; // Room shrink..
