@@ -28,22 +28,33 @@ function onSignIn(googleUser) {
 	AWS.config.credentials.get(function() {
 
 		// Create new api client
-		API.SETTINGS = apigClientFactory.newClient.settings({
+		API.settings = apigClientFactory.newClient.settings({
 			accessKey: AWS.config.credentials.accessKeyId
 			, secretKey: AWS.config.credentials.secretAccessKey
 			, sessionToken: AWS.config.credentials.sessionToken
 			, region: AWS.config.region
 		});
 
-		API.TODO = apigClientFactory.newClient.todo({
+		API.constants = apigClientFactory.newClient.constants({
 			accessKey: AWS.config.credentials.accessKeyId
 			, secretKey: AWS.config.credentials.secretAccessKey
 			, sessionToken: AWS.config.credentials.sessionToken
 			, region: AWS.config.region
 		});
 
-		setUserInfo();
-		closeLogin();
+		API.todo = apigClientFactory.newClient.todo({
+			accessKey: AWS.config.credentials.accessKeyId
+			, secretKey: AWS.config.credentials.secretAccessKey
+			, sessionToken: AWS.config.credentials.sessionToken
+			, region: AWS.config.region
+		});
+
+		loadTexts().then(function(result) {
+			setUserInfo();
+			closeLogin();
+		}, function(error) {
+			log(JSON.stringify(error));
+		});
 	});
 }
 

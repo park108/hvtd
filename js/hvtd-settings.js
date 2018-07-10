@@ -13,7 +13,7 @@ function saveSettings() {
 	let additionalParams = {};
 
 	// Call Generated API Gateway SDK
-	API.SETTINGS.settingsUserPost(params, body, additionalParams)
+	API.settings.settingsUserPost(params, body, additionalParams)
 	.then(function(response) {
 		setBottomMessage("success", getMessage("015"));
 	}, function(error) {
@@ -34,7 +34,7 @@ function loadSettings() {
 	let additionalParams = {};
 
 	// Call Generated API Gateway SDK
-	API.SETTINGS.settingsUserGet(params, body, additionalParams)
+	API.settings.settingsUserGet(params, body, additionalParams)
 	.then(function(response) {
 
 		let settings = response.data.settings;

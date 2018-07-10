@@ -60,7 +60,7 @@ function saveTodo() {
 			let additionalParams = {};
 
 			// Call Generated API Gateway SDK
-			API.TODO.todoUserYyyymmddPost(params, body, additionalParams)
+			API.todo.todoUserYyyymmddPost(params, body, additionalParams)
 			.then(function(response) {
 
 				resolve(response);
@@ -112,7 +112,7 @@ function loadTodo(focusNodeId) {
 	setSemaphore(true, getMessage("007"));
 
 	// Call Generated API Gateway SDK
-	API.TODO.todoUserYyyymmddGet(params, body, additionalParams)
+	API.todo.todoUserYyyymmddGet(params, body, additionalParams)
 	.then(function(response) {
 
 		log(JSON.stringify(response.data));
@@ -197,7 +197,7 @@ function deleteTodo() {
 			setSemaphore(true, getMessage("009"));
 
 			// Call Generated API Gateway SDK
-			API.TODO.todoUserYyyymmddDelete(params, body, additionalParams)
+			API.todo.todoUserYyyymmddDelete(params, body, additionalParams)
 			.then(function(response) {
 
 				log(JSON.stringify(response.data));
@@ -267,7 +267,7 @@ function loadPreviousTodo() {
 	let copiedCount = 0;
 
 	// Call Generated API Gateway SDK
-	API.TODO.todoUserYyyymmddPreviousGet(params, body, additionalParams)
+	API.todo.todoUserYyyymmddPreviousGet(params, body, additionalParams)
 	.then(function(response) {
 
 		log(JSON.stringify(response));
@@ -391,7 +391,7 @@ function searchTodo(searchString) {
 	setSemaphore(true, getMessage("013"));
 
 	// Call Generated API Gateway SDK
-	API.TODO.todoUserSearchSearchStringGet(params, body, additionalParams)
+	API.todo.todoUserSearchSearchStringGet(params, body, additionalParams)
 	.then(function(response) {
 
 		log(JSON.stringify(response));

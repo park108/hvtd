@@ -40,8 +40,9 @@ let IMG = {
 }
 
 let API = {
-	"SETTINGS": null
-	, "TODO": null
+	"settings": null
+	, "constants": null
+	, "todo": null
 }
 
 function log(line) {
