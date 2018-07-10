@@ -32,5 +32,5 @@ function loadTexts() {
 
 			reject(Error("error!"));
 		});
-	}
+	});
 }
