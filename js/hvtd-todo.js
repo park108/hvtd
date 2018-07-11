@@ -63,10 +63,16 @@ function saveTodo() {
 			API.todo.todoUserYyyymmddPost(params, body, additionalParams)
 			.then(function(response) {
 
+				// Release semaphore before return reslove/reject
+				setSemaphore(false);
+
 				resolve(response);
 				setSaveIconVisibillity();
 
 			}, function(error) {
+
+				// Release semaphore return reslove/reject
+				setSemaphore(false);
 
 				reject(Error("DB error!"));
 
@@ -77,6 +83,9 @@ function saveTodo() {
 
 			}).catch(function(error) {
 
+				// Release semaphore return reslove/reject
+				setSemaphore(false);
+
 				log(JSON.stringify(error));
 
 				// If credential is expired, sign out
@@ -84,10 +93,6 @@ function saveTodo() {
 					signOut();
 				}
 
-			}).finally(function() {
-
-				// Release semaphore
-				setSemaphore(false);
 			});
 		}
 	});
@@ -218,7 +223,7 @@ function deleteTodo() {
 				, user: USER.id
 			};
 			let body = {
-				"Content-Type": "application/json"
+				"Content-Type": "application/json" // Set header data into body for avoid 415 error
 			};
 			let additionalParams = {};
 
@@ -487,7 +492,7 @@ function searchTodo(searchString) {
 		setSemaphore(false);
 
 		log(JSON.stringify(error));
-		
+
 
 		// If credential is expired, sign out
 		if(403 == error.status) {
