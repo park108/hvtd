@@ -70,6 +70,20 @@ function saveTodo() {
 
 				reject(Error("DB error!"));
 
+				// If credential is expired, sign out
+				if(403 == error.status) {
+					signOut();
+				}
+
+			}).catch(function(error) {
+
+				log(JSON.stringify(error));
+
+				// If credential is expired, sign out
+				if(403 == error.status) {
+					signOut();
+				}
+
 			}).finally(function() {
 
 				// Release semaphore
@@ -128,6 +142,11 @@ function loadTodo(focusNodeId) {
 			+ "\n" + "URL = " + error.config.url
 			);
 
+		// If credential is expired, sign out
+		if(403 == error.status) {
+			signOut();
+		}
+
 	}).then(function(data) {
 
 		let todoList = data.list;
@@ -162,6 +181,11 @@ function loadTodo(focusNodeId) {
 	}).catch(function(error) {
 
 		log(JSON.stringify(error));
+
+		// If credential is expired, sign out
+		if(403 == error.status) {
+			signOut();
+		}
 
 	}).finally(function() {
 
@@ -216,7 +240,13 @@ function deleteTodo() {
 					+ "\n" + "URL = " + error.config.url
 					);
 
-				setBottomMessage("error", getMessage("002"));
+				// If credential is expired, sign out
+				if(403 == error.status) {
+					signOut();
+				}
+				else {
+					setBottomMessage("error", getMessage("002"));
+				}
 
 			}).then(function() {
 
@@ -230,7 +260,13 @@ function deleteTodo() {
 
 				log(JSON.stringify(error));
 
-				setBottomMessage("error", getMessage("002"));
+				// If credential is expired, sign out
+				if(403 == error.status) {
+					signOut();
+				}
+				else {
+					setBottomMessage("error", getMessage("002"));
+				}
 
 			}).finally(function() {
 
@@ -287,6 +323,11 @@ function loadPreviousTodo() {
 			+ "\n" + "MESSAGE = " + error.data.message
 			+ "\n" + "URL = " + error.config.url
 			);
+
+		// If credential is expired, sign out
+		if(403 == error.status) {
+			signOut();
+		}
 
 	}).then(function(response) {
 
@@ -367,6 +408,11 @@ function loadPreviousTodo() {
 
 		log(error);
 
+		// If credential is expired, sign out
+		if(403 == error.status) {
+			signOut();
+		}
+
 	}).finally(function() {
 
 		// Release semaphore
@@ -415,6 +461,12 @@ function searchTodo(searchString) {
 
 		log(JSON.stringify(error));
 
+
+		// If credential is expired, sign out
+		if(403 == error.status) {
+			signOut();
+		}
+
 	}).then(function(response) {
 
 		// Release semaphore
@@ -435,6 +487,12 @@ function searchTodo(searchString) {
 		setSemaphore(false);
 
 		log(JSON.stringify(error));
+		
+
+		// If credential is expired, sign out
+		if(403 == error.status) {
+			signOut();
+		}
 	});
 }
 
