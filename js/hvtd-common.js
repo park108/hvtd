@@ -69,10 +69,22 @@ function E(id) {
 }
 
 function percentEncode(str) {
-	return encodeURIComponent(str).replace(/[!*()']/g, (character) => {
-		return '%' + character.charCodeAt(0).toString(16);
-	});
-};
+
+	if(null == str || "" == str) {
+		return "";
+	}
+	else {
+
+		var result= encodeURIComponent(str);
+		
+		// Fix the mismatch between OAuth's  RFC3986's and Javascript's beliefs in what is right and wrong ;)
+		return result.replace(/\!/g, "%21")
+			.replace(/\'/g, "%27")
+			.replace(/\(/g, "%28")
+			.replace(/\)/g, "%29")
+			.replace(/\*/g, "%2A");
+	}
+}
 
 function getXMLHttpRequestObject() {
 

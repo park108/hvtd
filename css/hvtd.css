@@ -483,7 +483,6 @@ button {
 
 .button-set {
 	width: 100%;
-	display: table-row;
 }
 
 .button-set-single {
@@ -496,6 +495,10 @@ button {
 
 .button-set-triple {
 	width: calc(33.3% - 10px);
+}
+
+.signin-button-set {
+	display: table-row;
 }
 
 .signin-button {
