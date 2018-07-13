@@ -151,8 +151,6 @@ function createNode(currentNode, inputLevel, inputStatus, inputCollapse, inputCo
 		currentNode.parentNode.insertBefore(newNode, currentNode.nextSibling);
 	}
 
-	log("Current = " + currentNode.id + ", New = " + newNode.id);
-
 	newNodeContents.addEventListener("input", changeData, false);
 	refreshNode(newNode);
 

@@ -3,5 +3,5 @@
 info.txt
 package-lock.json
 package.json
-/js/test_setting.js
 /node_modules/*
+main.js

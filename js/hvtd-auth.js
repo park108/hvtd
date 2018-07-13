@@ -1,18 +1,12 @@
-function onSignIn(googleUser) {
+function onSignInGoogle(googleUser) {
 
 	let profile = googleUser.getBasicProfile();
-
-	console.log('Google ID = ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-	console.log('Google Name = ' + profile.getName());
-	console.log('Google Image URL = ' + profile.getImageUrl());
-	console.log('Google Email = ' + profile.getEmail()); // This is null if the 'email' scope is not present.
 
 	USER.id = profile.getEmail(); // Google email for hvtd ID
 	USER.name = profile.getName(); // Google name for hvtd Name
 	USER.image = profile.getImageUrl().replace("s96-c/", ""); // Google image for hvtd image
-
-	let authResponse = googleUser.getAuthResponse();
-	USER.token = authResponse.id_token; // Google id_token for hvtd user token
+	USER.token = googleUser.getAuthResponse().id_token; // Google id_token for hvtd user token
+	USER.id_provider = "Google";
 
 	// Add the Google access token to the Cognito credentials login map.
 	AWS.config.region = 'ap-northeast-2';
@@ -52,15 +46,128 @@ function onSignIn(googleUser) {
 		loadTexts().then(function(result) {
 			setUserInfo();
 			closeLogin();
+
 		}, function(error) {
-			log(JSON.stringify(error));
+			log(error);
 		});
 	});
 }
 
+let TWITTER_KEYS = {
+	"CONSUMER_KEY": "qR1YCAyHsZglYObENwbDvjMJL"
+	, "CONSUMER_SECRET": "mo8eXUWIwVnnnU9BFpmMjUwCnuSkZoOmVxBVz2sMegevOtaImg"
+	, "ACCESS_TOKEN": "1017289935554920448-KolLOiJjyo0Xhq3KnrEkDw0uP6vQ3d"
+	, "ACCESS_TOKEN_SECRECT": "Lz9lp8i2qiZ56WK9AYpI3SWh6qCHxkUog1YlAvWDYYkHw"
+}
+
+function onSignInTwitter() {
+
+	let timestamp  = Math.round(Date.now() / 1000);
+
+	let urlSplit = document.URL.split("/");
+	let callbackUrl = urlSplit[0] + "//" + urlSplit[2];
+
+	let requestUrl = "https://api.twitter.com/oauth/request_token";
+	let method = "POST";
+	let signatureMethod = "HMAC-SHA1";
+	let nonce = getNonce();
+	let oAuthVersion = "1.0";
+
+	// Make signature
+	let paramString = getParamString(TWITTER_KEYS.CONSUMER_KEY, nonce, signatureMethod, timestamp, TWITTER_KEYS.ACCESS_TOKEN, oAuthVersion);
+	let signatureString = getSignatureString(method, requestUrl, paramString);
+	let signingKey = percentEncode(TWITTER_KEYS.CONSUMER_SECRET) + "&" + percentEncode(TWITTER_KEYS.ACCESS_TOKEN_SECRECT);
+	let signature = getSignature("SHA-1", "TEXT", "B64", signingKey, signatureString);
+
+	log("paramString = " + paramString);
+	log("signatureString = " + signatureString);
+	log("signingKey = " + signingKey);
+	log("signature = " + signature);
+
+	// Make authorization header
+	let authHeader = "OAuth ";
+	let oauth_nonce = "oauth_nonce=\"" + nonce + "\", ";
+	let oauth_callback = "oauth_callback=\"" + percentEncode(callbackUrl) + "\", ";
+	let oauth_signature_method = "oauth_signature_method=\"" + signatureMethod + "\", ";
+	let oauth_timestamp = "oauth_timestamp=\"" + timestamp + "\", ";
+	let oauth_consumer_key = "oauth_consumer_key=\"" + TWITTER_KEYS.CONSUMER_KEY + "\", ";
+	let oauth_signature = "oauth_signature=\"" + percentEncode(signature) + "\", ";
+	let oauth_version = "oauth_version=\"" + oAuthVersion + "\"";
+
+	authHeader = authHeader
+				+ oauth_nonce
+				+ oauth_callback
+				+ oauth_signature_method
+				+ oauth_timestamp
+				+ oauth_consumer_key
+				+ oauth_signature
+				+ oauth_version;
+
+	log("Authorization = " + authHeader);
+
+	// Make and send request
+	let req = getXMLHttpRequestObject();
+	req.open(method, requestUrl, true);
+	req.setRequestHeader('Authorization', authHeader);
+
+	req.onreadystatechange = function(e) {
+
+		if (req.readyState == 4) {
+			if(req.status == 200) {
+				log(req.responseText);
+			}
+			else {
+				log(JSON.stringify(e));
+			}
+		}
+	};
+
+	req.send(null);
+}
+
+function getParamString(consumerKey, nonce, signatureMethod, timestamp, accessToken, oAuthVersion) {
+
+	let str = "oauth_consumer_key=" + percentEncode(consumerKey)
+			+ "&" + "oauth_nonce=" + percentEncode(nonce)
+			+ "&" + "oauth_signature_method=" + percentEncode(signatureMethod)
+			+ "&" + "oauth_timestamp=" + percentEncode(timestamp)
+			+ "&" + "oauth_token=" + percentEncode(accessToken)
+			+ "&" + "oauth_version=" + percentEncode(oAuthVersion);
+
+	log(str);
+
+	return str;
+}
+
+function getSignatureString(method, requestUrl, paramString) {
+
+	let str = method + "&"
+			+ percentEncode(requestUrl) + "&"
+			+ percentEncode(paramString);
+
+	log(str);
+
+	return str;
+}
+
+function getSignature(variant, inputType, outputType, key, text) {
+
+	let shaObj = new jsSHA(variant, inputType);
+	shaObj.setHMACKey(key, inputType);
+	shaObj.update(text);
+	return shaObj.getHMAC(outputType);
+}
+
+function getNonce() {
+	const charset = '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz'
+	const result = [];
+	window.crypto.getRandomValues(new Uint8Array(32)).forEach(c =>
+		result.push(charset[c % charset.length]));
+	return result.join('');
+}
+
 function onSignInFailure(e) {
-	log(JSON.stringify(e));
-	console.log("User signed in failed.");
+	signOut();
 }
 
 function signOut() {

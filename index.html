@@ -50,24 +50,23 @@
 			<div class="modal-content">
 				<p id="login-message"></p>
 				<div class="button-set">
-					<div id="login-button-signin" class="g-signin2" data-onsuccess="onSignIn" data-onfailure="onSignInFailure"></div>
+					<div id="login-button-google"
+						class="g-signin2 signin-button"
+						data-onsuccess="onSignInGoogle"
+						data-onfailure="onSignInFailure"
+						data-width="50"
+						data-height="50"
+						data-longtitle="false"
+						>
+					</div>
+					<div class="signin-button-description">Google Sign-In</div>
+				</div>
+				<div class="button-set">
+					<button id="login-button-twitter" class="signin-button">T</button>
+					<div class="signin-button-description">Twitter Sign-In</div>
 				</div>
 			</div>
 		</div>
-
-		<script src="js/lib/bluebird.min.js"></script>
-		
-		<script type="text/javascript" src="js/aws/lib/axios/dist/axios.standalone.js"></script>
-		<script type="text/javascript" src="js/aws/lib/CryptoJS/rollups/hmac-sha256.js"></script>
-		<script type="text/javascript" src="js/aws/lib/CryptoJS/rollups/sha256.js"></script>
-		<script type="text/javascript" src="js/aws/lib/CryptoJS/components/hmac.js"></script>
-		<script type="text/javascript" src="js/aws/lib/CryptoJS/components/enc-base64.js"></script>
-		<script type="text/javascript" src="js/aws/lib/url-template/url-template.js"></script>
-		<script type="text/javascript" src="js/aws/lib/apiGatewayCore/sigV4Client.js"></script>
-		<script type="text/javascript" src="js/aws/lib/apiGatewayCore/apiGatewayClient.js"></script>
-		<script type="text/javascript" src="js/aws/lib/apiGatewayCore/simpleHttpClient.js"></script>
-		<script type="text/javascript" src="js/aws/lib/apiGatewayCore/utils.js"></script>
-		<script type="text/javascript" src="js/aws/apigClient.js"></script>
 
 		<script src="js/hvtd-common.js"></script>
 		<script src="js/hvtd-layout.js"></script>
@@ -82,14 +81,29 @@
 		<script src="js/hvtd-toolbar.js"></script>
 		<script src="js/hvtd-key-in-control.js"></script>
 		<script src="js/hvtd-search.js"></script>
+		<script src="js/hvtd-auth.js"></script>
 		<script src="js/hvtd-main.js"></script>
+
+		<script src="js/lib/sha1.js"></script>
+		<script src="js/lib/bluebird.min.js"></script>
+		
+		<script type="text/javascript" src="js/aws/lib/axios/dist/axios.standalone.js"></script>
+		<script type="text/javascript" src="js/aws/lib/CryptoJS/rollups/hmac-sha256.js"></script>
+		<script type="text/javascript" src="js/aws/lib/CryptoJS/rollups/sha256.js"></script>
+		<script type="text/javascript" src="js/aws/lib/CryptoJS/components/hmac.js"></script>
+		<script type="text/javascript" src="js/aws/lib/CryptoJS/components/enc-base64.js"></script>
+		<script type="text/javascript" src="js/aws/lib/url-template/url-template.js"></script>
+		<script type="text/javascript" src="js/aws/lib/apiGatewayCore/sigV4Client.js"></script>
+		<script type="text/javascript" src="js/aws/lib/apiGatewayCore/apiGatewayClient.js"></script>
+		<script type="text/javascript" src="js/aws/lib/apiGatewayCore/simpleHttpClient.js"></script>
+		<script type="text/javascript" src="js/aws/lib/apiGatewayCore/utils.js"></script>
+		<script type="text/javascript" src="js/aws/apigClient.js"></script>
 
 		<script src="js/aws/aws-cognito-sdk.min.js"></script>
 		<script src="js/aws/amazon-cognito-identity.min.js"></script>
 		<script src="js/aws/aws-sdk-2.258.1.min.js"></script>
+
 		<script src="js/google/platform.js" async defer></script>
-		
-		<script src="js/hvtd-auth.js"></script>
 
 	</body>
 </html>

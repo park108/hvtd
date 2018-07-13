@@ -21,16 +21,16 @@ function loadTexts() {
 				resolve(response);
 			}
 			else {
-				reject(Error("No application global settings!"));
+				reject(new Error("No application global settings!"));
 			}
 
 		}, function(error) {
 			
-			reject(Error("DB error!"));
+			reject(new Error("DB error!"));
 			
 		}).catch(function(error) {
 
-			reject(Error("error!"));
+			reject(new Error("error!"));
 		});
 	});
 }

@@ -119,14 +119,12 @@ function setSelectedDateText() {
 
 function setDate(year, month, date, focusNodeId) {
 
-	log(year + "-" + month + "-" + date);
-
 	// Check semaphore
 	if(!GLOBAL_VARIABLE.now_loading && !GLOBAL_VARIABLE.open_modal) {
 
 		saveTodo().then(function(result) {
 		}, function(error) {
-			log(JSON.stringify(error));
+			log(error);
 		}).finally(function() {
 				
 			GLOBAL_VARIABLE.selected_date = new Date(year, month, date);
@@ -152,7 +150,7 @@ function setYesterday() {
 
 		saveTodo().then(function(result) {
 		}, function(error) {
-			log(JSON.stringify(error));
+			log(error);
 		}).finally(function() {
 			let yesterday = GLOBAL_VARIABLE.selected_date;
 			yesterday.setDate(yesterday.getDate() - 1);
@@ -166,9 +164,6 @@ function setYesterday() {
 
 function setTomorrow() {
 
-	log("PROCESSING = " + GLOBAL_VARIABLE.now_loading);
-	log("MODAL = " + GLOBAL_VARIABLE.open_modal);
-
 	// Check semaphore
 	if(GLOBAL_VARIABLE.now_loading) {
 		log("Now processing... Can't move tomorrow");
@@ -177,10 +172,9 @@ function setTomorrow() {
 		log("Now modal opened.");
 	}
 	else {
-
 		saveTodo().then(function(result) {
 		}, function(error) {
-			log(JSON.stringify(error));
+			log(error);
 		}).finally(function() {
 			let tomorrow = GLOBAL_VARIABLE.selected_date;
 			tomorrow.setDate(tomorrow.getDate() + 1);
@@ -206,7 +200,7 @@ function setToday() {
 
 			saveTodo().then(function(result) {
 			}, function(error) {
-				log(JSON.stringify(error));
+				log(error);
 			}).finally(function() {
 				setDate(today.getFullYear(), today.getMonth(), today.getDate());
 			});

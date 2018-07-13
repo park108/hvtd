@@ -27,7 +27,8 @@ let USER = {
 	"id": "",
 	"name": "",
 	"token": "",
-	"image": ""
+	"image": "",
+	"id_provider": ""
 }
 
 let IMG = {
@@ -66,6 +67,12 @@ function log(line) {
 function E(id) {
 	return document.getElementById(id);
 }
+
+function percentEncode(str) {
+	return encodeURIComponent(str).replace(/[!*()']/g, (character) => {
+		return '%' + character.charCodeAt(0).toString(16);
+	});
+};
 
 function getXMLHttpRequestObject() {
 

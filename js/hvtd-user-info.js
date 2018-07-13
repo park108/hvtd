@@ -47,8 +47,6 @@ function createUserInfo() {
 
 	let userInfo = E("user-info");
 	userInfo.appendChild(userIcon);
-
-	log("Created for " + USER.name);
 }
 
 function toggleUserDropdown() {

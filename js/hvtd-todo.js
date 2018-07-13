@@ -5,13 +5,13 @@ function saveTodo() {
 
 		// No change do nothing
 		if(!GLOBAL_VARIABLE.changed) {
-			reject(Error("No changes"));
+			reject(new Error("No changes"));
 		}
 		else if(GLOBAL_VARIABLE.now_loading) {
-			reject(Error("Now processing... Can't save"));
+			reject(new Error("Now processing... Can't save"));
 		}
 		else if(GLOBAL_VARIABLE.open_modal) {
-			reject(ERROR("Now modal opened."));
+			reject(new Error("Now modal opened."));
 		}
 
 		else {
@@ -74,7 +74,7 @@ function saveTodo() {
 				// Release semaphore return reslove/reject
 				setSemaphore(false);
 
-				reject(Error("DB error!"));
+				reject(new Error("DB error!"));
 
 				// If credential is expired, sign out
 				if(403 == error.status) {
@@ -411,7 +411,7 @@ function loadPreviousTodo() {
 
 	}).catch(function(error) {
 
-		log(error);
+		log(JSON.stringify(error));
 
 		// If credential is expired, sign out
 		if(403 == error.status) {
@@ -466,7 +466,6 @@ function searchTodo(searchString) {
 
 		log(JSON.stringify(error));
 
-
 		// If credential is expired, sign out
 		if(403 == error.status) {
 			signOut();
@@ -493,7 +492,6 @@ function searchTodo(searchString) {
 
 		log(JSON.stringify(error));
 
-
 		// If credential is expired, sign out
 		if(403 == error.status) {
 			signOut();
@@ -503,8 +501,6 @@ function searchTodo(searchString) {
 
 // Clear todo on page
 function clearTodo() {
-
-	log();
 
 	// Get node list
 	let nodeList = getNodeList();

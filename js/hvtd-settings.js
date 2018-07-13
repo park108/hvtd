@@ -55,11 +55,12 @@ function loadSettings() {
 		else {
 
 			SETTINGS = settings;
+			log(USER.id + " signed in by " + USER.id_provider);
 		}
 
 	}, function(error) {
 
-		log(error);
+		log(JSON.stringify(error));
 		
 	}).then(function() {
 
@@ -80,6 +81,6 @@ function loadSettings() {
 
 	}).catch(function(error) {
 
-		log(error);
+		log(JSON.stringify(error));
 	});
 }
