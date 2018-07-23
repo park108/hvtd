@@ -18,7 +18,7 @@ window.onload = function() {
 	E("search-execute").addEventListener("click", getSearchResult, false);
 	E("search-close").addEventListener("click", closeSearch, false);
 	E("shortcut-button").addEventListener("click", openShortcuts, false);
-	E("login-button-twitter").addEventListener("click", onSignInTwitter, false);
+	// E("login-button-twitter").addEventListener("click", onSignInTwitter, false);
 
 	// Clear todo and set user info
 	clearTodo();

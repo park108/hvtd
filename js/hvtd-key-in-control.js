@@ -213,34 +213,44 @@ function keyInContents(e) {
 		if(0 == getCaretPosition() ) {
 
 			let currentContents = getContents(currentNode);
+			let currentNodeLevel = getNodeLevel(currentNode);
 
-			if(isNodeCanDelete(currentNode) && 0 == currentContents.innerHTML.length) {
+			if(currentNodeLevel > 1) {
 
-				if(hasChildNode(currentNode)) {
-
-					openConfirmModal(getMessage("001")
-						, function() {
-							deleteNode(currentNode, e.which);
-							closeConfirmModal();
-							setSaveIconVisibillity();
-						}, closeConfirmModal);
-
-				}
-				else {
-					deleteNode(currentNode, e.which);
-					setSaveIconVisibillity();
-				}
+				setNodeLevel(currentNode, -1);
+				refreshNode(currentNode);
 			}
 
-			else if(0 < currentContents.innerHTML.length && undefined != getPreviousNode(currentNode) && !hasChildNode(currentNode)) {
+			else {
 
-				let prevNode = getPreviousNode(currentNode);
-				let prevContents = getContents(prevNode);
-				let prevContentsLength = prevContents.innerHTML.length;
-				prevContents.innerHTML = prevContents.innerHTML + currentContents.innerHTML;
-				deleteNode(currentNode, e.which);
-				setCaretPosition(prevContents, prevContentsLength);
-				setSaveIconVisibillity();
+				if(isNodeCanDelete(currentNode) && 0 == currentContents.innerHTML.length) {
+
+					if(hasChildNode(currentNode)) {
+
+						openConfirmModal(getMessage("001")
+							, function() {
+								deleteNode(currentNode, e.which);
+								closeConfirmModal();
+								setSaveIconVisibillity();
+							}, closeConfirmModal);
+
+					}
+					else {
+						deleteNode(currentNode, e.which);
+						setSaveIconVisibillity();
+					}
+				}
+
+				else if(0 < currentContents.innerHTML.length && undefined != getPreviousNode(currentNode) && !hasChildNode(currentNode)) {
+
+					let prevNode = getPreviousNode(currentNode);
+					let prevContents = getContents(prevNode);
+					let prevContentsLength = prevContents.innerHTML.length;
+					prevContents.innerHTML = prevContents.innerHTML + currentContents.innerHTML;
+					deleteNode(currentNode, e.which);
+					setCaretPosition(prevContents, prevContentsLength);
+					setSaveIconVisibillity();
+				}
 			}
 
 			return false;
