@@ -71,6 +71,8 @@ function createCalendar(d) {
 		++currentDate;
 		day = ( ++day % 7 );
 	}
+
+	setCalendarVisibility(GLOBAL_VARIABLE.show_calendar);
 }
 
 function setCalendarVisibility(show) {
