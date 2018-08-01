@@ -21,6 +21,8 @@ let GLOBAL_VARIABLE = {
 	"touch_y": null,
 	"resize_timer": null,
 	"open_modal": false,
+	"last_focused": null,
+	"copied_node": null,
 }
 
 let USER = {

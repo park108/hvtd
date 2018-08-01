@@ -64,6 +64,10 @@ function setToolbarButtonLayout() {
 				else if("navigation-toolbar-save" == button.id && !GLOBAL_VARIABLE.changed) {
 				}
 
+				// No copied node, no show node paste button
+				else if("navigation-toolbar-nodepaste" == button.id && GLOBAL_VARIABLE.copied_node == null) {
+				}
+
 				// Show button
 				else {
 
@@ -139,6 +143,12 @@ function toggleMoreDropdown() {
 
 		createMoreDropdownItem("navigation-toolbar-search", "more-dropdown-search", openSearch, "SEARCH", "Alt F");
 		createMoreDropdownItem("navigation-toolbar-today", "more-dropdown-today", setToday, "GO_TODAY", "Alt T");
+		createMoreDropdownItem("navigation-toolbar-nodecopy", "more-dropdown-nodecopy", copyNode, "COPY_NODE", "");
+
+		if(null != GLOBAL_VARIABLE.copied_node) {
+			createMoreDropdownItem("navigation-toolbar-nodepaste", "more-dropdown-nodepaste", pasteNode, "PASTE_NODE", "");
+		}
+
 		createMoreDropdownItem("navigation-toolbar-copy", "more-dropdown-copy", loadPreviousTodo, "COPY_PREVIOUS", "");
 
 		if(GLOBAL_VARIABLE.changed) {

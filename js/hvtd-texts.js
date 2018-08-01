@@ -21,6 +21,8 @@ function setTooltipText() {
 	if(SETTINGS.tooltip) {
 		setDomAttribute("navigation-toolbar-today", "data-tooltip", getTooltip("006"));
 		setDomAttribute("navigation-toolbar-search", "data-tooltip", getTooltip("009"));
+		setDomAttribute("navigation-toolbar-nodecopy", "data-tooltip", getTooltip("010"));
+		setDomAttribute("navigation-toolbar-nodepaste", "data-tooltip", getTooltip("011"));
 		setDomAttribute("navigation-toolbar-copy", "data-tooltip", getTooltip("007"));
 		setDomAttribute("navigation-toolbar-calendar", "data-tooltip", getTooltip("000"));
 		setDomAttribute("navigation-toolbar-clear", "data-tooltip", getTooltip("001"));
@@ -33,6 +35,8 @@ function setTooltipText() {
 	else {
 		removeDomAttribute("navigation-toolbar-today", "data-tooltip");
 		removeDomAttribute("navigation-toolbar-search", "data-tooltip");
+		removeDomAttribute("navigation-toolbar-nodecopy", "data-tooltip");
+		removeDomAttribute("navigation-toolbar-nodepaste", "data-tooltip");
 		removeDomAttribute("navigation-toolbar-copy", "data-tooltip");
 		removeDomAttribute("navigation-toolbar-calendar", "data-tooltip");
 		removeDomAttribute("navigation-toolbar-clear", "data-tooltip");

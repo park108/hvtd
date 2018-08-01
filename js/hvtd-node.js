@@ -1,5 +1,4 @@
-function changeData(e) {
-	log(e.target.parentNode.id);
+function changeData(e) {log(e.target.parentNode.id);
 	setChanged(true);
 	setSaveIconVisibillity();
 }
@@ -84,6 +83,7 @@ function createNode(currentNode, inputLevel, inputStatus, inputCollapse, inputCo
 	newNodeContents.setAttribute("contenteditable", "true");
 	newNodeContents.setAttribute("onpaste", "return removeTags(this)");
 	newNodeContents.setAttribute("ondrop", "return false");
+	newNodeContents.setAttribute("onblur", "return setLastFocusedNode(this.parentNode.id)");
 	newNodeContents.classList.add("node-contents");
 	newNodeContents.innerHTML = contents;
 
@@ -1143,3 +1143,105 @@ function collapseAll() {
 
 	document.activeElement.blur(); // Lose focus
 }
+
+function setLastFocusedNode(id) {
+
+	GLOBAL_VARIABLE.last_focused = id;
+}
+
+function copyNode() {
+
+	// Copy last focused node
+	if(null != GLOBAL_VARIABLE.last_focused) {
+
+		GLOBAL_VARIABLE.copied_node = null;
+		GLOBAL_VARIABLE.copied_node = new Array();
+
+		let nodeData = new Object();
+
+		// Add last focused node to array
+		let lastNode = E(GLOBAL_VARIABLE.last_focused);
+		
+		nodeData.id = lastNode.id;
+		nodeData.level = getNodeLevel(lastNode);
+		nodeData.status = getNodeStatus(lastNode);
+		nodeData.contents = getContentsString(lastNode);
+
+		GLOBAL_VARIABLE.copied_node.push(nodeData);
+
+		// Add children of last focused node to array
+		let childrenIdList = getChildrenIdList(lastNode);
+
+		childrenIdList.forEach(function(id) {
+			childNode = E(id);
+			
+			nodeData = new Object();
+
+			nodeData.id = childNode.id;
+			nodeData.level = getNodeLevel(childNode);
+			nodeData.status = getNodeStatus(childNode);
+			nodeData.contents = getContentsString(childNode);
+
+			GLOBAL_VARIABLE.copied_node.push(nodeData);
+		});
+
+		// Pop success message
+		if(GLOBAL_VARIABLE.copied_node.length > 0) {
+			setBottomMessage("success", getMessage("017"));
+			setToolbarButtonLayout();
+		}
+	}
+}
+
+function pasteNode() {
+
+	// If has copied node, execute paste
+	if(null != GLOBAL_VARIABLE.copied_node) {
+
+		// Get base node position 
+		let baseNode = E(GLOBAL_VARIABLE.last_focused);
+		let baseNodeLevel = getNodeLevel(baseNode);
+		let nextNode = getNextNode(baseNode);
+		let nextNodeLevel = getNodeLevel(nextNode);
+
+		while(undefined != nextNode) {
+
+			if(baseNodeLevel >= nextNodeLevel) {
+				break;
+			}
+
+			baseNode = nextNode;
+			baseNodeLevel = nextNodeLevel;
+			nextNode = getNextNode(baseNode);
+			nextNodeLevel = getNodeLevel(nextNode);
+		}
+
+		// Paste copied node below current node as next sibling
+		let isFirst = true;
+		let currentNodeLevel = 0;
+		let bias = 0;
+		let currentNode = baseNode;
+
+		GLOBAL_VARIABLE.copied_node.forEach(function(node) {
+			
+			currentNodeLevel = node.level * 1;
+
+			if(isFirst) {
+
+				bias = baseNodeLevel - currentNodeLevel;
+
+				isFirst = false;
+			}
+
+			currentNode = createNode(currentNode, currentNodeLevel + bias, node.status, false, node.contents);
+		});	
+
+		// Pop success message
+		setBottomMessage("success", getMessage("018"));
+
+		GLOBAL_VARIABLE.copied_node = null;
+
+		setToolbarButtonLayout();
+	}
+}
+

@@ -67,6 +67,7 @@ function loadSettings() {
 		// Set objects after load settings
 		createUserInfo();
 		setSelectedDateText();
+		createCalendar(GLOBAL_VARIABLE.selected_date);
 		setCalendarVisibility(SETTINGS.show_calendar);
 		setTooltipText();
 		setAutoSaveInterval(SETTINGS.auto_save_interval);

@@ -71,8 +71,6 @@ function createCalendar(d) {
 		++currentDate;
 		day = ( ++day % 7 );
 	}
-
-	setCalendarVisibility(GLOBAL_VARIABLE.show_calendar);
 }
 
 function setCalendarVisibility(show) {
@@ -82,7 +80,6 @@ function setCalendarVisibility(show) {
 
 	if(true == show || "none" == calendar.style.display) {
 		calendar.style.display = "block";
-		createCalendar(GLOBAL_VARIABLE.selected_date);
 	}
 	else {
 		calendar.style.display = "none";

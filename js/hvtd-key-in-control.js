@@ -160,10 +160,10 @@ function keyInContents(e) {
 		let remainContents = contentsString.substring(0, position);
 		let splittedContents = contentsString.substring(position, contentsString.length);
 
-		log("POS = " + position);
-		log("CURR_CONTENTS = " + contentsString);
-		log("REMN_CONTENTS = " + remainContents);
-		log("SPLT_CONTENTS = " + splittedContents);
+		// log("POS = " + position);
+		// log("CURR_CONTENTS = " + contentsString);
+		// log("REMN_CONTENTS = " + remainContents);
+		// log("SPLT_CONTENTS = " + splittedContents);
 
 		createNode(currentNode, undefined, undefined, undefined, splittedContents);
 		contents.innerHTML = remainContents;
@@ -368,9 +368,9 @@ function keyInContents(e) {
 				let prevContentsString = getContentsString(prevNode);
 				let prevContentsLength = prevContentsString.length;
 				let newPos = prevContentsLength > GLOBAL_VARIABLE.max_position ? GLOBAL_VARIABLE.max_position : prevContentsLength;
-				log("maxPos= " + GLOBAL_VARIABLE.max_position);
-				log("prevPos= " + prevContentsLength);
-				log("newPos= " + newPos);
+				// log("maxPos= " + GLOBAL_VARIABLE.max_position);
+				// log("prevPos= " + prevContentsLength);
+				// log("newPos= " + newPos);
 
 				if(newPos > 0) {
 					setCaretPosition(prevContents, newPos);
@@ -405,9 +405,9 @@ function keyInContents(e) {
 				let nextContentsString = getContentsString(nextNode);
 				let nextContentsLength = nextContentsString.length;
 				let newPos = nextContentsLength > GLOBAL_VARIABLE.max_position ? GLOBAL_VARIABLE.max_position : nextContentsLength;
-				log("maxPos= " + GLOBAL_VARIABLE.max_position);
-				log("nextPos= " + nextContentsLength);
-				log("newPos= " + newPos);
+				// log("maxPos= " + GLOBAL_VARIABLE.max_position);
+				// log("nextPos= " + nextContentsLength);
+				// log("newPos= " + newPos);
 
 				if(newPos > 0) {
 					setCaretPosition(nextContents, newPos);
