@@ -260,11 +260,10 @@ body {
 .search-button {
 	float: left;
 
-	width: 3em;
 	height: calc(100% - 10px);
 	min-height: 0px;
 
-	padding: 3px;
+	padding: 3px 10px 3px 10px;
 }
 
 .search-result-date {
@@ -706,7 +705,7 @@ select {
 	padding: 5px;
 	width: 26px;
 	height: 26px;
-	left: 50px;
+	left: 60px;
 	bottom: 50px;
 	z-index: 100;
 	background-color: white;

@@ -3,6 +3,24 @@ function openSearch() {
 	let search = E("search");
 	search.style.display = "block";
 
+	// Create and append search button
+	let button = document.createElement("button");
+	button.setAttribute("id", "search-execute");
+	button.innerHTML = getKeyword("SEARCH");
+	button.classList.add("search-button");
+	button.classList.add("button-ok");
+	button.addEventListener("click", getSearchResult, false);
+	search.appendChild(button);
+
+	// Create and append close button
+	button = document.createElement("button");
+	button.setAttribute("id", "search-close");
+	button.innerHTML = getKeyword("CLOSE");
+	button.classList.add("search-button");
+	button.classList.add("button-cancel");
+	button.addEventListener("click", closeSearch, false);
+	search.appendChild(button);
+
 	let searchString = E("search-string");
 	searchString.focus();
 
@@ -16,6 +34,9 @@ function closeSearch() {
 	
 	let search = E("search");
 	search.style.display = "none";
+
+	search.removeChild(E("search-execute"));
+	search.removeChild(E("search-close"));
 
 	setContentsMargin();
 }

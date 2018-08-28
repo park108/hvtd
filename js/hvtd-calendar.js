@@ -78,11 +78,11 @@ function setCalendarVisibility(show) {
 	let header = E("header");
 	let calendar = E("calendar");
 
-	if(true == show || "none" == calendar.style.display) {
-		calendar.style.display = "block";
+	if(false == show || "block" == calendar.style.display) {
+		calendar.style.display = "none";
 	}
 	else {
-		calendar.style.display = "none";
+		calendar.style.display = "block";
 	}
 
 	setContentsMargin();

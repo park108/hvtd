@@ -17,8 +17,6 @@ window.onload = function() {
 	E("navigation-toolbar-save").addEventListener("click", saveTodoAsync, false);
 	E("navigation-toolbar-expandall").addEventListener("click", expandAll, false);
 	E("navigation-toolbar-collapseall").addEventListener("click", collapseAll, false);
-	E("search-execute").addEventListener("click", getSearchResult, false);
-	E("search-close").addEventListener("click", closeSearch, false);
 	E("shortcut-button").addEventListener("click", openShortcuts, false);
 
 	// Clear todo and set user info
