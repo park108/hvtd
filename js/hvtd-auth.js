@@ -1,7 +1,5 @@
 function onSignInGoogle(googleUser) {
 
-	console.log(googleUser);
-
 	let profile = googleUser.getBasicProfile();
 
 	USER.id = profile.getEmail(); // Google email for hvtd ID
@@ -56,7 +54,6 @@ function onSignInGoogle(googleUser) {
 }
 
 function onSignInFailure(e) {
-	log(e);
 	signOut();
 }
 
