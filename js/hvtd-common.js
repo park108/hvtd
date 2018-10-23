@@ -215,7 +215,7 @@ function getYYYYMMDD(inputDate) {
 		date = "0" + date;
 	}
 
-	return year + month + date;
+	return "" + year + month + date;
 }
 
 // Open confirm modal
