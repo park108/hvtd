@@ -42,11 +42,21 @@ function createCalendar(d) {
 
 	// Create current month calendar
 	let currentDate = 1;
+	let dateString = "";
 
 	while(currentDate <= lastDate.getDate()) {
 
 		dateObj = document.createElement("span");
 		dateObj.innerHTML = currentDate + " " ;
+
+		if(currentDate < 10) {
+			dateString = "0" + currentDate;
+		}
+		else {
+			dateString = currentDate;
+		}
+		
+		dateObj.setAttribute("id", "calendar-date-" + yearString + monthString + dateString);
 		dateObj.classList.add("date");
 
 		if(currentDate == selectedDate.getDate()
@@ -71,6 +81,9 @@ function createCalendar(d) {
 		++currentDate;
 		day = ( ++day % 7 );
 	}
+
+	// Get todo count for mark date has data
+	getTodoCount(d);
 }
 
 function setCalendarVisibility(show) {

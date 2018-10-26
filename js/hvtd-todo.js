@@ -499,6 +499,75 @@ function searchTodo(searchString) {
 	});
 }
 
+// Get todo count
+function getTodoCount(d) {
+
+	log("Call...");
+
+	let yyyymm = getYYYYMMDD(d).substring(0, 6);
+
+	let fromDate = yyyymm + "01";
+	let toDate = new Date(d.getFullYear(), d.getMonth() + 1, 0);
+
+	// Set send data
+	let params = {
+		user: USER.id
+		, fromDate: fromDate
+		, toDate: getYYYYMMDD(toDate)
+	};
+	let body = {};
+	let additionalParams = {};
+
+	// Call Generated API Gateway SDK
+	API.todo.todoUserCountFromDateToDateGet(params, body, additionalParams)
+	.then(function(response) {
+
+		return response;
+
+	}, function(error) {
+
+		log(JSON.stringify(error));
+
+		// If credential is expired, sign out
+		if(403 == error.status) {
+			signOut();
+		}
+
+	}).then(function(response) {
+
+		let dateString = "";
+		let result = response.data;
+		let dateId = "";
+		let dateElement = new Object();
+
+		for(let currentDate = 1; currentDate <= toDate.getDate(); currentDate++) {
+
+			if(currentDate < 10) {
+				dateString = "" + yyyymm + "0" + currentDate;
+			}
+			else {
+				dateString = "" + yyyymm + currentDate;
+			}
+
+			dateId = "calendar-date-" + dateString;
+			dateElement = E(dateId);
+
+			if(result.items[dateString].totalCount > 0) {
+				dateElement.classList.add("has-data");
+			}
+		}
+		
+	}).catch(function(error) {
+
+		log(JSON.stringify(error));
+
+		// If credential is expired, sign out
+		if(403 == error.status) {
+			signOut();
+		}
+	});
+}
+
 // Clear todo on page
 function clearTodo() {
 

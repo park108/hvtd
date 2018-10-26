@@ -213,6 +213,41 @@ apigClientFactory.newClient.todo = function (config) {
     
     
     
+    apigClient.todoUserCountFromDateToDateGet = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, ['fromDate', 'toDate', 'user'], ['body']);
+        
+        var todoUserCountFromDateToDateGetRequest = {
+            verb: 'get'.toUpperCase(),
+            path: pathComponent + uritemplate('/todo/{user}/count/{fromDate}/{toDate}').expand(apiGateway.core.utils.parseParametersToObject(params, ['fromDate', 'toDate', 'user'])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(todoUserCountFromDateToDateGetRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.todoUserCountFromDateToDateOptions = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        
+        var todoUserCountFromDateToDateOptionsRequest = {
+            verb: 'options'.toUpperCase(),
+            path: pathComponent + uritemplate('/todo/{user}/count/{fromDate}/{toDate}').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(todoUserCountFromDateToDateOptionsRequest, authType, additionalParams, config.apiKey);
+    };
+    
     apigClient.todoUserSearchSearchStringGet = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         

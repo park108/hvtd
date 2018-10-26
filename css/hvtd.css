@@ -226,6 +226,10 @@ body {
 	color: firebrick;
 }
 
+#calendar span.has-data {
+	font-weight: 700;
+}
+
 /* Search */
 #search {
 	display: none;
