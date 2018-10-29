@@ -20,15 +20,8 @@ function setUserInfo() {
 	// Initialize user-info
 	E("user-info").innerHTML = "";
 
-	// If has no token, pop signin up
-	if(null == USER.token || "" == USER.token) {
-
-		openLogin(getMessage("000"));
-	}
-
 	// If has token, create user-icon image and sign-out button in user-info element
-	else {
-
+	if(null != USER.token && "" != USER.token) {
 		loadSettings();
 	}
 }

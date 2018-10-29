@@ -90,4 +90,6 @@ function signOut() {
 		clearTodo();
 		setUserInfo();
 	}
+
+	openLogin(getMessage("000"));
 }
